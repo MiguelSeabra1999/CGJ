@@ -8,7 +8,7 @@
 // The code comes with no warranties, use it at your own risk.
 // You may use it, or parts of it, wherever you want.
 // 
-// Author: João Madeiras Pereira
+// Author: Joï¿½o Madeiras Pereira
 //
 
 /*
@@ -46,6 +46,7 @@ const string font_name = "fonts/arial.ttf";
 vector<struct MyMesh> myMeshes;
 //Vector with GameObjects
 vector< GameObject*> myGameObjects;
+PlayerCar* player;
 
 //External array storage defined in AVTmathLib.cpp
 
@@ -71,7 +72,7 @@ float r = 10.0f;
 long myTime,timebase = 0,frame = 0;
 char s[32];
 float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
-
+bool directionalKeys[4] = { false,false,false,false };
 
 void timer(int value)
 {
@@ -195,6 +196,23 @@ void processKeys(unsigned char key, int xx, int yy)
 			break;
 		case 'm': glEnable(GL_MULTISAMPLE); break;
 		case 'n': glDisable(GL_MULTISAMPLE); break;
+		case 'w':
+			directionalKeys[0] = !directionalKeys[0];	
+			player->forward(directionalKeys[0]);
+			break;
+		case 's':	
+			directionalKeys[1] = !directionalKeys[1];
+			player->backward(directionalKeys[1]);
+			break;
+		case 'a':
+			directionalKeys[2] = !directionalKeys[2];
+			player->left(directionalKeys[2]);
+			break;
+		case 'd':	
+			directionalKeys[3] = !directionalKeys[3]; 
+			player->right(directionalKeys[3]);
+			break;
+		
 	}
 }
 
@@ -345,37 +363,86 @@ GLuint setupShaders() {
 void createGameObjects()
 {
 	PlayerCar* playerCar = new PlayerCar();
-	playerCar->transform.setPosition(0, -3, 0);
-	//playerCar->transform.setScale(2, 2, 1);
+	playerCar->transform.setScale(.2, .2, .2);
 	myGameObjects.push_back((GameObject*)playerCar);
+	player = playerCar;
 
+
+	Cube* cube = new Cube();
+	cube->transform.setLocalScale(3,.6,1.7);
+	cube->transform.setLocalPosition(.5,.2,0);
+	cube->transform.setParent(&(playerCar->transform));
+	myGameObjects.push_back((GameObject*)cube);
+
+	cube = new Cube();
+	cube->transform.setLocalScale(1.4, .6, 1.7);
+	cube->transform.setLocalPosition(.69, .775, 0);
+	cube->transform.setParent(&(playerCar->transform));
+	myGameObjects.push_back((GameObject*)cube);
+
+	cube = new Cube();
+	cube->transform.setLocalScale(.8, .8, 1.7);
+	cube->transform.setLocalPosition(1.4, .5, 0);
+	cube->transform.setRotation(0, 0, 45);
+	cube->transform.setParent(&(playerCar->transform));
+	myGameObjects.push_back((GameObject*)cube);
+
+	
 	Wheel* wheel = new Wheel();
-	wheel->transform.setLocalPosition(0, 0, 5);
-	wheel->transform.setLocalRotation(0, 90, 0);
+	wheel->transform.setLocalPosition(-0.5, 0, 1);
+	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
 	myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
-	wheel->transform.setLocalPosition(0, 0, -2);
-	wheel->transform.setLocalRotation(0, 90, 0);
+	wheel->transform.setLocalPosition(-0.5, 0, -1);
+	wheel->transform.setRotation(90,0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
 	myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
-	wheel->transform.setLocalPosition(5, 0, 5);
-	wheel->transform.setLocalRotation(0, 90, 0);
+	wheel->transform.setLocalPosition(1.5, 0, 1);
+	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
 	myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
-	wheel->transform.setLocalPosition(5, 0, -2);
-	wheel->transform.setLocalRotation(0, 90, 0);
+	wheel->transform.setLocalPosition(1.5, 0, -1);
+	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
 	myGameObjects.push_back((GameObject*)wheel);
+
+
+	float mapSize = 30;
+	cube = new Cube();
+	cube->transform.setScale(mapSize, 1, mapSize);
+	cube->transform.setPosition(0, -1, 0);
+	myGameObjects.push_back((GameObject*)cube);
+
+	cube = new Cube();
+	cube->transform.setScale(mapSize, 5, 1);
+	cube->transform.setPosition(0,0, mapSize/2);
+	myGameObjects.push_back((GameObject*)cube);
+
+	cube = new Cube();
+	cube->transform.setScale(mapSize, 5, 1);
+	cube->transform.setPosition(0, 0, -mapSize / 2);
+	myGameObjects.push_back((GameObject*)cube);
+
+	cube = new Cube();
+	cube->transform.setScale( 1,5 , mapSize);
+	cube->transform.setPosition(mapSize / 2, 0, 0);
+	myGameObjects.push_back((GameObject*)cube);
+
+	cube = new Cube();
+	cube->transform.setScale(1, 5, mapSize);
+	cube->transform.setPosition(-mapSize / 2, 0, 0);
+	myGameObjects.push_back((GameObject*)cube);
+
 	
 
 }

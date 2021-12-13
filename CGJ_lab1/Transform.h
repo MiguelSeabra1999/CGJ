@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 class SimpleTransform
 {
 public:
@@ -47,7 +50,7 @@ public:
 	void initZero()
 	{
 		setPosition(0, 0, 0);
-		setRotation(0, 0, 0);
+		setRotation(0,0,0);
 		setScale(1, 1, 1);
 	}
 
@@ -83,15 +86,16 @@ public:
 		pos[1] = a->pos[1] + b->pos[1];
 		pos[2] = a->pos[2] + b->pos[2];
 
-		rot[0] = a->rot[0] + b->rot[0];
+		/*rot[0] = a->rot[0] + b->rot[0];
 		rot[1] = a->rot[1] + b->rot[1];
 		rot[2] = a->rot[2] + b->rot[2];
-		ClampRotations();
+		ClampRotations();*/
 
 		scale[0] = a->scale[0] * b->scale[0];
 		scale[1] = a->scale[1] * b->scale[1];
 		scale[2] = a->scale[2] * b->scale[2];
 	}
+
 
 };
 
@@ -119,8 +123,11 @@ class Transform
 		}
 		void updateLocalTransform()
 		{
+
 			if(parent != nullptr)
 				globalTransform.SumTransform(&localTransform, &(parent->globalTransform));
+
+			//cout << "transform " << globalTransform.pos[0] << " " << globalTransform.pos[1] << " " << globalTransform.pos[2] << " /n";
 		}
 
 		

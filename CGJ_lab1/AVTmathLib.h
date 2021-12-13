@@ -34,6 +34,8 @@
 			PROJ_VIEW_MODEL
 		};
 
+		void multVectors(float* result, float* a, float* b, int size);
+
 		/** Similar to glTranslate*. 
 		  *
 		  * \param aType any value from MatrixTypes

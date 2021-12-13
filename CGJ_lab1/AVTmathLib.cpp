@@ -97,6 +97,14 @@ void multMatrix(float *resMat, float *aMatrix)
 	memcpy(a, res, 16 * sizeof(float));
 }
 
+void multVectors(float* result, float* a , float* b, int size)
+{
+	
+	for(int i = 0; i < size; i++)
+	{
+		result[i] = a[i] * b[i];
+	}
+}
 
 // glLoadMatrix implementation
 void loadMatrix(MatrixTypes aType, float *aMatrix)

@@ -56,11 +56,39 @@ class GameObject {
 				glUniform1f(loc, myMeshes[i].mat.shininess);
 				pushMatrix(MODEL);
 
-				//MoveToPlace
-				//rotate(MODEL, 0, transform.globalTransform.rot);
-				scale(MODEL, transform.globalTransform.scale);
+
+
 				
-				translate(MODEL, transform.globalTransform.pos);
+
+				if (transform.parent != nullptr)
+				{
+					translate(MODEL, transform.parent->globalTransform.pos);
+					
+					rotate(MODEL, transform.parent->globalTransform.rot[0], 1, 0, 0);
+					rotate(MODEL, transform.parent->globalTransform.rot[1], 0, 1, 0);
+					rotate(MODEL, transform.parent->globalTransform.rot[2], 0, 0, 1);
+
+					float t[3];
+					multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
+					translate(MODEL, t );
+				}else
+				{
+					translate(MODEL, transform.globalTransform.pos);
+				}
+				
+				scale(MODEL, transform.globalTransform.scale);
+
+				rotate(MODEL, transform.globalTransform.rot[0], 1, 0, 0);
+				rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
+				rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
+
+				//scale(MODEL, transform.localTransform.scale);
+
+
+					
+
+				//translate(MODEL, transform.localTransform.pos);
+				
 				
 
 				// send matrices to OGL
@@ -97,6 +125,8 @@ class PlayerCar : public GameObject
 		PlayerCar()
 		{
 			GameObject::GameObject();
+			inputDir[0] = 0;
+			inputDir[1] = 0;
 		}
 		void start()
 		{
@@ -105,30 +135,43 @@ class PlayerCar : public GameObject
 		void update()
 		{
 			GameObject::update();
-			GameObject::transform.globalTransform.translate(0, 0.1, 0);
+			GameObject::transform.globalTransform.translate(inputDir[0]*speed, 0, inputDir[1] * speed);
+			//GameObject::transform.globalTransform.rotate(10,0,0);
 		}
 		void initDraw(GLuint myShaderProgramIndex)
 		{
-			GameObject::initDraw(myShaderProgramIndex);
-			MyMesh amesh;
-			float amb[] = { 0.2f, 0.15f, 0.1f, 1.0f };
-			float diff[] = { 0.8f, 0.6f, 0.4f, 1.0f };
-			float spec[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-			float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-			float shininess = 100.0f;
-			int texcount = 0;
-
-			amesh = createCube();
-			memcpy(amesh.mat.diffuse, diff, 4 * sizeof(float));
-			memcpy(amesh.mat.specular, spec, 4 * sizeof(float));
-			memcpy(amesh.mat.emissive, emissive, 4 * sizeof(float));
-			amesh.mat.shininess = shininess;
-			amesh.mat.texCount = texcount;
-			myMeshes.push_back(amesh);
-
-
-
 		}
+		void forward(bool state)
+		{
+			if(state)
+				inputDir[0] -= 1;
+			else
+				inputDir[0] += 1;
+		}
+		void backward(bool state)
+		{
+			if (state)
+				inputDir[0] += 1;
+			else
+				inputDir[0] -= 1;
+		}
+		void left(bool state)
+		{
+			if (state)
+				inputDir[1] += 1;
+			else
+				inputDir[1] -= 1;
+		}
+		void right(bool state)
+		{
+			if (state)
+				inputDir[1] -= 1;
+			else
+				inputDir[1] += 1;
+		}
+	private:
+		float inputDir[2];
+		float speed = 0.01f;
 };
 class Wheel : public GameObject
 {
@@ -144,6 +187,7 @@ public:
 	void update()
 	{
 		GameObject::update();
+		GameObject::transform.localTransform.rotate(0, 5, 0);
 	}
 	void initDraw(GLuint myShaderProgramIndex)
 	{
@@ -158,6 +202,45 @@ public:
 
 
 		amesh = createTorus(1, 2, 10, 10);
+		memcpy(amesh.mat.diffuse, diff, 4 * sizeof(float));
+		memcpy(amesh.mat.specular, spec, 4 * sizeof(float));
+		memcpy(amesh.mat.emissive, emissive, 4 * sizeof(float));
+		amesh.mat.shininess = shininess;
+		amesh.mat.texCount = texcount;
+		myMeshes.push_back(amesh);
+
+
+	}
+};
+class Cube : public GameObject
+{
+public:
+	Cube()
+	{
+		GameObject::GameObject();
+	}
+	void start()
+	{
+
+	}
+	void update()
+	{
+		GameObject::update();
+
+	}
+	void initDraw(GLuint myShaderProgramIndex)
+	{
+		GameObject::initDraw(myShaderProgramIndex);
+		MyMesh amesh;
+		float amb[] = { 0.2f, 0.15f, 0.1f, 1.0f };
+		float diff[] = { 0.8f, 0.6f, 0.4f, 1.0f };
+		float spec[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+		float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		float shininess = 100.0f;
+		int texcount = 0;
+
+
+		amesh = createCube();
 		memcpy(amesh.mat.diffuse, diff, 4 * sizeof(float));
 		memcpy(amesh.mat.specular, spec, 4 * sizeof(float));
 		memcpy(amesh.mat.emissive, emissive, 4 * sizeof(float));

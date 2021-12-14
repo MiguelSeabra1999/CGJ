@@ -10,6 +10,7 @@
 #include "geometry.h"
 #include "avtFreeType.h"
 #include "Transform.h"
+
 using namespace std;
 extern float mMatrix[COUNT_MATRICES][16];
 extern float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
@@ -19,6 +20,7 @@ extern float mNormal3x3[9];
 class GameObject {
     public:
 		Transform transform;
+		//RigidBody* rigidbody;
 
 		GameObject()
 		{
@@ -28,6 +30,8 @@ class GameObject {
 
         virtual void update()
 		{
+			/*if(rigidbody != nullptr)
+				rigidbody->physicsUpdate();*/
 			transform.updateLocalTransform();
 		}
         virtual void start(){}
@@ -135,7 +139,8 @@ class PlayerCar : public GameObject
 		void update()
 		{
 			GameObject::update();
-			GameObject::transform.globalTransform.translate(inputDir[0]*speed, 0, inputDir[1] * speed);
+			GameObject::transform.globalTransform.translate(inputDir[0]*speed, 0, 0);
+			GameObject::transform.globalTransform.rotate(0,inputDir[1] * speed * 100,0);
 			//GameObject::transform.globalTransform.rotate(10,0,0);
 		}
 		void initDraw(GLuint myShaderProgramIndex)
@@ -143,6 +148,7 @@ class PlayerCar : public GameObject
 		}
 		void forward(bool state)
 		{
+			cout << "press:" << state;
 			if(state)
 				inputDir[0] -= 1;
 			else

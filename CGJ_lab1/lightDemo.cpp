@@ -72,7 +72,13 @@ float r = 10.0f;
 long myTime,timebase = 0,frame = 0;
 char s[32];
 float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
-bool directionalKeys[4] = { false,false,false,false };
+
+map<char, char> keys = {
+	{ 'w', false },
+	{ 'a', false },
+	{ 's', false },
+	{ 'd', false }
+};
 
 void timer(int value)
 {
@@ -182,39 +188,59 @@ void renderScene(void) {
 //
 // Events from the Keyboard
 //
-
-void processKeys(unsigned char key, int xx, int yy)
+void processKeys(unsigned char key, int xx, int yy, bool state)
 {
-	switch(key) {
+	switch (key) {
 
-		case 27:
-			glutLeaveMainLoop();
-			break;
+	case 27:
+		glutLeaveMainLoop();
+		break;
 
-		case 'c': 
-			printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
-			break;
-		case 'm': glEnable(GL_MULTISAMPLE); break;
-		case 'n': glDisable(GL_MULTISAMPLE); break;
-		case 'w':
-			directionalKeys[0] = !directionalKeys[0];	
-			player->forward(directionalKeys[0]);
-			break;
-		case 's':	
-			directionalKeys[1] = !directionalKeys[1];
-			player->backward(directionalKeys[1]);
-			break;
-		case 'a':
-			directionalKeys[2] = !directionalKeys[2];
-			player->left(directionalKeys[2]);
-			break;
-		case 'd':	
-			directionalKeys[3] = !directionalKeys[3]; 
-			player->right(directionalKeys[3]);
-			break;
-		
+	case 'c':
+		printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
+		break;
+	case 'm': glEnable(GL_MULTISAMPLE); break;
+	case 'n': glDisable(GL_MULTISAMPLE); break;
+	case 'w':
+		if(state != keys['w'])
+		{
+			player->forward(state);
+			keys['w'] = state;
+		}
+		break;
+	case 's':
+		if (state != keys['s'])
+		{
+			player->backward(state);
+			keys['s'] = state;
+		}
+		break;
+	case 'a':
+		if (state != keys['a'])
+		{
+			player->left(state);
+			keys['a'] = state;
+		}
+		break;
+	case 'd':
+		if (state != keys['d'])
+		{
+			player->right(state);
+			keys['d'] = state;
+		}
+		break;
+
 	}
 }
+void processKeysDown(unsigned char key, int xx, int yy)
+{
+	processKeys(key, xx, yy, true);
+}
+void processKeysUp(unsigned char key, int xx, int yy)
+{
+	processKeys(key, xx, yy, false);
+}
+
 
 
 // ------------------------------------------------------------
@@ -515,7 +541,8 @@ int main(int argc, char **argv) {
 	glutTimerFunc(0, refresh, 0);    //use it to to get 60 FPS whatever
 
 //	Mouse and Keyboard Callbacks
-	glutKeyboardFunc(processKeys);
+	glutKeyboardFunc(processKeysDown);
+	glutKeyboardUpFunc(processKeysUp);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
 	glutMouseWheelFunc ( mouseWheel ) ;

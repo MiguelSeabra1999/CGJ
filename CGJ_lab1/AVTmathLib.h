@@ -35,6 +35,7 @@
 		};
 
 		void multVectors(float* result, float* a, float* b, int size);
+		void addVectors(float* result, float* a, float* b, int size);
 
 		/** Similar to glTranslate*. 
 		  *

@@ -1,7 +1,6 @@
 #include "GameObjectLib.h"
 
-using namespace FollowCameraSpace;
-
+using namespace GameObjectSpace;
 
 
 FollowCamera::FollowCamera(SimpleTransform* target)
@@ -25,19 +24,19 @@ void FollowCamera::update()
 }
 void FollowCamera::SetCameraPosition()
 {
-	/*lookAt[0] = targetTransform->pos[0] + targetTransform->right[0] * horizontalDist;
+	lookAt[0] = targetTransform->pos[0] + targetTransform->right[0] * horizontalDist;
 	lookAt[1] = targetTransform->pos[1] + verticalDist;
-	lookAt[2] = targetTransform->pos[2] + targetTransform->right[2] * horizontalDist;*/
-	lookAt[0] = targetTransform->pos[0];
+	lookAt[2] = targetTransform->pos[2] + targetTransform->right[2] * horizontalDist;
+	/*lookAt[0] = targetTransform->pos[0];
 	lookAt[1] = targetTransform->pos[1] + 1;
-	lookAt[2] = targetTransform->pos[2];
+	lookAt[2] = targetTransform->pos[2];*/
 }
 void FollowCamera::SetCameraLookAt()
 {
-	/*lookAt[3] = targetTransform->pos[3];
-	lookAt[4] = targetTransform->pos[4] ;
-	lookAt[5] = targetTransform->pos[5] ;*/
-	lookAt[3] = 0;
+	lookAt[3] = targetTransform->pos[0];
+	lookAt[4] = targetTransform->pos[1] ;
+	lookAt[5] = targetTransform->pos[2] ;
+	/*lookAt[3] = 0;
 	lookAt[4] = 0;
-	lookAt[5] = 1;
+	lookAt[5] = 1;*/
 }

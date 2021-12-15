@@ -1,7 +1,5 @@
 #include "Wheel.h"
 
-
-using namespace WheelSpace;
 using namespace GameObjectSpace;
 
 

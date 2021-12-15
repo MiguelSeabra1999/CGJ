@@ -1,9 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-using namespace GameObjectSpace;
 
-namespace WheelSpace {
+namespace GameObjectSpace {
 	class Wheel : public GameObject
 	{
 	public:

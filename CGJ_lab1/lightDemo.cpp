@@ -134,9 +134,9 @@ void renderScene(void) {
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
+	//lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
 	//lookAt(cameraLookAt[0], cameraLookAt[1], cameraLookAt[2], cameraLookAt[3], cameraLookAt[4], cameraLookAt[5], cameraLookAt[6], cameraLookAt[7], cameraLookAt[8]);
-	//lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
+	lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 

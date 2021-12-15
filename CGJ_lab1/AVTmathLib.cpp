@@ -34,6 +34,18 @@ float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
 /// The normal matrix
 float mNormal3x3[9];
 
+
+int randomRange(int minInclusive, int maxExclusive)
+{
+	int random = minInclusive + rand() % (maxExclusive - minInclusive);
+	return random;
+}
+void multVectorConstant(float* result, float* a, float b)
+{
+	result[0] = a[0] * b;
+	result[1] = a[1] * b;
+	result[2] = a[2] * b;
+}
 // glPushMatrix implementation
 void pushMatrix(MatrixTypes aType) {
 
@@ -112,6 +124,81 @@ void addVectors(float* result, float* a, float* b, int size)
 	{
 		result[i] = a[i] + b[i];
 	}
+}
+
+void multMatixByVector(float* result, float* mat,  float* vec)
+{
+	float auxVec[4];
+	auxVec[0] = vec[0]; auxVec[1] = vec[1]; auxVec[2] = vec[2]; auxVec[3] = vec[3];
+
+	for(int i = 0; i < 4; i++)
+	{
+		float sum = 0;
+		int row = i * 4;
+		for(int j = 0; j < 4; j++)
+		{
+			sum += mat[row + j] * auxVec[j];
+		}
+		result[i] = sum;
+	}
+}
+
+void genRotationMatrix_X(float* result,float angle)
+{
+	angle = DegToRad(angle);
+	float c = cos(angle);
+	float s = sin(angle);
+
+	result[0] = 1;	result[1] = 0;	result[2] = 0;	result[3] = 0;
+
+	result[4] = 0;	result[5] = c;	result[6] = -s;	result[7] = 0;
+
+	result[8] = 0;	result[9] = s;	result[10] = c;	result[11] = 0;
+
+	result[12] = 0;	result[13] = 0; result[14] = 0;	result[15] = 1;
+}
+
+void genRotationMatrix_Y(float* result, float angle)
+{
+	angle = DegToRad(angle);
+	float c = cos(angle);
+	float s = sin(angle);
+
+	result[0] = c;	result[1] = 0;	result[2] = s;	result[3] = 0;
+
+	result[4] = 0;	result[5] = 1;	result[6] = 0;	result[7] = 0;
+
+	result[8] = -s;	result[9] = 0;	result[10] = c;	result[11] = 0;
+
+	result[12] = 0;	result[13] = 0; result[14] = 0;	result[15] = 1;
+}
+
+void genRotationMatrix_Z(float* result, float angle)
+{
+	angle = DegToRad(angle);
+	float c = cos(angle);
+	float s = sin(angle);
+
+	result[0] = c;	result[1] = -s;	result[2] = 0;	result[3] = 0;
+
+	result[4] = s;	result[5] = c;	result[6] = 0;	result[7] = 0;
+
+	result[8] = 0;	result[9] = 0;	result[10] = 1;	result[11] = 0;
+
+	result[12] = 0;	result[13] = 0; result[14] = 0;	result[15] = 1;
+}
+
+void genIdentityMatrix(float* result)
+{
+
+
+	result[0] = 1;	result[1] = 0;	result[2] = 0;	result[3] = 0;
+
+	result[4] = 0;	result[5] = 1;	result[6] = 0;	result[7] = 0;
+
+	result[8] = 0;	result[9] = 0;	result[10] = 1;	result[11] = 0;
+
+	result[12] = 0;	result[13] = 0; result[14] = 0;	result[15] = 1;
 }
 // glLoadMatrix implementation
 void loadMatrix(MatrixTypes aType, float *aMatrix)
@@ -200,6 +287,7 @@ void rotate(MatrixTypes aType, float angle, float* vec3)
 {
 	rotate(aType, angle, vec3[0], vec3[1], vec3[2]);
 }
+
 
 // gluLookAt implementation
 void lookAt(float xPos, float yPos, float zPos,

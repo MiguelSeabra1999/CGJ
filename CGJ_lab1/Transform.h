@@ -7,6 +7,11 @@ public:
 	float pos[3];
 	float rot[3];
 	float scale[3];
+	//reference vectors
+	float right[4];
+	float forward[4];
+	float up[4];
+
 
 
 	void setPosition(float x, float y, float z)
@@ -27,12 +32,15 @@ public:
 		rot[0] = x;
 		rot[1] = y;
 		rot[2] = z;
+		updateReferencePoints();
 	}
 	void rotate(float x, float y, float z)
 	{
 		rot[0] += x;
 		rot[1] += y;
 		rot[2] += z;
+		ClampRotations();
+		updateReferencePoints();
 	}
 	void setScale(float x, float y, float z)
 	{
@@ -52,6 +60,19 @@ public:
 		setPosition(0, 0, 0);
 		setRotation(0,0,0);
 		setScale(1, 1, 1);
+		updateReferencePoints();
+
+
+		right[0] = 1;
+		right[1] = 0;
+		right[2] = 0;
+		right[3] = 0;
+		float rotationMatrix[16];
+
+		genRotationMatrix_Y(rotationMatrix, 90);
+
+		multMatixByVector(right, rotationMatrix, right);
+		//cout << "|" << right[0] << "---" << right[1] << "---" << right[2] << "|\n";
 	}
 
 	float ClampAngle(float angle)
@@ -94,6 +115,44 @@ public:
 		scale[0] = a->scale[0] * b->scale[0];
 		scale[1] = a->scale[1] * b->scale[1];
 		scale[2] = a->scale[2] * b->scale[2];
+	}
+
+	void updateReferencePoints()
+	{
+		right[0] = 1; 
+		right[1] = 0; 
+		right[2] = 0;
+		right[3] = 1;
+		forward[0] = 0; 
+		forward[1] = 0;	
+		forward[2] = 1;
+		forward[3] = 1;
+		up[0] = 0; 
+		up[1] = 1; 
+		up[2] = 0;
+		up[3] = 1;
+
+		float rotationMatrix[16];
+		genRotationMatrix_X(rotationMatrix, rot[0]);
+		multMatixByVector(right, rotationMatrix, right);
+		genRotationMatrix_Y(rotationMatrix, rot[1]);
+		multMatixByVector(right, rotationMatrix, right);
+		genRotationMatrix_Z(rotationMatrix, rot[2]);
+		multMatixByVector(right, rotationMatrix, right);
+
+		genRotationMatrix_X(rotationMatrix, rot[0]);
+		multMatixByVector(forward, rotationMatrix, forward);
+		genRotationMatrix_Y(rotationMatrix, rot[1]);
+		multMatixByVector(forward, rotationMatrix, forward);
+		genRotationMatrix_Z(rotationMatrix, rot[2]);
+		multMatixByVector(forward, rotationMatrix, forward);
+
+		genRotationMatrix_X(rotationMatrix, rot[0]);
+		multMatixByVector(up, rotationMatrix, up);
+		genRotationMatrix_Y(rotationMatrix, rot[1]);
+		multMatixByVector(up, rotationMatrix, up);
+		genRotationMatrix_Z(rotationMatrix, rot[2]);
+		multMatixByVector(up, rotationMatrix, up);
 	}
 
 

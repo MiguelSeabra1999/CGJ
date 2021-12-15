@@ -170,7 +170,7 @@
   <ItemGroup>
     <ClInclude Include="avtFreeType.h" />
     <ClInclude Include="AVTmathLib.h" />
-    <ClInclude Include="Classes.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="geometry.h" />

@@ -34,8 +34,18 @@
 			PROJ_VIEW_MODEL
 		};
 
+		int randomRange(int minInclusive, int maxExclusive);
+
+		void multMatixByVector(float* result, float* mat, float* vec);
+		void genRotationMatrix_X(float* result, float angle);
+		void genRotationMatrix_Y(float* result, float angle);
+		void genRotationMatrix_Z(float* result, float angle);
+		void genIdentityMatrix(float* result);
+
 		void multVectors(float* result, float* a, float* b, int size);
 		void addVectors(float* result, float* a, float* b, int size);
+
+		void multVectorConstant(float* result, float* a, float b);
 
 		/** Similar to glTranslate*. 
 		  *
@@ -61,6 +71,7 @@
 		*/
 		void rotate(MatrixTypes aType, float angle, float x, float y, float z);
 		void rotate(MatrixTypes aType, float angle, float* vec3);
+
 
 		/** Similar to glLoadIdentity.
 		  *

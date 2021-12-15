@@ -24,10 +24,9 @@ glutposredisplay
 #include <string>
 
 
-#include "Classes.h"
 #include "GameObject.cpp"
 
-using namespace std;
+
 
 #define CAPTION "CGJ Demo: Phong Shading and Text rendered with FreeType"
 int WindowHandle = 0;
@@ -72,6 +71,8 @@ float r = 10.0f;
 long myTime,timebase = 0,frame = 0;
 char s[32];
 float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
+float* cameraLookAt = new float(9);
+Camera* currentCam;
 
 map<char, char> keys = {
 	{ 'w', false },
@@ -133,7 +134,9 @@ void renderScene(void) {
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
+	lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
+	//lookAt(cameraLookAt[0], cameraLookAt[1], cameraLookAt[2], cameraLookAt[3], cameraLookAt[4], cameraLookAt[5], cameraLookAt[6], cameraLookAt[7], cameraLookAt[8]);
+	//lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
@@ -201,28 +204,28 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		break;
 	case 'm': glEnable(GL_MULTISAMPLE); break;
 	case 'n': glDisable(GL_MULTISAMPLE); break;
-	case 'w':
+	case 'w':case 'W':
 		if(state != keys['w'])
 		{
 			player->forward(state);
 			keys['w'] = state;
 		}
 		break;
-	case 's':
+	case 's':case 'S':
 		if (state != keys['s'])
 		{
 			player->backward(state);
 			keys['s'] = state;
 		}
 		break;
-	case 'a':
+	case 'a':case 'A':
 		if (state != keys['a'])
 		{
 			player->left(state);
 			keys['a'] = state;
 		}
 		break;
-	case 'd':
+	case 'd':case 'D':
 		if (state != keys['d'])
 		{
 			player->right(state);
@@ -313,6 +316,9 @@ void processMouseMotion(int xx, int yy)
 	camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
 	camZ = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
 	camY = rAux *   						       sin(betaAux * 3.14f / 180.0f);
+	cameraLookAt[0] = camX;
+	cameraLookAt[1] = camY;
+	cameraLookAt[2] = camZ;
 
 //  uncomment this if not using an idle or refresh func
 //	glutPostRedisplay();
@@ -328,6 +334,10 @@ void mouseWheel(int wheel, int direction, int x, int y) {
 	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
 	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
 	camY = r *   						     sin(beta * 3.14f / 180.0f);
+	cameraLookAt[0] = camX;
+	cameraLookAt[1] = camY;
+	cameraLookAt[2] = camZ;
+
 
 //  uncomment this if not using an idle or refresh func
 //	glutPostRedisplay();
@@ -390,6 +400,7 @@ void createGameObjects()
 {
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
+	playerCar->transform.setPosition(0,.1,0);
 	myGameObjects.push_back((GameObject*)playerCar);
 	player = playerCar;
 
@@ -446,7 +457,7 @@ void createGameObjects()
 	float mapSize = 30;
 	cube = new Cube();
 	cube->transform.setScale(mapSize, 1, mapSize);
-	cube->transform.setPosition(0, -1, 0);
+	cube->transform.setPosition(0, -0.5, 0);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
@@ -469,6 +480,14 @@ void createGameObjects()
 	cube->transform.setPosition(-mapSize / 2, 0, 0);
 	myGameObjects.push_back((GameObject*)cube);
 
+	Orange* orange = new Orange();
+	orange->transform.setPosition(1, .5, 0);
+	myGameObjects.push_back((GameObject*)orange);
+
+	FollowCamera* followCamera = new FollowCamera( &(player->transform.globalTransform));
+	myGameObjects.push_back((GameObject*)followCamera);
+	
+	currentCam = followCamera;
 	
 
 }
@@ -492,6 +511,18 @@ void init()
 	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
 	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
 	camY = r *   						     sin(beta * 3.14f / 180.0f);
+	cameraLookAt[0] = camX;
+	cameraLookAt[1] = camY;
+	cameraLookAt[2] = camZ;
+	cameraLookAt[3] = 0;
+	cameraLookAt[4] = 0;
+	cameraLookAt[5] = 0;
+	cameraLookAt[6] = 0;
+	cameraLookAt[7] = 1;
+	cameraLookAt[8] = 0;
+
+
+
 
 	createGameObjects();
 

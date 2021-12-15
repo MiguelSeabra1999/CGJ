@@ -24,7 +24,17 @@ glutposredisplay
 #include <string>
 
 
-#include "GameObject.cpp"
+#include "GameObjectLib.h"
+
+using namespace PlayerCarSpace;
+using namespace GameObjectSpace;
+using namespace CubeSpace;
+using namespace WheelSpace;
+using namespace OrangeSpace;
+using namespace CameraSpace;
+using namespace FollowCameraSpace;
+
+
 
 
 
@@ -284,8 +294,8 @@ void processMouseMotion(int xx, int yy)
 {
 
 	int deltaX, deltaY;
-	float alphaAux, betaAux;
-	float rAux;
+	float alphaAux=0.0f, betaAux=0.0f;
+	float rAux = 0.0f;
 
 	deltaX =  - xx + startX;
 	deltaY =    yy - startY;

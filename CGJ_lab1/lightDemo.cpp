@@ -24,7 +24,13 @@ glutposredisplay
 #include <string>
 
 
-#include "GameObject.cpp"
+#include "GameObjectLib.h"
+
+
+using namespace GameObjectSpace;
+
+
+
 
 
 
@@ -115,7 +121,22 @@ void changeSize(int w, int h) {
 	// set the projection matrix
 	ratio = (1.0f * w) / h;
 	loadIdentity(PROJECTION);
+	// eu juro que n entendo pq e que isto n ta a dar
+	/*
+	//int m_viewport[4];
+	//glGetIntegerv(GL_VIEWPORT, m_viewport);
+	if (currentCam->myType == CamType_t::ortho_t)
+		currentCam->SetProjArgs(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1);
+	else if (currentCam->myType == CamType_t::perspective_t) {
+		currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f);
+	}
+	currentCam->UpdateProjection();
+	*/
+	// em vez disto
 	perspective(53.13f, ratio, 0.1f, 1000.0f);
+
+	WinX = w;
+	WinY = h;
 }
 
 
@@ -134,9 +155,9 @@ void renderScene(void) {
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	//lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
+	lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
 	//lookAt(cameraLookAt[0], cameraLookAt[1], cameraLookAt[2], cameraLookAt[3], cameraLookAt[4], cameraLookAt[5], cameraLookAt[6], cameraLookAt[7], cameraLookAt[8]);
-	lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
+	//lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
@@ -175,7 +196,19 @@ void renderScene(void) {
 	loadIdentity(PROJECTION);
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
-	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
+
+	if (currentCam->myType == CamType_t::ortho_t) {
+		currentCam->SetProjArgs( m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1);
+	}
+
+	else if (currentCam->myType == CamType_t::perspective_t) {
+		float ratio = (1.0f * WinX) / WinY;
+		currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f);
+	}
+	currentCam->UpdateProjection();
+
+	//ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
+
 	RenderText(shaderText, "This is a sample text", 25.0f, 25.0f, 1.0f, 0.5f, 0.8f, 0.2f);
 	RenderText(shaderText, "CGJ Light and Text Rendering Demo", 440.0f, 570.0f, 0.5f, 0.3, 0.7f, 0.9f);
 	popMatrix(PROJECTION);
@@ -232,6 +265,20 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			keys['d'] = state;
 		}
 		break;
+	case '1':
+		if (state != keys['1'])
+		{
+			currentCam->SetCameraType(CamType_t::perspective_t);
+		}
+		break;
+	case '2':
+		if (state != keys['2'])
+		{
+			currentCam->SetCameraType(CamType_t::ortho_t);
+		}
+		break;
+
+
 
 	}
 }
@@ -284,8 +331,8 @@ void processMouseMotion(int xx, int yy)
 {
 
 	int deltaX, deltaY;
-	float alphaAux, betaAux;
-	float rAux;
+	float alphaAux=0.0f, betaAux=0.0f;
+	float rAux = 0.0f;
 
 	deltaX =  - xx + startX;
 	deltaY =    yy - startY;

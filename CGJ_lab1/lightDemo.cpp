@@ -78,6 +78,7 @@ long myTime,timebase = 0,frame = 0;
 char s[32];
 float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
 float* cameraLookAt = new float(9);
+int firstCameraIndex = 0;
 Camera* currentCam;
 
 map<char, char> keys = {
@@ -118,23 +119,7 @@ void changeSize(int w, int h) {
 		h = 1;
 	// set the viewport to be the entire window
 	glViewport(0, 0, w, h);
-	// set the projection matrix
-	ratio = (1.0f * w) / h;
-	loadIdentity(PROJECTION);
-	// eu juro que n entendo pq e que isto n ta a dar
-	/*
-	//int m_viewport[4];
-	//glGetIntegerv(GL_VIEWPORT, m_viewport);
-	if (currentCam->myType == CamType_t::ortho_t)
-		currentCam->SetProjArgs(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1);
-	else if (currentCam->myType == CamType_t::perspective_t) {
-		currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f);
-	}
-	currentCam->UpdateProjection();
-	*/
-	// em vez disto
-	perspective(53.13f, ratio, 0.1f, 1000.0f);
-
+	
 	WinX = w;
 	WinY = h;
 }
@@ -151,7 +136,16 @@ void renderScene(void) {
 
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// load identity matrices
+	
+
+	loadIdentity(PROJECTION);
+		
+	currentCam->UpdateProjection();
+
+
+
+
+	
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
@@ -184,7 +178,7 @@ void renderScene(void) {
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
 	glDisable(GL_DEPTH_TEST);
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
-	glEnable(GL_BLEND);  
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	int m_viewport[4];
 	glGetIntegerv(GL_VIEWPORT, m_viewport);
@@ -196,19 +190,7 @@ void renderScene(void) {
 	loadIdentity(PROJECTION);
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
-
-	if (currentCam->myType == CamType_t::ortho_t) {
-		currentCam->SetProjArgs( m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1);
-	}
-
-	else if (currentCam->myType == CamType_t::perspective_t) {
-		float ratio = (1.0f * WinX) / WinY;
-		currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f);
-	}
-	currentCam->UpdateProjection();
-
-	//ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
-
+	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
 	RenderText(shaderText, "This is a sample text", 25.0f, 25.0f, 1.0f, 0.5f, 0.8f, 0.2f);
 	RenderText(shaderText, "CGJ Light and Text Rendering Demo", 440.0f, 570.0f, 0.5f, 0.3, 0.7f, 0.9f);
 	popMatrix(PROJECTION);
@@ -226,6 +208,8 @@ void renderScene(void) {
 //
 void processKeys(unsigned char key, int xx, int yy, bool state)
 {
+	float ratio = (1.0f * WinX) / WinY;
+
 	switch (key) {
 
 	case 27:
@@ -268,13 +252,34 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case '1':
 		if (state != keys['1'])
 		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex];
 			currentCam->SetCameraType(CamType_t::perspective_t);
+			currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f, 0.0f, 0.0f);
+			
 		}
 		break;
 	case '2':
 		if (state != keys['2'])
 		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex];
 			currentCam->SetCameraType(CamType_t::ortho_t);
+			currentCam->SetProjArgs(-2.0f, 2.0f, -2.0f / ratio, 2.0f / ratio, -10.0f, 10.0f);
+		}
+		break;
+	case '3':
+		if (state != keys['3'])
+		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
+			currentCam->SetCameraType(CamType_t::perspective_t);
+			currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f, 0.0f, 0.0f);
+		}
+		break;
+	case '4':
+		if (state != keys['4'])
+		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
+			currentCam->SetCameraType(CamType_t::ortho_t);
+			currentCam->SetProjArgs(-30.0f, 30.0f, -30.0f / ratio, 30.0f / ratio, -150.0f, 150.0f);
 		}
 		break;
 
@@ -531,8 +536,12 @@ void createGameObjects()
 	orange->transform.setPosition(1, .5, 0);
 	myGameObjects.push_back((GameObject*)orange);
 
+	firstCameraIndex = myGameObjects.size();
 	FollowCamera* followCamera = new FollowCamera( &(player->transform.globalTransform));
 	myGameObjects.push_back((GameObject*)followCamera);
+
+	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(0,50,0);
+	myGameObjects.push_back((GameObject*)fixedCamera);
 	
 	currentCam = followCamera;
 	

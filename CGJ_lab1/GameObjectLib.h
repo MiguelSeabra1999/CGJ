@@ -6,3 +6,4 @@
 #include "CubeObj.h"
 #include "Wheel.h"
 #include "PlayerCar.h"
+#include "FixedTopDownCamera.h"

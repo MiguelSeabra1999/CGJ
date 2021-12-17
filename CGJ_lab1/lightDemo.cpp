@@ -456,12 +456,14 @@ void createGameObjects()
 	cube->transform.setLocalScale(3,.6,1.7);
 	cube->transform.setLocalPosition(.5,.2,0);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->setColor(1.0f,0.0f,0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setLocalScale(1.4, .6, 1.7);
 	cube->transform.setLocalPosition(.69, .775, 0);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
@@ -469,6 +471,7 @@ void createGameObjects()
 	cube->transform.setLocalPosition(1.4, .5, 0);
 	cube->transform.setRotation(0, 0, 45);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	
@@ -505,29 +508,34 @@ void createGameObjects()
 	cube = new Cube();
 	cube->transform.setScale(mapSize, 1, mapSize);
 	cube->transform.setPosition(0, -0.5, 0);
+	cube->setColor(0.0f, 0.3f, 0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setScale(mapSize, 5, 1);
 	cube->transform.setPosition(0,0, mapSize/2);
+	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setScale(mapSize, 5, 1);
 	cube->transform.setPosition(0, 0, -mapSize / 2);
+	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setScale( 1,5 , mapSize);
 	cube->transform.setPosition(mapSize / 2, 0, 0);
+	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setScale(1, 5, mapSize);
 	cube->transform.setPosition(-mapSize / 2, 0, 0);
+	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
-	Orange* orange = new Orange();
+	Orange* orange = new Orange(mapSize);
 	orange->transform.setPosition(1, .5, 0);
 	myGameObjects.push_back((GameObject*)orange);
 

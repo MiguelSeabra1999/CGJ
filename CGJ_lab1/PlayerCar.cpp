@@ -53,10 +53,19 @@ using namespace GameObjectSpace;
 		GameObject::transform.globalTransform.translate(-1 * transform.globalTransform.right[0] * velocity, 0, -1 * transform.globalTransform.right[2] * velocity);
 		//cout <<   "" << -1 * transform.globalTransform.right[0] * velocity << "," << 0 <<  "," << -1 * transform.globalTransform.right[2] * velocity << " \n";
 		//GameObject::transform.globalTransform.translate(inputDir[0]*speed, 0, 0);
-		if (velocity >= 0)
-			GameObject::transform.globalTransform.rotate(0, inputDir[1] * speed * 100, 0);
-		else
-			GameObject::transform.globalTransform.rotate(0, -inputDir[1] * speed * 100, 0);
+		if(velocity != 0)
+		{
+			float speedPercent = velocity / maxSpeed;
+			speedPercent = max(0.1f,speedPercent);
+			float turnMod = (1 - speedPercent) * turnSpeedVelocityMod;
+			
+
+			cout << turnMod << endl;
+			if (velocity > 0)
+				GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed * turnMod * 100, 0);
+			else
+				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed * turnMod * 100, 0);
+		}
 
 	}
 	void PlayerCar::initDraw(GLuint myShaderProgramIndex)

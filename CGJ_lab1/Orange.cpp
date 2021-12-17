@@ -4,19 +4,17 @@ using namespace GameObjectSpace;
 
 
 
-Orange::Orange()
+Orange::Orange(float mapSize)
 {
 	GameObject::GameObject();
 
 	rigidbody = new RigidBody(&transform);
 	GameObject::components.push_back(rigidbody);
-	//random rotation
-	// random velocity
-	rigidbody->setVelocity(transform.globalTransform.forward);
-	multVectorConstant(rigidbody->velocity, rigidbody->velocity, maxStartSpeed);
-	rigidbody->setAcceleration(transform.globalTransform.forward);
-	multVectorConstant(rigidbody->acceleration, rigidbody->acceleration, acceleration);
+	moveInRandomDirection();
 
+	bounds = mapSize / 2;
+
+	
 
 }
 void Orange::start()
@@ -27,28 +25,68 @@ void Orange::update()
 {
 	GameObject::update();
 	GameObject::transform.globalTransform.rotate(2, 5, 3);
+	if(!respawning)
+	{
+		if (abs(transform.globalTransform.pos[0]) > bounds || abs(transform.globalTransform.pos[1]) > bounds || abs(transform.globalTransform.pos[2]) > bounds)
+		{
+			queueRespawn();
+			//respawn();
+		}
+	}
+	else if (currentTime > respawnTime)
+	{
+		respawn();
+	}
+
+}
+
+void Orange::queueRespawn()
+{
+	cout << "quqe" << endl;
+	respawnTime = currentTime + 2;
+	myMeshes.clear();
+	respawning = true;
+}
+void Orange::respawn()
+{
+	cout << "respawnj" << endl;
+	respawning = false;
+	respawnTime = 0;
+	initDraw(shaderProgramIndex);
+	goToRandomPos();
+	moveInRandomDirection();
+
 }
 void Orange::initDraw(GLuint myShaderProgramIndex)
 {
 	GameObject::initDraw(myShaderProgramIndex);
 	MyMesh amesh;
-	float amb[] = { 0.2f, 0.15f, 0.1f, 1.0f };
-	float diff[] = { 0.8f, 0.6f, 0.4f, 1.0f };
-	float spec[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	float shininess = 100.0f;
-	int texcount = 0;
-
-
 	amesh = createSphere(radius, 3);
-	memcpy(amesh.mat.diffuse, diff, 4 * sizeof(float));
-	memcpy(amesh.mat.specular, spec, 4 * sizeof(float));
-	memcpy(amesh.mat.emissive, emissive, 4 * sizeof(float));
-	amesh.mat.shininess = shininess;
-	amesh.mat.texCount = texcount;
+	diff[0] = 0.8f;
+	diff[1] = 0.7f;
+	diff[2] = 0.0f;
+	GameObject::initMaterial();
+	amesh.mat = *material;
 	myMeshes.push_back(amesh);
+}
 
+void Orange::goToRandomPos()
+{
+	randomRange(-bounds, bounds);
+	transform.setPosition(0, 0.5, 0);
+}
 
+void Orange::moveInRandomDirection()
+{
+
+	float angle = randomRange(0, 360);
+	GameObject::transform.globalTransform.setRotation(0, 0, 0);
+	GameObject::transform.globalTransform.rotate(0,angle,0);
+
+	rigidbody->setVelocity(transform.globalTransform.forward);
+	multVectorConstant(rigidbody->velocity, rigidbody->velocity, maxStartSpeed);
+	rigidbody->setAcceleration(transform.globalTransform.forward);
+	multVectorConstant(rigidbody->acceleration, rigidbody->acceleration, acceleration);
 }
 
 

@@ -11,11 +11,21 @@ GameObject::GameObject()
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	transform.initZero();
+	material = new Material;
+
 
 }
 
 void GameObject::update()
 {
+	prevTime = currentTime;
+	//time_t now = time(nullptr);
+
+	currentTime = static_cast<long int> (time(NULL));
+	deltaTime = currentTime - prevTime;
+	//cout << currentTime << endl;
+
+
 	int n = components.size();
 	for(int i = 0; i < n; i++)
 	{
@@ -23,6 +33,10 @@ void GameObject::update()
 	}
 					
 	transform.updateLocalTransform();
+
+
+
+
 }
 void GameObject::start(){}
 
@@ -102,8 +116,25 @@ void GameObject::draw()
 
 		popMatrix(MODEL);
 	}
+
 }
 
+void GameObject::initMaterial()
+{
+	memcpy(material->diffuse, diff, 4 * sizeof(float));
+	memcpy(material->specular, spec, 4 * sizeof(float));
+	memcpy(material->emissive, emissive, 4 * sizeof(float));
+	material->shininess = shininess;
+	material->texCount = texcount;
+}
+void GameObject::setColor(float r, float g, float b, float alpha)
+{
+	diff[0] = amb[0] = r;
+	diff[1] = amb[1] = g;
+	diff[2] = amb[2] = b;
+	diff[3] = amb[3] = alpha;
+
+}
 
 
 

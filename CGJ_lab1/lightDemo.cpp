@@ -222,6 +222,9 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->forward(state);
 			keys['w'] = state;
+			if (currentCam->GetMovingAttr()) {
+				currentCam->SetPlayerMoving(state);
+			}
 		}
 		break;
 	case 's':case 'S':
@@ -229,6 +232,9 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->backward(state);
 			keys['s'] = state;
+			if (currentCam->GetMovingAttr()) {
+				currentCam->SetPlayerMoving(state);
+			}
 		}
 		break;
 	case 'a':case 'A':
@@ -236,9 +242,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->left(state);
 			keys['a'] = state;
-			if (currentCam->GetMovingAttr()) {
-				currentCam->PlayerAKeyState(state);
-			}
+			
 		}
 		break;
 	case 'd':case 'D':
@@ -246,9 +250,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->right(state);
 			keys['d'] = state;
-			if (currentCam->GetMovingAttr()) {
-				currentCam->PlayerDKeyState(state);
-			}
+			
 		}
 		break;
 	case '1':
@@ -374,23 +376,12 @@ void processMouseMotion(int xx, int yy)
 	cout << "DELTA X = " << deltaX << endl;
 	// left mouse button: move camera
 	if (tracking == 1 && currentCam->GetMovingAttr()) {
-		alpha += (deltaX * 0.003f);
-		alpha += (deltaX * 0.003f);
+		alpha -= (deltaX * 0.003f);
 		beta += (deltaY* 0.003f);
 	}
-	// right mouse button: zoom
-	else if (tracking == 2) {
-
-		rAux = r + (deltaY * 0.01f);
-		if (rAux < 0.1f)
-			rAux = 0.1f;
-	}
-
 	currentCam->alpha = alpha;
 	currentCam->beta = beta;
 
-//  uncomment this if not using an idle or refresh func
-//	glutPostRedisplay();
 }
 
 

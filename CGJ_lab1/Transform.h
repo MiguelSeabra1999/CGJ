@@ -67,7 +67,7 @@ public:
 		right[0] = 1;
 		right[1] = 0;
 		right[2] = 0;
-		right[3] = 0;
+		right[3] = 1;
 		float rotationMatrix[16];
 
 		genRotationMatrix_Y(rotationMatrix, 90);

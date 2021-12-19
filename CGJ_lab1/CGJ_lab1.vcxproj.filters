@@ -1,154 +1,166 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\GameObjects">
-      <UniqueIdentifier>{71ab338d-a0e3-4bba-a6b6-1b28f9c6a67f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObjects">
-      <UniqueIdentifier>{9b653a95-2817-4191-ad0a-4a1bd5ce678e}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="AVTmathLib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="basic_geometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vsShaderLib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture_Loader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lightDemo.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="lightDemo.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="avtFreeType.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>LibsClass\Source</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="AVTmathLib.cpp">
+      <Filter>LibsClass\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Orange.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="basic_geometry.cpp">
+      <Filter>LibsClass\Source</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerCar.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="Texture_Loader.cpp">
+      <Filter>LibsClass\Source</Filter>
     </ClCompile>
-    <ClCompile Include="CubeObj.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="vsShaderLib.cpp">
+      <Filter>LibsClass\Source</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+      <Filter>GameObjects\Source</Filter>
     </ClCompile>
-    <ClCompile Include="FollowCamera.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Wheel.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+    <ClCompile Include="CubeObj.cpp">
+      <Filter>GameObjects\Source</Filter>
     </ClCompile>
     <ClCompile Include="FixedTopDownCamera.cpp">
-    <ClCompile Include="Collider.cpp">
-      <Filter>Source Files\GameObjects</Filter>
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowCamera.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Orange.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCar.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Wheel.cpp">
+      <Filter>GameObjects\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AVTmathLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexAttrDef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vsShaderLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture_Loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="geometry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ft2build.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="avtFreeType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Collider.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\GameObjects</Filter>
+    <ClInclude Include="cube.h">
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="FollowCamera.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectLib.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeObj.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Orange.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Wheel.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerCar.h">
-      <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="FixedTopDownCamera.h">
-    <ClInclude Include="Collider.h">
-      <Filter>Header Files\GameObjects</Filter>
+    <ClInclude Include="geometry.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexAttrDef.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="avtFreeType.h">
+      <Filter>LibsClass\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AVTmathLib.h">
+      <Filter>LibsClass\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ft2build.h">
+      <Filter>LibsClass\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture_Loader.h">
+      <Filter>LibsClass\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="vsShaderLib.h">
+      <Filter>LibsClass\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeObj.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowCamera.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectLib.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedTopDownCamera.h">
+      <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="LightSource.h">
-      <Filter>Header Files\GameObjects</Filter>
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Orange.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCar.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Wheel.h">
+      <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Dependencies.exe" />
+    <None Include="shaders\gouraud.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\gouraud.vert">
+      <Filter>Shaders</Filter>
+    </None>
     <None Include="shaders\pointlight.frag">
-      <Filter>Resource Files</Filter>
+      <Filter>Shaders</Filter>
     </None>
     <None Include="shaders\pointlight.vert">
-      <Filter>Resource Files</Filter>
+      <Filter>Shaders</Filter>
     </None>
-    <None Include="Dependencies.exe" />
     <None Include="shaders\text.frag">
-      <Filter>Resource Files</Filter>
+      <Filter>Shaders</Filter>
     </None>
     <None Include="shaders\text.vert">
-      <Filter>Resource Files</Filter>
+      <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\gouraud.frag" />
-    <None Include="shaders\gouraud.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="LibsClass">
+      <UniqueIdentifier>{372c13a6-d979-4a0d-83cc-a6f95e2df989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{da764b54-33f5-4fb4-9231-5ce903b7f5e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ca18a5b4-afed-4876-aa8c-4f3dc4a5e2f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{0a8b2fc4-6eb0-41ba-84f2-2d69f802c3ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LibsClass\Headers">
+      <UniqueIdentifier>{fe4defcc-b089-4203-bf58-215c3233d55b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LibsClass\Source">
+      <UniqueIdentifier>{11fd86d4-aedb-4ae5-b6b7-5cade9614ee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Headers">
+      <UniqueIdentifier>{3c0731f0-a7a8-4781-b355-dfcde017275b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Source">
+      <UniqueIdentifier>{54a422ef-2f17-470d-a8aa-096894871fe3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

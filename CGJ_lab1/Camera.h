@@ -28,8 +28,7 @@ namespace GameObjectSpace {
 		virtual void SetCameraRadius();
 		virtual void UpdateCameraPosition();
 
-		virtual void PlayerAKeyState(bool state){}
-		virtual void PlayerDKeyState(bool state){}
+		virtual void SetPlayerMoving(bool state){}
 		
 		void ResetCamera() {
 			alpha = 0.0f;

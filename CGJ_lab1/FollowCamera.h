@@ -8,8 +8,7 @@ namespace GameObjectSpace {
 		float horizontalDist = 3;
 		float verticalDist = 1.5;
 		float rad[3];
-		bool Astate = false;
-		bool Dstate = false;
+		bool playerMoving = false;
 		float zeta = 0.0f;
 
 
@@ -23,8 +22,7 @@ namespace GameObjectSpace {
 		void UpdateCameraPosition();
 		void SetAngles();
 		void UpdateAngles();
-		void PlayerAKeyState(bool state);
-		void PlayerDKeyState(bool state);
+		void SetPlayerMoving(bool state);
 		void SetZeta();
 	};
 

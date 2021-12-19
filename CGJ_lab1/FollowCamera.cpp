@@ -46,28 +46,31 @@ void FollowCamera::SetCameraPosition()
 
 void FollowCamera::UpdateCameraPosition()
 {
+	float threshhold = 0.02f;
 	// muda estas constantes para valores de sensibilidade a passar a camara
+	// o alpha funciona ao inverso aka -alpha
+	// mudar o playerMoving para ver se o carro ainda tem aceleracao
 	SetCameraRadius();
-	//UpdateAngles();
-	cout << "zeta :" << zeta << endl;
-	if ( zeta>0) alpha -= zeta/0.01f; //zeta/0.001f;
-	if ( zeta<0) alpha += zeta/0.01f;//zeta/0.001f;
-	
-	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * cos(alpha) ;
-	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius* sin(beta) ;
-	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + radius*sin(alpha) *cos(beta);
+	UpdateAngles();
+	cout << "beta :" << beta<< endl;
+	if (playerMoving) {
+		if (zeta > threshhold) { alpha -= zeta/30; }
+		else if (zeta < -threshhold) { alpha -= zeta/30; }
+
+	}
+
+	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
+	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
+	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + radius * cos(alpha) * cos(beta);
+
 	SetCameraRadius();
 	SetZeta();
 
 
 }
-void FollowCamera::PlayerAKeyState(bool state)
+void FollowCamera::SetPlayerMoving(bool state)
 {
-	Astate = state;
-}
-void FollowCamera::PlayerDKeyState(bool state)
-{
-	Dstate = state;
+	playerMoving = state;
 }
 
 void FollowCamera::SetCameraLookAt()
@@ -107,14 +110,34 @@ void FollowCamera::SetAngles() {
 
 void FollowCamera::UpdateAngles() {
 	//SetAngles();
-	if (alpha >= 2*PI) alpha = 2*PI;
-	if (beta >= 2*PI) beta = 2*PI;
-	if (zeta >= 2 * PI) zeta = 2 * PI;
+	if (alpha >= 2 * PI) alpha -= 2 * PI;
+	else if (alpha <= 2 * PI) alpha += 2 * PI;
+	if (beta >= 2*PI) beta -= 2*PI;
+	else if (beta <= 2 * PI) beta += 2 * PI;
+	//if (zeta >= 2 * PI) zeta -= 2 * PI;
 }
 
 void FollowCamera::SetZeta() {
+	float res, dot;
 	float xzProj[3] = { rad[0], 0.0f, rad[2] };
 	float right[3] = { -GameObject::transform.parent->globalTransform.right[0], 0.0f, -GameObject::transform.parent->globalTransform.right[2] };
 
-	zeta = acos(dotProduct(right, xzProj) / (length(right) * length(xzProj)));
+	float forward[3] = { GameObject::transform.parent->globalTransform.forward[0], 0.0f, GameObject::transform.parent->globalTransform.forward[2] };
+
+
+	//cout << "proj :" << rad[0] << ", " << 0.0f << ", "<< rad[2] << endl;
+	//cout << "right :" << right[0] << ", " << 0.0f << ", " << right[2] << endl;
+	//cout << "dotprod= " << dotProduct(right, xzProj)<< endl;
+	//cout << "length right = " << length(right) << endl;
+	//cout << "length xzProj = " << length(xzProj) << endl;
+	cout << " all : " << dotProduct(right, xzProj) / (length(forward) * length(xzProj)) <<endl;
+
+	dot = dotProduct(forward, xzProj);
+
+	res = acos(dotProduct(right, xzProj)/ (length(right) * length(xzProj)));
+	if (dot > 0)
+		zeta = res;
+	else
+		zeta = -res;
+
 }

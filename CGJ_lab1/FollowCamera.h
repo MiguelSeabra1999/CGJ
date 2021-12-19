@@ -5,13 +5,26 @@ namespace GameObjectSpace {
 	class FollowCamera : public Camera
 	{
 	public:
-		SimpleTransform* targetTransform;
 		float horizontalDist = 3;
 		float verticalDist = 1.5;
+		float rad[3];
+		bool Astate = false;
+		bool Dstate = false;
 
-		FollowCamera(SimpleTransform* target);
+
+		FollowCamera(Transform * parent);
+		FollowCamera(Transform * parent, CamType_t t, float args[6]);
 		void update();
 		void SetCameraPosition();
 		void SetCameraLookAt();
+		float GetCameraRadius();
+		void SetCameraRadius();
+		void UpdateCameraPosition();
+		void SetAngles();
+		void UpdateAngles();
+		void PlayerAKeyState(bool state);
+		void PlayerDKeyState(bool state);
 	};
+
+
 }

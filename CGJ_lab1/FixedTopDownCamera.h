@@ -6,10 +6,11 @@ namespace GameObjectSpace {
 	{
 	public:
 		float center[3] = { 0.0f };
-		FixedTopDownCamera(float x, float y, float z);
+		FixedTopDownCamera(float pos[3]);
+		FixedTopDownCamera(float pos[3], CamType_t t, float args[6]);
 		void update();
 		void SetCameraPosition();
-		void SetCameraCenter(float x, float y, float z);
+		void SetCameraCenter(float pos[3]);
 		void SetCameraLookAt();
 	};
 }

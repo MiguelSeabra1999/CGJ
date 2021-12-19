@@ -17,6 +17,9 @@
 #include <string>
 #include <GL/glew.h>
 
+#define PI 3.14159265358979323846
+
+
 	/// number of settable matrices
 		#define COUNT_MATRICES 3
 		/// number of derived matrices

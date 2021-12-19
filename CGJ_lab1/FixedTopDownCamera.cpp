@@ -3,10 +3,10 @@
 using namespace GameObjectSpace;
 
 
-FixedTopDownCamera::FixedTopDownCamera(float x, float y, float z)
+FixedTopDownCamera::FixedTopDownCamera(float pos[3])
 {
 	Camera::Camera();
-	SetCameraCenter(x, y, z);
+	SetCameraCenter(pos);
 	SetCameraPosition();
 	SetCameraLookAt();
 	//set world up
@@ -16,10 +16,23 @@ FixedTopDownCamera::FixedTopDownCamera(float x, float y, float z)
 
 }
 
-void FixedTopDownCamera::SetCameraCenter(float x, float y, float z) {
-	center[0] = x;
-	center[1] = y;
-	center[2] = z;
+FixedTopDownCamera::FixedTopDownCamera(float pos[3], CamType_t t, float args[6]) {
+	Camera::Camera();
+	//set world up
+	lookAt[6] = 0;
+	lookAt[7] = 1;
+	lookAt[8] = 0;
+	SetProjArgs(args);
+	SetCameraType(t);
+	SetCameraCenter(pos);
+	SetCameraPosition();
+	SetCameraLookAt();
+}
+
+void FixedTopDownCamera::SetCameraCenter(float pos[3]) {
+	center[0] = pos[0];
+	center[1] = pos[1];
+	center[2] = pos[2];
 }
 
 void FixedTopDownCamera::update()

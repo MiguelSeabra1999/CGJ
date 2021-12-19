@@ -40,6 +40,7 @@ int WinX = 1024, WinY = 768;
 
 unsigned int FrameCount = 0;
 
+
 //shaders
 VSShaderLib shader;  //geometry
 VSShaderLib shaderText;  //render bitmap text
@@ -67,10 +68,10 @@ GLint tex_loc, tex_loc1, tex_loc2;
 float camX, camY, camZ;
 
 // Mouse Tracking Variables
-int startX, startY, tracking = 0;
+int startX = WinX/2.0f, startY=WinY/2.0f, tracking = 0.0f;
 
 // Camera Spherical Coordinates
-float alpha = 39.0f, beta = 51.0f;
+float alpha = 0.0f, beta = 0.0f;
 float r = 10.0f;
 
 // Frame counting and FPS computation
@@ -87,6 +88,11 @@ map<char, char> keys = {
 	{ 's', false },
 	{ 'd', false }
 };
+
+// Camera Stuff
+float positionTopDownCamera[3] = { 0.0f, 50.0f, 0.0f };
+
+
 
 void timer(int value)
 {
@@ -122,6 +128,7 @@ void changeSize(int w, int h) {
 	
 	WinX = w;
 	WinY = h;
+	currentCam->UpdateProjection();
 }
 
 
@@ -136,15 +143,8 @@ void renderScene(void) {
 
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-
-	loadIdentity(PROJECTION);
 		
 	currentCam->UpdateProjection();
-
-
-
-
 	
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
@@ -209,6 +209,7 @@ void renderScene(void) {
 void processKeys(unsigned char key, int xx, int yy, bool state)
 {
 	float ratio = (1.0f * WinX) / WinY;
+	float args[6] = { 0 };
 
 	switch (key) {
 
@@ -240,6 +241,9 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->left(state);
 			keys['a'] = state;
+			if (currentCam->GetMovingAttr()) {
+				currentCam->PlayerAKeyState(state);
+			}
 		}
 		break;
 	case 'd':case 'D':
@@ -247,6 +251,9 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->right(state);
 			keys['d'] = state;
+			if (currentCam->GetMovingAttr()) {
+				currentCam->PlayerDKeyState(state);
+			}
 		}
 		break;
 	case '1':
@@ -254,7 +261,12 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex];
 			currentCam->SetCameraType(CamType_t::perspective_t);
-			currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f, 0.0f, 0.0f);
+			args[0] = 53.13f; // angle
+			args[1] = ratio; // ratio w/h
+			args[2] = 0.1f; //near 
+			args[3] = 1000.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
 			
 		}
 		break;
@@ -263,7 +275,14 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex];
 			currentCam->SetCameraType(CamType_t::ortho_t);
-			currentCam->SetProjArgs(-2.0f, 2.0f, -2.0f / ratio, 2.0f / ratio, -10.0f, 10.0f);
+			args[0] = -2.0f; // left
+			args[1] = 2.0f; // right
+			args[2] = -2.0f / ratio; //bottom 
+			args[3] = 2.0f / ratio; //up
+			args[4] = -10.0f; //near
+			args[5] = 10.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
 		}
 		break;
 	case '3':
@@ -271,7 +290,12 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
 			currentCam->SetCameraType(CamType_t::perspective_t);
-			currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f, 0.0f, 0.0f);
+			args[0] = 53.13f; // angle
+			args[1] = ratio; // ratio w/h
+			args[2] = 0.1f; //near 
+			args[3] = 1000.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
 		}
 		break;
 	case '4':
@@ -279,7 +303,15 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
 			currentCam->SetCameraType(CamType_t::ortho_t);
-			currentCam->SetProjArgs(-30.0f, 30.0f, -30.0f / ratio, 30.0f / ratio, -150.0f, 150.0f);
+			args[0] = -30.0f; // left
+			args[1] = 30.0f; // right
+			args[2] = -30.0f / ratio; //bottom 
+			args[3] = 30.0f / ratio; //up
+			args[4] = -150.0f; //near
+			args[5] = 150.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
+			
 		}
 		break;
 
@@ -318,8 +350,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
-			alpha -= (xx - startX);
-			beta += (yy - startY);
+			
 		}
 		else if (tracking == 2) {
 			r += (yy - startY) * 0.01f;
@@ -335,42 +366,33 @@ void processMouseButtons(int button, int state, int xx, int yy)
 void processMouseMotion(int xx, int yy)
 {
 
-	int deltaX, deltaY;
-	float alphaAux=0.0f, betaAux=0.0f;
+	float deltaX, deltaY;
 	float rAux = 0.0f;
 
-	deltaX =  - xx + startX;
-	deltaY =    yy - startY;
 
+	deltaX = xx - startX;
+	deltaY = yy - startY;
+
+	startX = xx;
+	startY = yy;
+	
+	cout << "DELTA X = " << deltaX << endl;
 	// left mouse button: move camera
-	if (tracking == 1) {
-
-
-		alphaAux = alpha + deltaX;
-		betaAux = beta + deltaY;
-
-		if (betaAux > 85.0f)
-			betaAux = 85.0f;
-		else if (betaAux < -85.0f)
-			betaAux = -85.0f;
-		rAux = r;
+	if (tracking == 1 && currentCam->GetMovingAttr()) {
+		alpha += (deltaX * 0.003f);
+		alpha += (deltaX * 0.003f);
+		beta += (deltaY* 0.003f);
 	}
 	// right mouse button: zoom
 	else if (tracking == 2) {
 
-		alphaAux = alpha;
-		betaAux = beta;
 		rAux = r + (deltaY * 0.01f);
 		if (rAux < 0.1f)
 			rAux = 0.1f;
 	}
 
-	camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-	camZ = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-	camY = rAux *   						       sin(betaAux * 3.14f / 180.0f);
-	cameraLookAt[0] = camX;
-	cameraLookAt[1] = camY;
-	cameraLookAt[2] = camZ;
+	currentCam->alpha = alpha;
+	currentCam->beta = beta;
 
 //  uncomment this if not using an idle or refresh func
 //	glutPostRedisplay();
@@ -537,13 +559,14 @@ void createGameObjects()
 	myGameObjects.push_back((GameObject*)orange);
 
 	firstCameraIndex = myGameObjects.size();
-	FollowCamera* followCamera = new FollowCamera( &(player->transform.globalTransform));
+	FollowCamera* followCamera = new FollowCamera( &(player->transform));
 	myGameObjects.push_back((GameObject*)followCamera);
 
-	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(0,50,0);
+	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera);
 	myGameObjects.push_back((GameObject*)fixedCamera);
 	
 	currentCam = followCamera;
+	r = currentCam->GetCameraRadius();
 	
 
 }
@@ -562,20 +585,6 @@ void init()
 
 	/// Initialization of freetype library with font_name file
 	freeType_init(font_name);
-
-	// set the camera position based on its spherical coordinates
-	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camY = r *   						     sin(beta * 3.14f / 180.0f);
-	cameraLookAt[0] = camX;
-	cameraLookAt[1] = camY;
-	cameraLookAt[2] = camZ;
-	cameraLookAt[3] = 0;
-	cameraLookAt[4] = 0;
-	cameraLookAt[5] = 0;
-	cameraLookAt[6] = 0;
-	cameraLookAt[7] = 1;
-	cameraLookAt[8] = 0;
 
 
 

@@ -162,6 +162,7 @@
     <ClCompile Include="avtFreeType.cpp" />
     <ClCompile Include="AVTmathLib.cpp" />
     <ClCompile Include="basic_geometry.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="lightDemo.cpp" />
     <ClCompile Include="Orange.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="avtFreeType.h" />
     <ClInclude Include="AVTmathLib.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="FollowCamera.h" />
@@ -185,6 +187,8 @@
     <ClInclude Include="geometry.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="CubeObj.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="Orange.h" />
     <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />

@@ -10,6 +10,7 @@ namespace GameObjectSpace {
 		float rad[3];
 		bool Astate = false;
 		bool Dstate = false;
+		float zeta = 0.0f;
 
 
 		FollowCamera(Transform * parent);
@@ -24,6 +25,7 @@ namespace GameObjectSpace {
 		void UpdateAngles();
 		void PlayerAKeyState(bool state);
 		void PlayerDKeyState(bool state);
+		void SetZeta();
 	};
 
 

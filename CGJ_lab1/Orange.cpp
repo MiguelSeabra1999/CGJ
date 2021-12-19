@@ -42,14 +42,14 @@ void Orange::update()
 
 void Orange::queueRespawn()
 {
-	cout << "quqe" << endl;
+
 	respawnTime = currentTime + 2;
 	myMeshes.clear();
 	respawning = true;
 }
 void Orange::respawn()
 {
-	cout << "respawnj" << endl;
+
 	respawning = false;
 	respawnTime = 0;
 	initDraw(shaderProgramIndex);

@@ -60,7 +60,8 @@ PlayerCar* player;
 GLint pvm_uniformId;
 GLint vm_uniformId;
 GLint normal_uniformId;
-GLint lPos_uniformId;
+GLint model_uniformId;
+
 GLint tex_loc, tex_loc1, tex_loc2;
 	
 // Camera Position
@@ -161,13 +162,7 @@ void renderScene(void) {
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
-		//send the light position in eye coordinates
-		//glUniform4fv(lPos_uniformId, 1, lightPos); //efeito capacete do mineiro, ou seja lighPos foi definido em eye coord 
-
-		float res[4];
-		multMatrixPoint(VIEW, lightPos,res);   //lightPos definido em World Coord so is converted to eye space
-		glUniform4fv(lPos_uniformId, 1, res);
-
+	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 	int count = myGameObjects.size();
 
@@ -414,6 +409,7 @@ GLuint setupShaders() {
 	// set semantics for the shader variables
 	glBindFragDataLocation(shader.getProgramIndex(), 0, "colorOut");
 	glBindAttribLocation(shader.getProgramIndex(), VERTEX_COORD_ATTRIB, "position");
+	
 	glBindAttribLocation(shader.getProgramIndex(), NORMAL_ATTRIB, "normal");
 	glLinkProgram(shader.getProgramIndex());
 	//glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
@@ -421,7 +417,8 @@ GLuint setupShaders() {
 	pvm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_pvm");
 	vm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
-	lPos_uniformId = glGetUniformLocation(shader.getProgramIndex(), "l_pos");
+	model_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_model");
+
 	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texmap");
 	tex_loc1 = glGetUniformLocation(shader.getProgramIndex(), "texmap1");
 	tex_loc2 = glGetUniformLocation(shader.getProgramIndex(), "texmap2");
@@ -543,6 +540,27 @@ void createGameObjects()
 	myGameObjects.push_back((GameObject*)followCamera);
 	
 	currentCam = followCamera;
+
+	//Lights
+	LightSource* lightSource;
+	/*lightSource = new LightSource(LightType::global);
+	lightSource->light->color[0] = 0.3f;
+	lightSource->light->color[1] = 0.3f;
+	lightSource->light->color[2] = 0.3f;
+	lightSource->light->position[1] = 3.0f;
+	myGameObjects.push_back((GameObject*)lightSource);*/
+	
+	lightSource = new LightSource(LightType::point);
+	lightSource->light->color[0] = 1;
+	lightSource->light->color[1] = 1;
+	lightSource->light->color[2] = 1;
+	lightSource->light->position[1] = 1.0f;
+	lightSource->light->linear = 0.2f;
+	myGameObjects.push_back((GameObject*)lightSource);
+
+
+
+	//GameObject::n_lights = 2;
 	
 
 }

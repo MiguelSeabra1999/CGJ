@@ -56,11 +56,15 @@ using namespace GameObjectSpace;
 		if(velocity != 0)
 		{
 			float speedPercent = velocity / maxSpeed;
-			speedPercent = max(0.1f,speedPercent);
-			float turnMod = (1 - speedPercent) * turnSpeedVelocityMod;
+			float turnMod;
+			if(speedPercent > 0.3)
+				turnMod = (1 - speedPercent) * turnSpeedVelocityMod;
+			else
+				turnMod = speedPercent * turnSpeedVelocityMod;
+			//speedPercent = max(0.1f,speedPercent);
 			
 
-			cout << turnMod << endl;
+			
 			if (velocity > 0)
 				GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed * turnMod * 100, 0);
 			else

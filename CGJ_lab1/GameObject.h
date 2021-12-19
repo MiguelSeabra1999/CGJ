@@ -12,6 +12,7 @@
 #include "avtFreeType.h"
 #include "Rigidbody.h"
 #include <ctime>
+#include "Light.h"
 using namespace std;
 
 
@@ -29,6 +30,8 @@ namespace GameObjectSpace {
 		long int deltaTime = 0;
 		Transform transform;
 		vector<Component*> components;
+		static vector<Light*> lights;
+		static int n_lights;
 		Material* material = nullptr;
 		float amb[4] = { 0.2f, 0.15f, 0.1f, 1.0f };
 		float diff[4] = { 0.8f, 0.6f, 0.4f, 1.0f };
@@ -44,6 +47,9 @@ namespace GameObjectSpace {
 		void draw();
 		void initMaterial();
 		void setColor(float r, float g, float b, float alpha);
+		void sendLightToShader(int i);
+		void sendMaterialToShader(int i);
+		
 
 	protected:
 		vector<struct MyMesh> myMeshes;
@@ -51,5 +57,6 @@ namespace GameObjectSpace {
 		GLint vm_uniformId;
 		GLint normal_uniformId;
 		GLuint shaderProgramIndex;
+		GLint model_uniformId;
 	};
 }

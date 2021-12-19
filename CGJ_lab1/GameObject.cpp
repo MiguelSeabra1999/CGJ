@@ -2,12 +2,14 @@
 
 using namespace GameObjectSpace;
 
-
+vector<Light*> GameObject::lights;
+int GameObject::n_lights;
 
 GameObject::GameObject()
 {
 	pvm_uniformId = 0;
 	vm_uniformId = 0;
+	model_uniformId = 0;
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	transform.initZero();
@@ -46,28 +48,24 @@ void GameObject::initDraw(GLuint myShaderProgramIndex)
 }
 void GameObject::draw()
 {
+	model_uniformId = glGetUniformLocation(shaderProgramIndex, "m_model");
 	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
-		
+	for (int j = 0; j < n_lights; j++)
+	{
+		sendLightToShader(j);
+	}
+
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
 	for (int i = 0; i < myMeshesLen; i++)
 	{
-		// send the material
-		loc = glGetUniformLocation(shaderProgramIndex, "mat.ambient");
-		glUniform4fv(loc, 1, myMeshes[i].mat.ambient);
-		loc = glGetUniformLocation(shaderProgramIndex, "mat.diffuse");
-		glUniform4fv(loc, 1, myMeshes[i].mat.diffuse);
-		loc = glGetUniformLocation(shaderProgramIndex, "mat.specular");
-		glUniform4fv(loc, 1, myMeshes[i].mat.specular);
-		loc = glGetUniformLocation(shaderProgramIndex, "mat.shininess");
-		glUniform1f(loc, myMeshes[i].mat.shininess);
+		sendMaterialToShader(i);
+
+
 		pushMatrix(MODEL);
 
-
-
-				
 
 		if (transform.parent != nullptr)
 		{
@@ -90,18 +88,11 @@ void GameObject::draw()
 		rotate(MODEL, transform.globalTransform.rot[0], 1, 0, 0);
 		rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
 		rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
-
-		//scale(MODEL, transform.localTransform.scale);
-
-
-					
-
-		//translate(MODEL, transform.localTransform.pos);
-				
 				
 
 		// send matrices to OGL
 		computeDerivedMatrix(PROJ_VIEW_MODEL);
+		glUniformMatrix4fv(model_uniformId, 1, GL_FALSE, mCompMatrix[VIEW]);
 		glUniformMatrix4fv(vm_uniformId, 1, GL_FALSE, mCompMatrix[VIEW_MODEL]);
 		glUniformMatrix4fv(pvm_uniformId, 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
 		computeNormalMatrix3x3();
@@ -115,6 +106,7 @@ void GameObject::draw()
 		glBindVertexArray(0);
 
 		popMatrix(MODEL);
+	
 	}
 
 }
@@ -134,6 +126,53 @@ void GameObject::setColor(float r, float g, float b, float alpha)
 	diff[2] = amb[2] = b;
 	diff[3] = amb[3] = alpha;
 
+}
+
+void GameObject::sendMaterialToShader(int i)
+{
+	GLint loc;
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.ambient");
+	glUniform4fv(loc, 1, myMeshes[i].mat.ambient);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.diffuse");
+	glUniform4fv(loc, 1, myMeshes[i].mat.diffuse);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.specular");
+	glUniform4fv(loc, 1, myMeshes[i].mat.specular);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.shininess");
+	glUniform1f(loc, myMeshes[i].mat.shininess);
+
+}
+
+void GameObject::sendLightToShader(int i)
+{
+	GLint loc;
+
+	loc = glGetUniformLocation(shaderProgramIndex,(const GLchar*) ("lights[" + to_string(i) + "].position").c_str());
+	glUniform4fv(loc, 1, lights[i]->position);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].color").c_str());
+	glUniform4fv(loc, 1, lights[i]->color);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].direction").c_str());
+	glUniform4fv(loc, 1, lights[i]->direction);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].angle").c_str());
+	glUniform1f(loc, lights[i]->angle);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].type").c_str());
+	glUniform1i(loc, lights[i]->type);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].constant").c_str());
+	glUniform1f(loc, lights[i]->constant);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].linear").c_str());
+	glUniform1f(loc, lights[i]->linear);
+
+	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].quadratic").c_str());
+	glUniform1f(loc, lights[i]->quadratic);
+
+	loc = glGetUniformLocation(shaderProgramIndex, "n_lights");
+	glUniform1i(loc, n_lights);
+	
 }
 
 

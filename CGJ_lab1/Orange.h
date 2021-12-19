@@ -7,15 +7,23 @@ namespace GameObjectSpace {
 	{
 	public:
 		float radius = 1;
-		float minStartSpeed = 0.00001;
-		float maxStartSpeed = 0.00003;
+		float minStartSpeed = 0.00006;
+		float maxStartSpeed = 0.0001;
 		float acceleration = 0.0001;
-		RigidBody* rigidbody;
+		long int respawnTime = 0;
+		bool respawning = false;
 
-		Orange();
+		RigidBody* rigidbody;
+		float bounds;
+
+		Orange(float mapSize);
 		void start();
 		void update();
 		void initDraw(GLuint myShaderProgramIndex);
+		void respawn();
+		void queueRespawn();
+		void goToRandomPos();
+		void moveInRandomDirection();
 	};
 }
 

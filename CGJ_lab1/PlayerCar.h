@@ -11,9 +11,9 @@ namespace GameObjectSpace{
 		float velocity;
 		float acceleration;
 		float backAcceleration = 0.001;
-		float forwardAcceleration = 0.003;
-		float maxSpeed = 0.1;
-		float friction = 0.005;
+		float forwardAcceleration = 0.0006;
+		float maxSpeed = 0.2;
+		float friction = 0.0005;
 		PlayerCar();
 		void start();
 		void update();
@@ -25,6 +25,7 @@ namespace GameObjectSpace{
 
 	private:
 		float inputDir[2];
-		float speed = 0.01f;
+		float turnSpeed = 0.005f;
+		float turnSpeedVelocityMod = 4; //how much more % you cant turn at small speed vs high speed
 	};
 }

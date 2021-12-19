@@ -60,6 +60,7 @@
     <ClCompile Include="Wheel.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="FixedTopDownCamera.cpp">
     <ClCompile Include="Collider.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
@@ -122,6 +123,7 @@
     <ClInclude Include="PlayerCar.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="FixedTopDownCamera.h">
     <ClInclude Include="Collider.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>

@@ -40,6 +40,7 @@ int WinX = 1024, WinY = 768;
 
 unsigned int FrameCount = 0;
 
+
 //shaders
 VSShaderLib shader;  //geometry
 VSShaderLib shaderText;  //render bitmap text
@@ -68,10 +69,10 @@ GLint tex_loc, tex_loc1, tex_loc2;
 float camX, camY, camZ;
 
 // Mouse Tracking Variables
-int startX, startY, tracking = 0;
+int startX = WinX/2.0f, startY=WinY/2.0f, tracking = 0.0f;
 
 // Camera Spherical Coordinates
-float alpha = 39.0f, beta = 51.0f;
+float alpha = 0.0f, beta = 0.0f;
 float r = 10.0f;
 
 // Frame counting and FPS computation
@@ -79,6 +80,7 @@ long myTime,timebase = 0,frame = 0;
 char s[32];
 float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
 float* cameraLookAt = new float(9);
+int firstCameraIndex = 0;
 Camera* currentCam;
 
 map<char, char> keys = {
@@ -87,6 +89,11 @@ map<char, char> keys = {
 	{ 's', false },
 	{ 'd', false }
 };
+
+// Camera Stuff
+float positionTopDownCamera[3] = { 0.0f, 50.0f, 0.0f };
+
+
 
 void timer(int value)
 {
@@ -119,25 +126,10 @@ void changeSize(int w, int h) {
 		h = 1;
 	// set the viewport to be the entire window
 	glViewport(0, 0, w, h);
-	// set the projection matrix
-	ratio = (1.0f * w) / h;
-	loadIdentity(PROJECTION);
-	// eu juro que n entendo pq e que isto n ta a dar
-	/*
-	//int m_viewport[4];
-	//glGetIntegerv(GL_VIEWPORT, m_viewport);
-	if (currentCam->myType == CamType_t::ortho_t)
-		currentCam->SetProjArgs(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1);
-	else if (currentCam->myType == CamType_t::perspective_t) {
-		currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f);
-	}
-	currentCam->UpdateProjection();
-	*/
-	// em vez disto
-	perspective(53.13f, ratio, 0.1f, 1000.0f);
-
+	
 	WinX = w;
 	WinY = h;
+	currentCam->UpdateProjection();
 }
 
 
@@ -152,7 +144,9 @@ void renderScene(void) {
 
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// load identity matrices
+		
+	currentCam->UpdateProjection();
+	
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
@@ -179,7 +173,7 @@ void renderScene(void) {
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
 	glDisable(GL_DEPTH_TEST);
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
-	glEnable(GL_BLEND);  
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	int m_viewport[4];
 	glGetIntegerv(GL_VIEWPORT, m_viewport);
@@ -191,19 +185,7 @@ void renderScene(void) {
 	loadIdentity(PROJECTION);
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
-
-	if (currentCam->myType == CamType_t::ortho_t) {
-		currentCam->SetProjArgs( m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1);
-	}
-
-	else if (currentCam->myType == CamType_t::perspective_t) {
-		float ratio = (1.0f * WinX) / WinY;
-		currentCam->SetProjArgs(53.13f, ratio, 0.1f, 1000.0f);
-	}
-	currentCam->UpdateProjection();
-
-	//ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
-
+	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
 	RenderText(shaderText, "This is a sample text", 25.0f, 25.0f, 1.0f, 0.5f, 0.8f, 0.2f);
 	RenderText(shaderText, "CGJ Light and Text Rendering Demo", 440.0f, 570.0f, 0.5f, 0.3, 0.7f, 0.9f);
 	popMatrix(PROJECTION);
@@ -221,6 +203,9 @@ void renderScene(void) {
 //
 void processKeys(unsigned char key, int xx, int yy, bool state)
 {
+	float ratio = (1.0f * WinX) / WinY;
+	float args[6] = { 0 };
+
 	switch (key) {
 
 	case 27:
@@ -251,6 +236,9 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->left(state);
 			keys['a'] = state;
+			if (currentCam->GetMovingAttr()) {
+				currentCam->PlayerAKeyState(state);
+			}
 		}
 		break;
 	case 'd':case 'D':
@@ -258,18 +246,67 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		{
 			player->right(state);
 			keys['d'] = state;
+			if (currentCam->GetMovingAttr()) {
+				currentCam->PlayerDKeyState(state);
+			}
 		}
 		break;
 	case '1':
 		if (state != keys['1'])
 		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex];
 			currentCam->SetCameraType(CamType_t::perspective_t);
+			args[0] = 53.13f; // angle
+			args[1] = ratio; // ratio w/h
+			args[2] = 0.1f; //near 
+			args[3] = 1000.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
+			
 		}
 		break;
 	case '2':
 		if (state != keys['2'])
 		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex];
 			currentCam->SetCameraType(CamType_t::ortho_t);
+			args[0] = -2.0f; // left
+			args[1] = 2.0f; // right
+			args[2] = -2.0f / ratio; //bottom 
+			args[3] = 2.0f / ratio; //up
+			args[4] = -10.0f; //near
+			args[5] = 10.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
+		}
+		break;
+	case '3':
+		if (state != keys['3'])
+		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
+			currentCam->SetCameraType(CamType_t::perspective_t);
+			args[0] = 53.13f; // angle
+			args[1] = ratio; // ratio w/h
+			args[2] = 0.1f; //near 
+			args[3] = 1000.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
+		}
+		break;
+	case '4':
+		if (state != keys['4'])
+		{
+			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
+			currentCam->SetCameraType(CamType_t::ortho_t);
+			args[0] = -30.0f; // left
+			args[1] = 30.0f; // right
+			args[2] = -30.0f / ratio; //bottom 
+			args[3] = 30.0f / ratio; //up
+			args[4] = -150.0f; //near
+			args[5] = 150.0f; //far
+			currentCam->SetProjArgs(args);
+			r = currentCam->GetCameraRadius();
+			
 		}
 		break;
 
@@ -308,8 +345,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
-			alpha -= (xx - startX);
-			beta += (yy - startY);
+			
 		}
 		else if (tracking == 2) {
 			r += (yy - startY) * 0.01f;
@@ -325,42 +361,33 @@ void processMouseButtons(int button, int state, int xx, int yy)
 void processMouseMotion(int xx, int yy)
 {
 
-	int deltaX, deltaY;
-	float alphaAux=0.0f, betaAux=0.0f;
+	float deltaX, deltaY;
 	float rAux = 0.0f;
 
-	deltaX =  - xx + startX;
-	deltaY =    yy - startY;
 
+	deltaX = xx - startX;
+	deltaY = yy - startY;
+
+	startX = xx;
+	startY = yy;
+	
+	cout << "DELTA X = " << deltaX << endl;
 	// left mouse button: move camera
-	if (tracking == 1) {
-
-
-		alphaAux = alpha + deltaX;
-		betaAux = beta + deltaY;
-
-		if (betaAux > 85.0f)
-			betaAux = 85.0f;
-		else if (betaAux < -85.0f)
-			betaAux = -85.0f;
-		rAux = r;
+	if (tracking == 1 && currentCam->GetMovingAttr()) {
+		alpha += (deltaX * 0.003f);
+		alpha += (deltaX * 0.003f);
+		beta += (deltaY* 0.003f);
 	}
 	// right mouse button: zoom
 	else if (tracking == 2) {
 
-		alphaAux = alpha;
-		betaAux = beta;
 		rAux = r + (deltaY * 0.01f);
 		if (rAux < 0.1f)
 			rAux = 0.1f;
 	}
 
-	camX = rAux * sin(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-	camZ = rAux * cos(alphaAux * 3.14f / 180.0f) * cos(betaAux * 3.14f / 180.0f);
-	camY = rAux *   						       sin(betaAux * 3.14f / 180.0f);
-	cameraLookAt[0] = camX;
-	cameraLookAt[1] = camY;
-	cameraLookAt[2] = camZ;
+	currentCam->alpha = alpha;
+	currentCam->beta = beta;
 
 //  uncomment this if not using an idle or refresh func
 //	glutPostRedisplay();
@@ -536,10 +563,15 @@ void createGameObjects()
 	orange->transform.setPosition(1, .5, 0);
 	myGameObjects.push_back((GameObject*)orange);
 
-	FollowCamera* followCamera = new FollowCamera( &(player->transform.globalTransform));
+	firstCameraIndex = myGameObjects.size();
+	FollowCamera* followCamera = new FollowCamera( &(player->transform));
 	myGameObjects.push_back((GameObject*)followCamera);
+
+	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera);
+	myGameObjects.push_back((GameObject*)fixedCamera);
 	
 	currentCam = followCamera;
+	r = currentCam->GetCameraRadius();
 
 	//Lights
 	LightSource* lightSource;
@@ -579,20 +611,6 @@ void init()
 
 	/// Initialization of freetype library with font_name file
 	freeType_init(font_name);
-
-	// set the camera position based on its spherical coordinates
-	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camY = r *   						     sin(beta * 3.14f / 180.0f);
-	cameraLookAt[0] = camX;
-	cameraLookAt[1] = camY;
-	cameraLookAt[2] = camZ;
-	cameraLookAt[3] = 0;
-	cameraLookAt[4] = 0;
-	cameraLookAt[5] = 0;
-	cameraLookAt[6] = 0;
-	cameraLookAt[7] = 1;
-	cameraLookAt[8] = 0;
 
 
 

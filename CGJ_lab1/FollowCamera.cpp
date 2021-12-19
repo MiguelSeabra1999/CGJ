@@ -50,6 +50,7 @@ void FollowCamera::UpdateCameraPosition()
 	// muda estas constantes para valores de sensibilidade a passar a camara
 	// o alpha funciona ao inverso aka -alpha
 	// mudar o playerMoving para ver se o carro ainda tem aceleracao
+	// fazer o lerp ao contrario qdo se faz marcha atras
 	SetCameraRadius();
 	UpdateAngles();
 	cout << "beta :" << beta<< endl;

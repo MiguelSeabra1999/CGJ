@@ -48,14 +48,16 @@ void FollowCamera::UpdateCameraPosition()
 {
 	// muda estas constantes para valores de sensibilidade a passar a camara
 	SetCameraRadius();
-	UpdateAngles();
-	//if (Astate && alpha > 0) alpha -= 0.025f;
-	//if (Dstate && alpha < 0) alpha += 0.025f;
+	//UpdateAngles();
+	cout << "zeta :" << zeta << endl;
+	if ( zeta>0) alpha -= zeta/0.01f; //zeta/0.001f;
+	if ( zeta<0) alpha += zeta/0.01f;//zeta/0.001f;
 	
 	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * cos(alpha) ;
 	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius* sin(beta) ;
 	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + radius*sin(alpha) *cos(beta);
 	SetCameraRadius();
+	SetZeta();
 
 
 }
@@ -94,23 +96,25 @@ float FollowCamera::GetCameraRadius() {
 }
 
 void FollowCamera::SetAngles() {
-	// alpha = arccos[(a · b) / (|a| * |b|)]
-
 	float yzProj[3] = {0.0f, rad[1], rad[2]};
 	float xzProj[3] = { rad[0], 0.0f, rad[2] };
 	float zz[3] = { 0.0f, 0.0f, 1.0f };
 
-
 	alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj)));
 	beta = acos(dotProduct(zz, yzProj)/ (length(zz)*length(yzProj)));
-
-	//cout << "alpha = " << alpha << endl;
-	//cout << "beta = " << beta << endl;
 }
 
 
 void FollowCamera::UpdateAngles() {
 	//SetAngles();
-	if (alpha >= 360) alpha -= 360;
-	if (beta >= 360) beta -= 360;
+	if (alpha >= 2*PI) alpha = 2*PI;
+	if (beta >= 2*PI) beta = 2*PI;
+	if (zeta >= 2 * PI) zeta = 2 * PI;
+}
+
+void FollowCamera::SetZeta() {
+	float xzProj[3] = { rad[0], 0.0f, rad[2] };
+	float right[3] = { -GameObject::transform.parent->globalTransform.right[0], 0.0f, -GameObject::transform.parent->globalTransform.right[2] };
+
+	zeta = acos(dotProduct(right, xzProj) / (length(right) * length(xzProj)));
 }

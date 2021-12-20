@@ -53,11 +53,15 @@ void FollowCamera::UpdateCameraPosition()
 	// fazer o lerp ao contrario qdo se faz marcha atras
 	SetCameraRadius();
 	UpdateAngles();
-	cout << "beta :" << beta<< endl;
-	if (playerMoving) {
+	PlayerCar * car = (PlayerCar*)GameObject::transform.parent->owner;
+	if (car->velocity>0) {
 		if (zeta > threshhold) { alpha -= zeta/30; }
 		else if (zeta < -threshhold) { alpha -= zeta/30; }
 
+	}
+	else if (car->velocity < 0) {
+		if (zeta < PI-threshhold && zeta>0) { alpha += (PI-zeta) / 20; }
+		else if (zeta > -PI+threshhold && zeta<0) { alpha += -(PI+zeta) / 20; }
 	}
 
 	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
@@ -124,14 +128,6 @@ void FollowCamera::SetZeta() {
 	float right[3] = { -GameObject::transform.parent->globalTransform.right[0], 0.0f, -GameObject::transform.parent->globalTransform.right[2] };
 
 	float forward[3] = { GameObject::transform.parent->globalTransform.forward[0], 0.0f, GameObject::transform.parent->globalTransform.forward[2] };
-
-
-	//cout << "proj :" << rad[0] << ", " << 0.0f << ", "<< rad[2] << endl;
-	//cout << "right :" << right[0] << ", " << 0.0f << ", " << right[2] << endl;
-	//cout << "dotprod= " << dotProduct(right, xzProj)<< endl;
-	//cout << "length right = " << length(right) << endl;
-	//cout << "length xzProj = " << length(xzProj) << endl;
-	cout << " all : " << dotProduct(right, xzProj) / (length(forward) * length(xzProj)) <<endl;
 
 	dot = dotProduct(forward, xzProj);
 

@@ -82,6 +82,7 @@ float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
 float* cameraLookAt = new float(9);
 int firstCameraIndex = 0;
 Camera* currentCam;
+bool mouseLock = false;
 
 map<char, char> keys = {
 	{ 'w', false },
@@ -220,6 +221,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 'w':case 'W':
 		if(state != keys['w'])
 		{
+			mouseLock = state;
 			player->forward(state);
 			keys['w'] = state;
 			if (currentCam->GetMovingAttr()) {
@@ -230,6 +232,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 's':case 'S':
 		if (state != keys['s'])
 		{
+			mouseLock = state;
 			player->backward(state);
 			keys['s'] = state;
 			if (currentCam->GetMovingAttr()) {
@@ -347,12 +350,13 @@ void processMouseButtons(int button, int state, int xx, int yy)
 	//stop tracking the mouse
 	else if (state == GLUT_UP) {
 		if (tracking == 1) {
-			
 		}
 		else if (tracking == 2) {
 			r += (yy - startY) * 0.01f;
 			if (r < 0.1f)
 				r = 0.1f;
+		}
+		else {
 		}
 		tracking = 0;
 	}
@@ -365,22 +369,24 @@ void processMouseMotion(int xx, int yy)
 
 	float deltaX, deltaY;
 	float rAux = 0.0f;
-
-
-	deltaX = xx - startX;
-	deltaY = yy - startY;
-
-	startX = xx;
-	startY = yy;
+	if((!mouseLock) && player->velocity==0) {
 	
-	cout << "DELTA X = " << deltaX << endl;
-	// left mouse button: move camera
-	if (tracking == 1 && currentCam->GetMovingAttr()) {
-		alpha -= (deltaX * 0.003f);
-		beta += (deltaY* 0.003f);
+		deltaX = xx - startX;
+		deltaY = yy - startY;
+
+		startX = xx;
+		startY = yy;
+	
+		// left mouse button: move camera
+		if (tracking == 1 && currentCam->GetMovingAttr()) {
+			alpha -= (deltaX * 0.003f);
+			beta += (deltaY* 0.003f);
+		}
+		currentCam->alpha = alpha;
+		currentCam->beta = beta;
+	
 	}
-	currentCam->alpha = alpha;
-	currentCam->beta = beta;
+
 
 }
 
@@ -463,6 +469,7 @@ void createGameObjects()
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
 	playerCar->transform.setPosition(0,.1,0);
+	playerCar->transform.setOwner(playerCar);
 	myGameObjects.push_back((GameObject*)playerCar);
 	player = playerCar;
 
@@ -471,6 +478,7 @@ void createGameObjects()
 	cube->transform.setLocalScale(3,.6,1.7);
 	cube->transform.setLocalPosition(.5,.2,0);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->transform.setOwner(cube);
 	cube->setColor(1.0f,0.0f,0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
@@ -478,6 +486,7 @@ void createGameObjects()
 	cube->transform.setLocalScale(1.4, .6, 1.7);
 	cube->transform.setLocalPosition(.69, .775, 0);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->transform.setOwner(cube);
 	cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
@@ -486,6 +495,7 @@ void createGameObjects()
 	cube->transform.setLocalPosition(1.4, .5, 0);
 	cube->transform.setRotation(0, 0, 45);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->transform.setOwner(cube);
 	cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 	myGameObjects.push_back((GameObject*)cube);
 
@@ -495,6 +505,7 @@ void createGameObjects()
 	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
+	wheel->transform.setOwner(wheel);
 	myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
@@ -502,6 +513,7 @@ void createGameObjects()
 	wheel->transform.setRotation(90,0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
+	wheel->transform.setOwner(wheel);
 	myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
@@ -509,6 +521,7 @@ void createGameObjects()
 	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
+	wheel->transform.setOwner(wheel);
 	myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
@@ -516,6 +529,7 @@ void createGameObjects()
 	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
+	wheel->transform.setOwner(wheel);
 	myGameObjects.push_back((GameObject*)wheel);
 
 

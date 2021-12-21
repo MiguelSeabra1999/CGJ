@@ -31,9 +31,6 @@ using namespace GameObjectSpace;
 
 
 
-
-
-
 #define CAPTION "CGJ Demo: Phong Shading and Text rendered with FreeType"
 int WindowHandle = 0;
 int WinX = 1024, WinY = 768;
@@ -91,9 +88,45 @@ map<char, char> keys = {
 	{ 'd', false }
 };
 
-// Camera Stuff
+// Camera constants and values for easy definition
 float positionTopDownCamera[3] = { 0.0f, 50.0f, 0.0f };
+float followCameraPerspectiveArguments[8] = { 
+	WinX, // window width
+	WinY, // window height
+	53.13f, // angle
+	0.1f, //near 
+	1000.0f, //far
+};
 
+float followCameraOrthoArguments[8] = {
+	WinX, //window width
+	WinY, // window height
+	-2.0f, // left
+	2.0f, // right
+	-2.0f, // bottom
+	2.0f, // top
+	-10.0f, //near 
+	10.0f, //far
+};
+
+float fixedCameraPerspectiveArguments[8] = {
+	WinX, // window width
+	WinY, // window height
+	53.13f, // angle
+	0.1f, //near 
+	1000.0f, //far
+};
+
+float fixedCameraOrthoArguments[8] = {
+	WinX, //window width
+	WinY, // window height
+	-30.0f, // left
+	30.0f, // right
+	-30.0f, // bottom
+	30.0f, // top
+	-150.0f, //near 
+	150.0f, //far
+};
 
 
 void timer(int value)
@@ -130,6 +163,7 @@ void changeSize(int w, int h) {
 	
 	WinX = w;
 	WinY = h;
+	currentCam->SetWidthHeightProj(WinX, WinY);
 	currentCam->UpdateProjection();
 }
 
@@ -204,8 +238,6 @@ void renderScene(void) {
 //
 void processKeys(unsigned char key, int xx, int yy, bool state)
 {
-	float ratio = (1.0f * WinX) / WinY;
-	float args[6] = { 0 };
 
 	switch (key) {
 
@@ -256,65 +288,50 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			
 		}
 		break;
+
+	case 'l':case 'L':
+		if (state != keys['f'])
+		{
+			if (currentCam->GetMovingAttr()) {
+				currentCam->SetLerp(!currentCam->lerp);
+			}
+		}
+		break;
+	case 'f':case 'F':
+		if (state != keys['f'])
+		{
+			currentCam->SetFollow(!currentCam->follow);
+		}
+		break;
 	case '1':
 		if (state != keys['1'])
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex];
-			currentCam->SetCameraType(CamType_t::perspective_t);
-			args[0] = 53.13f; // angle
-			args[1] = ratio; // ratio w/h
-			args[2] = 0.1f; //near 
-			args[3] = 1000.0f; //far
-			currentCam->SetProjArgs(args);
-			r = currentCam->GetCameraRadius();
-			
+			currentCam->SetCameraCharacteristics(CamType_t::perspective_t, followCameraPerspectiveArguments, WinX, WinY);
 		}
 		break;
 	case '2':
 		if (state != keys['2'])
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex];
-			currentCam->SetCameraType(CamType_t::ortho_t);
-			args[0] = -2.0f; // left
-			args[1] = 2.0f; // right
-			args[2] = -2.0f / ratio; //bottom 
-			args[3] = 2.0f / ratio; //up
-			args[4] = -10.0f; //near
-			args[5] = 10.0f; //far
-			currentCam->SetProjArgs(args);
-			r = currentCam->GetCameraRadius();
+			currentCam->SetCameraCharacteristics(CamType_t::ortho_t, followCameraOrthoArguments, WinX, WinY);
 		}
 		break;
 	case '3':
 		if (state != keys['3'])
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
-			currentCam->SetCameraType(CamType_t::perspective_t);
-			args[0] = 53.13f; // angle
-			args[1] = ratio; // ratio w/h
-			args[2] = 0.1f; //near 
-			args[3] = 1000.0f; //far
-			currentCam->SetProjArgs(args);
-			r = currentCam->GetCameraRadius();
+			currentCam->SetCameraCharacteristics(CamType_t::perspective_t, fixedCameraPerspectiveArguments, WinX, WinY);
+
 		}
 		break;
 	case '4':
 		if (state != keys['4'])
 		{
 			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
-			currentCam->SetCameraType(CamType_t::ortho_t);
-			args[0] = -30.0f; // left
-			args[1] = 30.0f; // right
-			args[2] = -30.0f / ratio; //bottom 
-			args[3] = 30.0f / ratio; //up
-			args[4] = -150.0f; //near
-			args[5] = 150.0f; //far
-			currentCam->SetProjArgs(args);
-			r = currentCam->GetCameraRadius();
-			
+			currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
 		}
-		break;
-
+	
 
 
 	}
@@ -352,9 +369,6 @@ void processMouseButtons(int button, int state, int xx, int yy)
 		if (tracking == 1) {
 		}
 		else if (tracking == 2) {
-			r += (yy - startY) * 0.01f;
-			if (r < 0.1f)
-				r = 0.1f;
 		}
 		else {
 		}
@@ -369,7 +383,7 @@ void processMouseMotion(int xx, int yy)
 
 	float deltaX, deltaY;
 	float rAux = 0.0f;
-	if((!mouseLock) && player->velocity==0) {
+	if((!mouseLock) && player->velocity==0 || !currentCam->lerp) {
 	
 		deltaX = xx - startX;
 		deltaY = yy - startY;
@@ -390,24 +404,6 @@ void processMouseMotion(int xx, int yy)
 
 }
 
-
-void mouseWheel(int wheel, int direction, int x, int y) {
-
-	r += direction * 0.1f;
-	if (r < 0.1f)
-		r = 0.1f;
-
-	camX = r * sin(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camZ = r * cos(alpha * 3.14f / 180.0f) * cos(beta * 3.14f / 180.0f);
-	camY = r *   						     sin(beta * 3.14f / 180.0f);
-	cameraLookAt[0] = camX;
-	cameraLookAt[1] = camY;
-	cameraLookAt[2] = camZ;
-
-
-//  uncomment this if not using an idle or refresh func
-//	glutPostRedisplay();
-}
 
 // --------------------------------------------------------
 //
@@ -569,14 +565,16 @@ void createGameObjects()
 	myGameObjects.push_back((GameObject*)orange);
 
 	firstCameraIndex = myGameObjects.size();
-	FollowCamera* followCamera = new FollowCamera( &(player->transform));
+	FollowCamera* followCamera = new FollowCamera( &(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
+	followCamera->transform.setParent(&(playerCar->transform));
+
 	myGameObjects.push_back((GameObject*)followCamera);
 
-	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera);
+	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera, CamType_t::perspective_t, fixedCameraPerspectiveArguments);
+	fixedCamera->transform.setParent(&(playerCar->transform));
 	myGameObjects.push_back((GameObject*)fixedCamera);
 	
 	currentCam = followCamera;
-	r = currentCam->GetCameraRadius();
 
 	//Lights
 	LightSource* lightSource;
@@ -672,7 +670,7 @@ int main(int argc, char **argv) {
 	glutKeyboardUpFunc(processKeysUp);
 	glutMouseFunc(processMouseButtons);
 	glutMotionFunc(processMouseMotion);
-	glutMouseWheelFunc ( mouseWheel ) ;
+	//glutMouseWheelFunc ( mouseWheel ) ;
 	
 
 //	return from main loop

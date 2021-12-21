@@ -9,6 +9,7 @@ FixedTopDownCamera::FixedTopDownCamera(float pos[3])
 	SetCameraCenter(pos);
 	SetCameraPosition();
 	SetCameraLookAt();
+	follow = false;
 	//set world up
 	lookAt[6] = 1;
 	lookAt[7] = 0;
@@ -16,12 +17,13 @@ FixedTopDownCamera::FixedTopDownCamera(float pos[3])
 
 }
 
-FixedTopDownCamera::FixedTopDownCamera(float pos[3], CamType_t t, float args[6]) {
-	Camera::Camera();
+FixedTopDownCamera::FixedTopDownCamera(float pos[3], CamType_t t, float args[8]) {
+	Camera::Camera(t, args);
 	//set world up
-	lookAt[6] = 0;
-	lookAt[7] = 1;
+	lookAt[6] = 1;
+	lookAt[7] = 0;
 	lookAt[8] = 0;
+	follow = false;
 	SetProjArgs(args);
 	SetCameraType(t);
 	SetCameraCenter(pos);
@@ -39,22 +41,40 @@ void FixedTopDownCamera::update()
 {
 
 	//not calling GameObject::update since there is no need to perform a render step, however that means we can add compontents
-	SetCameraPosition();
-	SetCameraLookAt();
+	if (follow) {
+		SetCameraPosition();
+		SetCameraLookAt();
+	}
 }
 void FixedTopDownCamera::SetCameraPosition()
 {
-	lookAt[0] = center[0];
-	lookAt[1] = center[1];
-	lookAt[2] = center[2];
+	if (GameObject::transform.parent!= nullptr) {
+		lookAt[0] = GameObject::transform.parent->globalTransform.pos[0];
+		lookAt[1] = center[1];
+		lookAt[2] = GameObject::transform.parent->globalTransform.pos[2];
+
+	}
+	else {
+		lookAt[0] = center[0];
+		lookAt[1] = center[1];
+		lookAt[2] = center[2];
+	}
 	
 }
 
 
 void FixedTopDownCamera::SetCameraLookAt()
 {
-	lookAt[3] = center[0];
-	lookAt[4] = 0;
-	lookAt[5] = center[2];
+	if (GameObject::transform.parent != nullptr) {
+		lookAt[3] = GameObject::transform.parent->globalTransform.pos[0];
+		lookAt[4] = 0;
+		lookAt[5] = GameObject::transform.parent->globalTransform.pos[2];
+	}
+	else {
+		lookAt[0] = center[0];
+		lookAt[1] = 0;
+		lookAt[2] = center[2];
+	}
+
 	
 }

@@ -10,23 +10,36 @@ namespace GameObjectSpace {
 	class Camera : public GameObject
 	{
 	public:
-		
+		Camera();
 		float lookAt[9] = { 0.0f };
 		float alpha = 0.0f;
 		float beta = 0.0f;
 		float radius = 0.0f;
-		Camera();
-		Camera(CamType_t t, float args[6]);
+		bool follow = true;
+		bool lerp = false;
+		float multiplier = 1.0f;
+		Camera(CamType_t t, float args[8]);
 		void update();
 		virtual void SetCameraPosition();
 		virtual void SetCameraLookAt();
 		void SetCameraType(CamType_t t);
 		void UpdateProjection();
-		void SetProjArgs(float args[6]);
+		void SetProjArgs(float args[8]);
 		bool GetMovingAttr();
 		virtual float GetCameraRadius();
 		virtual void SetCameraRadius();
 		virtual void UpdateCameraPosition();
+		virtual void SetCameraCharacteristics(CamType_t t, float args[8], float w, float h);
+		virtual void SetFollow(bool state) { follow = state; };
+		virtual void SetLerp(bool l) {};
+		void SetWidthHeightProj(float w, float h) {
+			projArgs[0] = w;
+			projArgs[1] = h;
+		}
+
+		void SetMuliplier(float m) {
+			multiplier = m;
+		}
 
 		virtual void SetPlayerMoving(bool state){}
 		
@@ -36,7 +49,7 @@ namespace GameObjectSpace {
 		};
 
 	protected:
-		float projArgs[6] = { 53.13f, 1.3333f, 0.1f, 1000.0f, 0.0f, 0.0f };
+		float projArgs[8];
 		CamType_t myType = CamType_t::perspective_t;
 		bool moving = false;
 	};

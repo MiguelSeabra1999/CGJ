@@ -1,5 +1,6 @@
 #include <iostream>
 #include "AVTmathLib.h"
+
 using namespace std;
 
 class SimpleTransform
@@ -164,6 +165,7 @@ class Transform
 	public:
 		Transform* parent = nullptr;
 		Transform* son = nullptr;
+		void* owner;
 		SimpleTransform localTransform;
 		SimpleTransform globalTransform;
 
@@ -181,6 +183,11 @@ class Transform
 			updateLocalTransform();
 		
 		}
+
+		void setOwner(void * myOwner) {
+			owner = myOwner;
+		}
+
 		void updateLocalTransform()
 		{
 

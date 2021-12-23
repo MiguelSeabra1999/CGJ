@@ -13,28 +13,34 @@ FollowCamera::FollowCamera(Transform * parent)
 	SetCameraLookAt();
 	SetCameraRadius();
 	SetAngles();
+	lerp = true;
 
 
 }
 
-FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[6]) {
-	Camera::Camera();
+FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8]) {
+	Camera::Camera(t, args);
 	radius = sqrt(verticalDist * verticalDist + horizontalDist * horizontalDist);
 	moving = true;
 	GameObject::transform.parent = parent;
+	SetProjArgs(args);
+	SetCameraType(t);
 	SetCameraPosition();
 	SetCameraLookAt();
 	SetCameraRadius();
 	SetAngles();
+	lerp = true;
 }
 
 void FollowCamera::update()
 {
 
 	//not calling GameObject::update since there is no need to perform a render step, however that means we can add compontents
-	//SetCameraPosition();
-	UpdateCameraPosition();
-	SetCameraLookAt();
+	if (follow) {
+		UpdateCameraPosition();
+		SetCameraLookAt();
+
+	}
 }
 void FollowCamera::SetCameraPosition()
 {
@@ -46,18 +52,25 @@ void FollowCamera::SetCameraPosition()
 
 void FollowCamera::UpdateCameraPosition()
 {
-	float threshhold = 0.02f;
 	// muda estas constantes para valores de sensibilidade a passar a camara
 	// o alpha funciona ao inverso aka -alpha
 	// mudar o playerMoving para ver se o carro ainda tem aceleracao
 	// fazer o lerp ao contrario qdo se faz marcha atras
 	SetCameraRadius();
 	UpdateAngles();
-	cout << "beta :" << beta<< endl;
-	if (playerMoving) {
-		if (zeta > threshhold) { alpha -= zeta/30; }
-		else if (zeta < -threshhold) { alpha -= zeta/30; }
 
+
+	if (lerp) {
+		PlayerCar * car = (PlayerCar*)GameObject::transform.parent->owner;
+		if (car->velocity>0) {
+			if (zeta > threshhold) { alpha -= zeta/angularConstantForLerp; }
+			else if (zeta < -threshhold) { alpha -= zeta/angularConstantForBackWardsLerp; }
+
+		}
+		else if (car->velocity < 0) {
+			if (zeta < PI-threshhold && zeta>0) { alpha += (PI-zeta) / angularConstantForBackWardsLerp; }
+			else if (zeta > -PI+threshhold && zeta<0) { alpha += -(PI+zeta) / angularConstantForBackWardsLerp; }
+		}
 	}
 
 	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
@@ -122,19 +135,9 @@ void FollowCamera::SetZeta() {
 	float res, dot;
 	float xzProj[3] = { rad[0], 0.0f, rad[2] };
 	float right[3] = { -GameObject::transform.parent->globalTransform.right[0], 0.0f, -GameObject::transform.parent->globalTransform.right[2] };
-
 	float forward[3] = { GameObject::transform.parent->globalTransform.forward[0], 0.0f, GameObject::transform.parent->globalTransform.forward[2] };
 
-
-	//cout << "proj :" << rad[0] << ", " << 0.0f << ", "<< rad[2] << endl;
-	//cout << "right :" << right[0] << ", " << 0.0f << ", " << right[2] << endl;
-	//cout << "dotprod= " << dotProduct(right, xzProj)<< endl;
-	//cout << "length right = " << length(right) << endl;
-	//cout << "length xzProj = " << length(xzProj) << endl;
-	cout << " all : " << dotProduct(right, xzProj) / (length(forward) * length(xzProj)) <<endl;
-
 	dot = dotProduct(forward, xzProj);
-
 	res = acos(dotProduct(right, xzProj)/ (length(right) * length(xzProj)));
 	if (dot > 0)
 		zeta = res;

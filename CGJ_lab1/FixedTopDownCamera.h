@@ -5,6 +5,7 @@ namespace GameObjectSpace {
 	class FixedTopDownCamera : public Camera
 	{
 	public:
+		bool reset = false;
 		float center[3] = { 0.0f };
 		FixedTopDownCamera(float pos[3]);
 		FixedTopDownCamera(float pos[3], CamType_t t, float args[6]);

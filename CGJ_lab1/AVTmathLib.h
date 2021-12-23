@@ -40,6 +40,7 @@
 		int randomRange(int minInclusive, int maxExclusive);
 
 		void multMatixByVector(float* result, float* mat, float* vec);
+		void multMatixInverseByVector(float* result, float* mat, float* vec);
 		void genRotationMatrix_X(float* result, float angle);
 		void genRotationMatrix_Y(float* result, float angle);
 		void genRotationMatrix_Z(float* result, float angle);

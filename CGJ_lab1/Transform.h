@@ -124,15 +124,15 @@ public:
 		right[0] = 1; 
 		right[1] = 0; 
 		right[2] = 0;
-		right[3] = 1;
+		right[3] = 0;
 		forward[0] = 0; 
 		forward[1] = 0;	
 		forward[2] = 1;
-		forward[3] = 1;
+		forward[3] = 0;
 		up[0] = 0; 
 		up[1] = 1; 
 		up[2] = 0;
-		up[3] = 1;
+		up[3] = 0;
 
 		float rotationMatrix[16];
 		genRotationMatrix_X(rotationMatrix, rot[0]);

@@ -20,7 +20,16 @@
     <ClCompile Include="vsShaderLib.cpp">
       <Filter>LibsClass\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
     <ClCompile Include="CubeObj.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedTopDownCamera.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowCamera.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -34,15 +43,6 @@
     </ClCompile>
     <ClCompile Include="Wheel.cpp">
       <Filter>GameObjects\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>GameObjects\Cameras\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="FixedTopDownCamera.cpp">
-      <Filter>GameObjects\Cameras\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="FollowCamera.cpp">
-      <Filter>GameObjects\Cameras\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,13 +85,22 @@
     <ClInclude Include="vsShaderLib.h">
       <Filter>LibsClass\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="CubeObj.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowCamera.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectLib.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedTopDownCamera.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="LightSource.h">
@@ -106,14 +115,8 @@
     <ClInclude Include="Wheel.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>GameObjects\Cameras\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="FixedTopDownCamera.h">
-      <Filter>GameObjects\Cameras\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowCamera.h">
-      <Filter>GameObjects\Cameras\Headers</Filter>
+    <ClInclude Include="Headlight.h">
+      <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,15 +164,6 @@
     </Filter>
     <Filter Include="GameObjects\Source">
       <UniqueIdentifier>{54a422ef-2f17-470d-a8aa-096894871fe3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObjects\Cameras">
-      <UniqueIdentifier>{c4c558ef-2a4c-4316-919b-d049db36fc2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObjects\Cameras\Headers">
-      <UniqueIdentifier>{f5dc9c91-f01e-4f6b-82cf-4a651b075dd6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameObjects\Cameras\Source">
-      <UniqueIdentifier>{ae3de7ca-e832-4bc5-9082-028e397fb247}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

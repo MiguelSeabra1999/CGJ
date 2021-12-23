@@ -15,7 +15,7 @@ struct Materials {
 struct Light {    
     vec4 position;
 	vec4 direction;
-	float angle;
+	float cos_angle;
     
     float constant;
     float linear;
@@ -30,20 +30,11 @@ struct Light {
 uniform int n_lights;
 uniform Light lights[MAX_LIGHTS];
 
-in vec3 lightPos[MAX_LIGHTS];
-
 uniform Materials mat;
-
-uniform mat4 m_viewModel;
-uniform mat4 m_pvm;
-uniform mat4 m_model;
-uniform mat4 m_view;
-uniform mat3 m_normal; 
 
 in Data {
 	vec3 normal;
 	vec3 eye;
-	vec3 l_old;
 } DataIn;
 
 vec4 blinnPhong(Light source, vec3 normal, vec3 lightDir, vec3 eye)
@@ -65,64 +56,66 @@ vec4 blinnPhong(Light source, vec3 normal, vec3 lightDir, vec3 eye)
 	
 	return max(intensity * source.color * mat.diffuse + spec,0);
 }
+
+float CalcAttenuation(Light source,float distance)
+{
+	float attenuation = 1;
+	float distAtten = source.constant + source.linear * distance + source.quadratic * (distance * distance);
+	if(distAtten != 0)
+		attenuation = 1.0 / distAtten;
+	return attenuation;
+}
+
 vec4 GlobalLight(Light source)
 {
 	return mat.diffuse*source.color;
-
 }
 vec4 PointLight(Light source, vec3 lightDir, vec3 normal, vec3 eye)
 {
-	float attenuation = 1;
 	float distance    = length(lightDir);
-	float distAtten = source.constant + source.linear * distance + source.quadratic * (distance * distance);
-	if(distAtten != 0)
-		attenuation = 1.0 / distAtten; 
-	
+	float attenuation = CalcAttenuation(source, distance);
+ 
 	return  blinnPhong(source, normal, normalize(lightDir), eye ) * attenuation;
-
 }
 
-vec4 DirectionalLight(Light source, vec3 normal, vec3 eye,vec3 l)
+vec4 DirectionalLight(Light source, vec3 normal, vec3 eye, vec3 dir)
 {
-	return blinnPhong(source, normal,l,  eye );
-//return blinnPhong(source, normal,normalize(m_normal*vec3(source.direction)),  eye );
+    return blinnPhong(source, normal,dir,  eye );
 }
-vec4 calcLightContribuition(Light source, vec3 lightDir, vec3 normal, vec3 eye)
+vec4 SpotLight(Light source, vec3 lightDir, vec3 normal, vec3 eye, vec3 dir)
 {
-
+	float angle = dot(normalize(lightDir), dir);
+	if(angle < source.cos_angle)
+		return vec4(0);
+	return PointLight(source, lightDir, normal, eye);
+}
+vec4 calcLightContribuition(Light source, vec3 l, vec3 normal, vec3 eye, vec3 dir)
+{
 	if(source.type ==  3)//global
 		return GlobalLight(source);
+	if(source.type ==  2)//spotlight
+		return SpotLight(source,l,normal,eye,dir);
 	if(source.type == 1)//directional/sunlight
-		return DirectionalLight(source, normal, eye,lightDir);
+		return DirectionalLight(source, normal, eye, dir);
 	if(source.type ==  0)//point
-		return PointLight(source,lightDir,normal,eye);
-
-
+		return PointLight(source,l,normal,eye);
 	return vec4(0.0);
 }
 
-
-
-void main() {
-
-	vec4 spec = vec4(0.0);
-
+void main()
+{
 	vec3 n = normalize(DataIn.normal);
-
 	vec3 e = normalize(DataIn.eye);
-	//vec4 position = DataIn.pos;
 	vec4 position =  real_position;
 	vec4 resultColor = vec4(0.0);
 	
 	for(int i = 0; i < n_lights; i++)
 	{
+		vec3 l = vec3(lights[i].position) - vec3(position);
+		vec3 dir = normalize(vec3(lights[i].direction));
 
-		vec3 l = lightPos[i] - vec3(position);
-		resultColor += calcLightContribuition(lights[i],l,n,e);
-
+		resultColor += calcLightContribuition(lights[i],l,n,e,dir);
 	}
-
-	
 	colorOut = resultColor;
 }
 

@@ -189,6 +189,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="CubeObj.h" />
     <ClInclude Include="FixedTopDownCamera.h" />
+    <ClInclude Include="Headlight.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="Orange.h" />

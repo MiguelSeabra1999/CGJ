@@ -34,36 +34,34 @@ namespace GameObjectSpace {
 			}
 			GameObject::lights.push_back(light);
 			GameObject::n_lights += 1;
-
-
 		}
 
 		void start()
 		{
-			transform.globalTransform.pos[0] = light->position[0];
-			transform.globalTransform.pos[1] = light->position[1];
-			transform.globalTransform.pos[2] = light->position[2];
+			light->position[0] = transform.globalTransform.pos[0];
+			light->position[1] = transform.globalTransform.pos[1];
+			light->position[2] = transform.globalTransform.pos[2];
 		}
 
 		void update()
 		{
-			light->position[0] = transform.globalTransform.pos[0];
-			light->position[1] = transform.globalTransform.pos[1];
-			light->position[2] = transform.globalTransform.pos[2];
-
-	
-
-
-			if(lightType == LightType::directional || lightType == LightType::spot)
+			if(transform.parent == nullptr)
 			{
-				light->direction[0] = transform.globalTransform.forward[0];
-				light->direction[1] = transform.globalTransform.forward[1];
-				light->direction[2] = transform.globalTransform.forward[2];
+				light->position[0] = transform.globalTransform.pos[0];
+				light->position[1] = transform.globalTransform.pos[1];
+				light->position[2] = transform.globalTransform.pos[2];
+			}else
+			{
+				float t[3] = { 0,0,0 };
+				multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
+
+				light->position[0] = transform.parent->globalTransform.pos[0] + t[0];
+				light->position[1] = transform.parent->globalTransform.pos[1] + t[1];
+				light->position[2] = transform.parent->globalTransform.pos[2] + t[2];
 			}
 
+
 			GameObject::update();
-
-
 		}
 
 	};

@@ -142,7 +142,22 @@ void multMatixByVector(float* result, float* mat,  float* vec)
 		result[i] = sum;
 	}
 }
+void multMatixInverseByVector(float* result, float* mat, float* vec)
+{
+	float auxVec[4];
+	auxVec[0] = vec[0]; auxVec[1] = vec[1]; auxVec[2] = vec[2]; auxVec[3] = vec[3];
 
+	for (int i = 0; i < 4; i++)
+	{
+		float sum = 0;
+		int row = i * 4;
+		for (int j = 0; j < 4; j++)
+		{
+			sum += mat[i + j*4] * auxVec[j];
+		}
+		result[i] = sum;
+	}
+}
 void genRotationMatrix_X(float* result,float angle)
 {
 	angle = DegToRad(angle);

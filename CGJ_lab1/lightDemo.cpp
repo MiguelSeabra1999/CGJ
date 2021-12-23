@@ -58,8 +58,6 @@ PlayerCar* player;
 GLint pvm_uniformId;
 GLint vm_uniformId;
 GLint normal_uniformId;
-GLint model_uniformId;
-GLint view_uniformId;
 GLint tex_loc, tex_loc1, tex_loc2;
 	
 // Camera Position
@@ -191,13 +189,19 @@ void renderScene(void) {
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
+	for(int i = 0; i < GameObject::n_lights; i++)
+	{
+		multMatixInverseByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
+		multMatixInverseByVector(GameObject::lights[i]->eye_coords_position,  mMatrix[VIEW], GameObject::lights[i]->position);
+	}
 	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 	int count = myGameObjects.size();
 	
 	for (int i = 0; i < count; i++)
 	{
-		//(*myGameObjects[i]).SendLightsToShader();
+		
+		(*myGameObjects[i]).SendLightsToShader();
 		
 		(*myGameObjects[i]).update();
 		(*myGameObjects[i]).draw();
@@ -439,8 +443,7 @@ GLuint setupShaders() {
 	pvm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_pvm");
 	vm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
-	model_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_model");
-	view_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_view");
+
 
 	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texmap");
 	tex_loc1 = glGetUniformLocation(shader.getProgramIndex(), "texmap1");
@@ -581,23 +584,39 @@ void createGameObjects()
 
 	//Lights
 	LightSource* lightSource;
-	/*lightSource = new LightSource(LightType::global);
-	lightSource->light->color[0] = 0.3f;
-	lightSource->light->color[1] = 0.3f;
-	lightSource->light->color[2] = 0.3f;
-	lightSource->light->position[1] = 3.0f;
-	myGameObjects.push_back((GameObject*)lightSource);*/
-	
-	lightSource = new LightSource(LightType::point);
-	lightSource->light->color[0] = 1;
-	lightSource->light->color[1] = 1;
-	lightSource->light->color[2] = 1;
-	/*lightSource->light->direction[0] = 0;
-	lightSource->light->direction[1] = -1;
-	lightSource->light->direction[2] = 0;*/
-	lightSource->light->position[1] = 1;
+	lightSource = new LightSource(LightType::global);
+	lightSource->light->color[0] = 0.2f;
+	lightSource->light->color[1] = 0.2f;
+	lightSource->light->color[2] = 0.2f;
+	myGameObjects.push_back((GameObject*)lightSource);
 
+
+	lightSource = new LightSource(LightType::directional);
+	lightSource->light->color[0] = 0.2f;
+	lightSource->light->color[1] = 0.2f;
+	lightSource->light->color[2] = 0.2f;
+	lightSource->light->direction[0] = .5f;
+	lightSource->light->direction[1] = .5f;
+
+	myGameObjects.push_back((GameObject*)lightSource);
+
+	
+	lightSource = new Headlight(playerCar);
+	lightSource->light->color[0] = 1;
+	lightSource->light->color[1] = 0.9f;
+	lightSource->light->color[2] = 0.2f;
 	lightSource->light->linear = 1;
+	lightSource->transform.setLocalPosition(0, -0.2,-1);
+	lightSource->transform.setParent(&(playerCar->transform));
+	myGameObjects.push_back((GameObject*)lightSource);
+
+	lightSource = new Headlight(playerCar);
+	lightSource->light->color[0] = 1;
+	lightSource->light->color[1] = 0.9f;
+	lightSource->light->color[2] = 0.2f;
+	lightSource->light->linear = 1;
+	lightSource->transform.setLocalPosition(0, 0.2, 1);
+	lightSource->transform.setParent(&(playerCar->transform));
 	myGameObjects.push_back((GameObject*)lightSource);
 
 

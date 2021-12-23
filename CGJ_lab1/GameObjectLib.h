@@ -9,3 +9,4 @@
 #include "PlayerCar.h"
 #include "FixedTopDownCamera.h"
 #include "LightSource.h"
+#include "Headlight.h"

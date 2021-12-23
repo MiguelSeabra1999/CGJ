@@ -47,9 +47,9 @@ namespace GameObjectSpace {
 		void draw();
 		void initMaterial();
 		void setColor(float r, float g, float b, float alpha);
-		void sendLightToShader(int i);
 		void sendMaterialToShader(int i);
-		
+		void sendLightToShader(int i);
+		void SendLightsToShader();
 
 	protected:
 		vector<struct MyMesh> myMeshes;
@@ -58,5 +58,6 @@ namespace GameObjectSpace {
 		GLint normal_uniformId;
 		GLuint shaderProgramIndex;
 		GLint model_uniformId;
+		GLint view_uniformId;
 	};
 }

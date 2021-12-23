@@ -11,6 +11,7 @@ GameObject::GameObject()
 	vm_uniformId = 0;
 	model_uniformId = 0;
 	normal_uniformId = 0;
+	view_uniformId = 0;
 	shaderProgramIndex = 0;
 	transform.initZero();
 	material = new Material;
@@ -52,10 +53,7 @@ void GameObject::draw()
 	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
-	for (int j = 0; j < n_lights; j++)
-	{
-		sendLightToShader(j);
-	}
+	view_uniformId = glGetUniformLocation(shaderProgramIndex, "m_view");
 
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
@@ -92,11 +90,14 @@ void GameObject::draw()
 
 		// send matrices to OGL
 		computeDerivedMatrix(PROJ_VIEW_MODEL);
-		glUniformMatrix4fv(model_uniformId, 1, GL_FALSE, mCompMatrix[VIEW]);
+		glUniformMatrix4fv(view_uniformId, 1, GL_FALSE, mMatrix[VIEW]);
+		glUniformMatrix4fv(model_uniformId, 1, GL_FALSE, mMatrix[MODEL]);
 		glUniformMatrix4fv(vm_uniformId, 1, GL_FALSE, mCompMatrix[VIEW_MODEL]);
 		glUniformMatrix4fv(pvm_uniformId, 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
 		computeNormalMatrix3x3();
 		glUniformMatrix3fv(normal_uniformId, 1, GL_FALSE, mNormal3x3);
+
+		SendLightsToShader();
 
 		// Render mesh
 		glBindVertexArray(myMeshes[i].vao);
@@ -109,6 +110,14 @@ void GameObject::draw()
 	
 	}
 
+}
+
+void GameObject::SendLightsToShader()
+{
+	for (int j = 0; j < n_lights; j++)
+	{
+		sendLightToShader(j);
+	}
 }
 
 void GameObject::initMaterial()

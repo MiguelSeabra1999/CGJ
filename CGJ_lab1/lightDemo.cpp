@@ -62,7 +62,7 @@ GLint pvm_uniformId;
 GLint vm_uniformId;
 GLint normal_uniformId;
 GLint model_uniformId;
-
+GLint view_uniformId;
 GLint tex_loc, tex_loc1, tex_loc2;
 	
 // Camera Position
@@ -159,9 +159,11 @@ void renderScene(void) {
 	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 	int count = myGameObjects.size();
-
+	
 	for (int i = 0; i < count; i++)
 	{
+		//(*myGameObjects[i]).SendLightsToShader();
+		
 		(*myGameObjects[i]).update();
 		(*myGameObjects[i]).draw();
 		if (!shader.isProgramValid()) {
@@ -169,7 +171,7 @@ void renderScene(void) {
 			exit(1);	
 		}
 	}
-
+	
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
 	glDisable(GL_DEPTH_TEST);
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
@@ -436,6 +438,7 @@ GLuint setupShaders() {
 	vm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
 	model_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_model");
+	view_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_view");
 
 	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texmap");
 	tex_loc1 = glGetUniformLocation(shader.getProgramIndex(), "texmap1");
@@ -577,8 +580,12 @@ void createGameObjects()
 	lightSource->light->color[0] = 1;
 	lightSource->light->color[1] = 1;
 	lightSource->light->color[2] = 1;
-	lightSource->light->position[1] = 1.0f;
-	lightSource->light->linear = 0.2f;
+	/*lightSource->light->direction[0] = 0;
+	lightSource->light->direction[1] = -1;
+	lightSource->light->direction[2] = 0;*/
+	lightSource->light->position[1] = 1;
+
+	lightSource->light->linear = 1;
 	myGameObjects.push_back((GameObject*)lightSource);
 
 

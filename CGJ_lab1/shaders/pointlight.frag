@@ -29,6 +29,7 @@ struct Light {
 #define MAX_LIGHTS 5
 uniform int n_lights;
 uniform Light lights[MAX_LIGHTS];
+uniform float fogginess;
 
 uniform Materials mat;
 
@@ -116,6 +117,14 @@ void main()
 
 		resultColor += calcLightContribuition(lights[i],l,n,e,dir);
 	}
+
+
+
+	float fogAmount = exp( -length(position)*fogginess );
+	// clamp(fogAmount, 0, 1.0); necessary only if linear
+	vec4 fogColor = vec4(0.5,0.6,0.7,1);
+	resultColor = mix(fogColor, resultColor, fogAmount );
+
 	colorOut = resultColor;
 }
 

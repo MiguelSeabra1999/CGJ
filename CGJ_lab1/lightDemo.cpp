@@ -59,7 +59,9 @@ GLint pvm_uniformId;
 GLint vm_uniformId;
 GLint normal_uniformId;
 GLint tex_loc, tex_loc1, tex_loc2;
-	
+GLint fogginess_uniformId;
+
+float fogginess = 0.05f;
 // Camera Position
 float camX, camY, camZ;
 
@@ -194,6 +196,9 @@ void renderScene(void) {
 		multMatixInverseByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
 		multMatixInverseByVector(GameObject::lights[i]->eye_coords_position,  mMatrix[VIEW], GameObject::lights[i]->position);
 	}
+
+	loc = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
+	glUniform1f(loc, fogginess);
 	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 	int count = myGameObjects.size();
@@ -443,12 +448,16 @@ GLuint setupShaders() {
 	pvm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_pvm");
 	vm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
+	fogginess_uniformId = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
 
 
 	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texmap");
 	tex_loc1 = glGetUniformLocation(shader.getProgramIndex(), "texmap1");
 	tex_loc2 = glGetUniformLocation(shader.getProgramIndex(), "texmap2");
 	
+
+
+
 	printf("InfoLog for Per Fragment Phong Lightning Shader\n%s\n\n", shader.getAllInfoLogs().c_str());
 
 	// Shader for bitmap Text

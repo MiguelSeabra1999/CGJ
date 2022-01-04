@@ -499,7 +499,7 @@ void createGameObjects()
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
 	playerCar->transform.setPosition(0,.1,0);
-	playerCar->transform.setOwner(playerCar);
+
 	myGameObjects.push_back((GameObject*)playerCar);
 	player = playerCar;
 
@@ -508,26 +508,25 @@ void createGameObjects()
 	cube->transform.setLocalScale(3,.6,1.7);
 	cube->transform.setLocalPosition(.5,.2,0);
 	cube->transform.setParent(&(playerCar->transform));
-	cube->transform.setOwner(cube);
+
 	cube->setColor(1.0f,0.0f,0.0f, 0.1f);
-	myTransparentGameObjects.push_back((GameObject*)cube);
+	//myTransparentGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setLocalScale(1.4, .6, 1.7);
 	cube->transform.setLocalPosition(.69, .775, 0);
 	cube->transform.setParent(&(playerCar->transform));
-	cube->transform.setOwner(cube);
+	
 	cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
-	myTransparentGameObjects.push_back((GameObject*)cube);
+	//myTransparentGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setLocalScale(.8, .8, 1.7);
 	cube->transform.setLocalPosition(1.4, .5, 0);
 	cube->transform.setRotation(0, 0, 45);
 	cube->transform.setParent(&(playerCar->transform));
-	cube->transform.setOwner(cube);
 	cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
-	myTransparentGameObjects.push_back((GameObject*)cube);
+	//myTransparentGameObjects.push_back((GameObject*)cube);
 
 	
 	Wheel* wheel = new Wheel();
@@ -535,32 +534,32 @@ void createGameObjects()
 	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
-	wheel->transform.setOwner(wheel);
-	myGameObjects.push_back((GameObject*)wheel);
+
+	//myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
 	wheel->transform.setLocalPosition(-0.5, 0, -1);
 	wheel->transform.setRotation(90,0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
-	wheel->transform.setOwner(wheel);
-	myGameObjects.push_back((GameObject*)wheel);
+
+	//myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
 	wheel->transform.setLocalPosition(1.5, 0, 1);
 	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
-	wheel->transform.setOwner(wheel);
-	myGameObjects.push_back((GameObject*)wheel);
+
+	//myGameObjects.push_back((GameObject*)wheel);
 
 	wheel = new Wheel();
 	wheel->transform.setLocalPosition(1.5, 0, -1);
 	wheel->transform.setRotation(90, 0, 0);
 	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
 	wheel->transform.setParent(&(playerCar->transform));
-	wheel->transform.setOwner(wheel);
-	myGameObjects.push_back((GameObject*)wheel);
+	
+	//myGameObjects.push_back((GameObject*)wheel);
 
 
 	float mapSize = 30;
@@ -634,18 +633,18 @@ void createGameObjects()
 	lightSource->light->color[1] = 0.9f;
 	lightSource->light->color[2] = 0.2f;
 	lightSource->light->linear = 1;
-	lightSource->transform.setLocalPosition(0, -0.2,-1);
+	//lightSource->transform.setLocalPosition(0, -0.2,-1);
 	lightSource->transform.setParent(&(playerCar->transform));
-	myGameObjects.push_back((GameObject*)lightSource);
+	//myGameObjects.push_back((GameObject*)lightSource);
 
 	lightSource = new Headlight(playerCar);
 	lightSource->light->color[0] = 1;
 	lightSource->light->color[1] = 0.9f;
 	lightSource->light->color[2] = 0.2f;
 	lightSource->light->linear = 1;
-	lightSource->transform.setLocalPosition(0, 0.2, 1);
+	//lightSource->transform.setLocalPosition(0, 0.2, 1);
 	lightSource->transform.setParent(&(playerCar->transform));
-	myGameObjects.push_back((GameObject*)lightSource);
+//	myGameObjects.push_back((GameObject*)lightSource);
 
 
 

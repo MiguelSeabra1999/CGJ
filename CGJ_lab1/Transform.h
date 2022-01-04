@@ -164,8 +164,8 @@ class Transform
 {
 	public:
 		Transform* parent = nullptr;
-		Transform* son = nullptr;
-		void* owner;
+		vector<Transform*> sons;
+		void* gameObject;
 		SimpleTransform localTransform;
 		SimpleTransform globalTransform;
 
@@ -178,15 +178,16 @@ class Transform
 		void setParent(Transform* newParent)
 		{
 			parent = newParent;
-			newParent->son = this;
+			newParent->sons.push_back(this);
 
 			updateLocalTransform();
 		
 		}
 
-		void setOwner(void * myOwner) {
-			owner = myOwner;
+		void setOwner(void* myOwner) {
+			gameObject = myOwner;
 		}
+
 
 		void updateLocalTransform()
 		{

@@ -20,6 +20,7 @@ namespace GameObjectSpace {
 		float multiplier = 1.0f;
 		Camera(CamType_t t, float args[8]);
 		void update();
+		void draw();
 		virtual void SetCameraPosition();
 		virtual void SetCameraLookAt();
 		void SetCameraType(CamType_t t);

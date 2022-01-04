@@ -38,9 +38,23 @@ namespace GameObjectSpace {
 
 		void start()
 		{
-			light->position[0] = transform.globalTransform.pos[0];
-			light->position[1] = transform.globalTransform.pos[1];
-			light->position[2] = transform.globalTransform.pos[2];
+
+			if (transform.parent == nullptr)
+			{
+				light->position[0] = transform.globalTransform.pos[0];
+				light->position[1] = transform.globalTransform.pos[1];
+				light->position[2] = transform.globalTransform.pos[2];
+			}
+			else
+			{
+				float t[3] = { 0,0,0 };
+				multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
+
+				light->position[0] = transform.parent->globalTransform.pos[0] + t[0];
+				light->position[1] = transform.parent->globalTransform.pos[1] + t[1];
+				light->position[2] = transform.parent->globalTransform.pos[2] + t[2];
+			}
+
 		}
 
 		void update()
@@ -52,12 +66,11 @@ namespace GameObjectSpace {
 				light->position[2] = transform.globalTransform.pos[2];
 			}else
 			{
-				float t[3] = { 0,0,0 };
-				multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
+				
 
-				light->position[0] = transform.parent->globalTransform.pos[0] + t[0];
-				light->position[1] = transform.parent->globalTransform.pos[1] + t[1];
-				light->position[2] = transform.parent->globalTransform.pos[2] + t[2];
+				light->position[0] = transform.globalTransform.pos[0] ;
+				light->position[1] = transform.globalTransform.pos[1] ;
+				light->position[2] = transform.globalTransform.pos[2];
 			}
 
 

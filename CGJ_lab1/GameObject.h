@@ -50,6 +50,8 @@ namespace GameObjectSpace {
 		void sendMaterialToShader(int i);
 		void sendLightToShader(int i);
 		void SendLightsToShader();
+		void updateAndDrawSons();
+		void startAndInitDrawSons();
 
 	protected:
 		vector<struct MyMesh> myMeshes;

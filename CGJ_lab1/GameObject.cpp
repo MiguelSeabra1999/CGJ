@@ -12,6 +12,7 @@ GameObject::GameObject()
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	transform.initZero();
+	transform.setOwner((void*)this);
 	material = new Material;
 
 
@@ -34,16 +35,44 @@ void GameObject::update()
 	}
 					
 	transform.updateLocalTransform();
+	updateAndDrawSons();
+}
 
+void GameObject::updateAndDrawSons()
+{
+	int n_sons = transform.sons.size();
+	cout << n_sons << endl;
+	for (int i = 0; i < n_sons; i++)
+	{
 
-
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->SendLightsToShader();
+		sonObject->update();
+		sonObject->draw();
+	}
 
 }
-void GameObject::start(){}
+void GameObject::startAndInitDrawSons()
+{
+	int n_sons = transform.sons.size();
+	cout << "init " << n_sons << endl;
+	for (int i = 0; i < n_sons; i++)
+	{
+
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->initDraw(shaderProgramIndex);
+		sonObject->start();
+	}
+
+}
+void GameObject::start() {  }
 
 void GameObject::initDraw(GLuint myShaderProgramIndex)
 {
 	shaderProgramIndex = myShaderProgramIndex;
+	startAndInitDrawSons();
 }
 void GameObject::draw()
 {
@@ -76,6 +105,8 @@ void GameObject::draw()
 			float t[3];
 			multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
 			translate(MODEL, t );
+
+
 		}else
 		{
 			translate(MODEL, transform.globalTransform.pos);
@@ -87,6 +118,13 @@ void GameObject::draw()
 		rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
 		rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
 				
+		if(transform.parent!= nullptr)
+		{
+			float t2[4] = {transform.localTransform.pos[0],transform.localTransform.pos[1],transform.localTransform.pos[2],1};
+			float result[4];
+			multMatixInverseByVector(result, mMatrix[MODEL], t2);
+			transform.globalTransform.setPosition(result[0], result[1], result[2]);
+		}
 
 		// send matrices to OGL
 		computeDerivedMatrix(PROJ_VIEW_MODEL);

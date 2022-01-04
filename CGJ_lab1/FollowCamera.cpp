@@ -61,7 +61,7 @@ void FollowCamera::UpdateCameraPosition()
 
 
 	if (lerp) {
-		PlayerCar * car = (PlayerCar*)GameObject::transform.parent->owner;
+		PlayerCar * car = (PlayerCar*)GameObject::transform.parent->gameObject;
 		if (car->velocity>0) {
 			if (zeta > threshhold) { alpha -= zeta/angularConstantForLerp; }
 			else if (zeta < -threshhold) { alpha -= zeta/angularConstantForBackWardsLerp; }

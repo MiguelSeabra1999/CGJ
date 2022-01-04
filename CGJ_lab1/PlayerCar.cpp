@@ -72,10 +72,7 @@ using namespace GameObjectSpace;
 		}
 
 	}
-	void PlayerCar::initDraw(GLuint myShaderProgramIndex)
-	{
 
-	}
 	void PlayerCar::forward(bool state)
 	{
 

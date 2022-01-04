@@ -49,6 +49,7 @@ const string font_name = "fonts/arial.ttf";
 vector<struct MyMesh> myMeshes;
 //Vector with GameObjects
 vector< GameObject*> myGameObjects;
+vector< GameObject*> myTransparentGameObjects;
 PlayerCar* player;
 
 //External array storage defined in AVTmathLib.cpp
@@ -202,19 +203,37 @@ void renderScene(void) {
 	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 	int count = myGameObjects.size();
-	
+
+	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	for (int i = 0; i < count; i++)
 	{
-		
+
 		(*myGameObjects[i]).SendLightsToShader();
-		
+
 		(*myGameObjects[i]).update();
 		(*myGameObjects[i]).draw();
+		if (!shader.isProgramValid()) {
+			printf("Program Not Valid!\n");
+			exit(1);
+		}
+	}
+	glDepthMask(GL_FALSE);
+	count = myTransparentGameObjects.size();
+	for (int i = 0; i < count; i++)
+	{
+
+		(*myTransparentGameObjects[i]).SendLightsToShader();
+		
+		(*myTransparentGameObjects[i]).update();
+		(*myTransparentGameObjects[i]).draw();
 		if (!shader.isProgramValid()) {
 			printf("Program Not Valid!\n");
 			exit(1);	
 		}
 	}
+	glDepthMask(GL_TRUE);
 	
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
 	glDisable(GL_DEPTH_TEST);
@@ -484,22 +503,22 @@ void createGameObjects()
 	myGameObjects.push_back((GameObject*)playerCar);
 	player = playerCar;
 
-
-	Cube* cube = new Cube();
+	Cube* cube;
+	cube = new Cube();
 	cube->transform.setLocalScale(3,.6,1.7);
 	cube->transform.setLocalPosition(.5,.2,0);
 	cube->transform.setParent(&(playerCar->transform));
 	cube->transform.setOwner(cube);
-	cube->setColor(1.0f,0.0f,0.0f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
+	cube->setColor(1.0f,0.0f,0.0f, 0.1f);
+	myTransparentGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setLocalScale(1.4, .6, 1.7);
 	cube->transform.setLocalPosition(.69, .775, 0);
 	cube->transform.setParent(&(playerCar->transform));
 	cube->transform.setOwner(cube);
-	cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
+	cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
+	myTransparentGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setLocalScale(.8, .8, 1.7);
@@ -507,8 +526,8 @@ void createGameObjects()
 	cube->transform.setRotation(0, 0, 45);
 	cube->transform.setParent(&(playerCar->transform));
 	cube->transform.setOwner(cube);
-	cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
+	cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
+	myTransparentGameObjects.push_back((GameObject*)cube);
 
 	
 	Wheel* wheel = new Wheel();
@@ -660,6 +679,12 @@ void init()
 	{
 		(*myGameObjects[i]).initDraw(shader.getProgramIndex());
 		(*myGameObjects[i]).start();
+	}
+	count = myTransparentGameObjects.size();
+	for (int i = 0; i < count; i++)
+	{
+		(*myTransparentGameObjects[i]).initDraw(shader.getProgramIndex());
+		(*myTransparentGameObjects[i]).start();
 	}
 
 	// some GL settings

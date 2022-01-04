@@ -55,8 +55,10 @@ void GameObject::draw()
 
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
+
 	for (int i = 0; i < myMeshesLen; i++)
 	{
+		
 		sendMaterialToShader(i);
 
 
@@ -131,6 +133,8 @@ void GameObject::setColor(float r, float g, float b, float alpha)
 	diff[1] = amb[1] = g;
 	diff[2] = amb[2] = b;
 	diff[3] = amb[3] = alpha;
+
+		
 
 }
 

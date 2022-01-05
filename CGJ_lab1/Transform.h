@@ -64,17 +64,6 @@ public:
 		setScale(1, 1, 1);
 		updateReferencePoints();
 
-
-		right[0] = 1;
-		right[1] = 0;
-		right[2] = 0;
-		right[3] = 1;
-		float rotationMatrix[16];
-
-		genRotationMatrix_Y(rotationMatrix, 90);
-
-		multMatixByVector(right, rotationMatrix, right);
-		//cout << "|" << right[0] << "---" << right[1] << "---" << right[2] << "|\n";
 	}
 
 	float ClampAngle(float angle)

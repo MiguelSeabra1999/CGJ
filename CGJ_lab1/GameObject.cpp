@@ -34,14 +34,14 @@ void GameObject::update()
 		components[i]->update();
 	}
 					
-	transform.updateLocalTransform();
+	//transform.updateLocalTransform();
 	updateAndDrawSons();
 }
 
 void GameObject::updateAndDrawSons()
 {
 	int n_sons = transform.sons.size();
-	cout << n_sons << endl;
+	
 	for (int i = 0; i < n_sons; i++)
 	{
 
@@ -56,14 +56,14 @@ void GameObject::updateAndDrawSons()
 void GameObject::startAndInitDrawSons()
 {
 	int n_sons = transform.sons.size();
-	cout << "init " << n_sons << endl;
+//	cout << "init " << n_sons << endl;
 	for (int i = 0; i < n_sons; i++)
 	{
 
 		Transform* sonTransform = transform.sons.at(i);
 		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
-		sonObject->initDraw(shaderProgramIndex);
 		sonObject->start();
+		sonObject->initDraw(shaderProgramIndex);
 	}
 
 }
@@ -120,7 +120,7 @@ void GameObject::draw()
 				
 		if(transform.parent!= nullptr)
 		{
-			float t2[4] = {transform.localTransform.pos[0],transform.localTransform.pos[1],transform.localTransform.pos[2],1};
+			float t2[4] = {0,0,0,1};
 			float result[4];
 			multMatixInverseByVector(result, mMatrix[MODEL], t2);
 			transform.globalTransform.setPosition(result[0], result[1], result[2]);
@@ -183,6 +183,8 @@ void GameObject::sendMaterialToShader(int i)
 	glUniform4fv(loc, 1, myMeshes[i].mat.ambient);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.diffuse");
 	glUniform4fv(loc, 1, myMeshes[i].mat.diffuse);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.emissive");
+	glUniform4fv(loc, 1, myMeshes[i].mat.emissive);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.specular");
 	glUniform4fv(loc, 1, myMeshes[i].mat.specular);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.shininess");

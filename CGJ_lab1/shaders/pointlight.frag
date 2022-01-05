@@ -125,6 +125,6 @@ void main()
 	vec4 fogColor = vec4(0.5,0.6,0.7,1);
 	resultColor = mix(fogColor, resultColor, fogAmount );
 	resultColor = vec4(resultColor.rgb, mat.diffuse.a);
-	colorOut = resultColor;
+	colorOut = resultColor + mat.emissive;
 }
 

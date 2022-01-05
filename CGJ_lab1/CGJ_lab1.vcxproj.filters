@@ -44,6 +44,9 @@
     <ClCompile Include="Wheel.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.h">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">
@@ -118,6 +121,9 @@
     <ClInclude Include="Headlight.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="CarScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
@@ -164,6 +170,9 @@
     </Filter>
     <Filter Include="GameObjects\Source">
       <UniqueIdentifier>{54a422ef-2f17-470d-a8aa-096894871fe3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{42a6dd43-f164-4c60-91c8-efa3f45c03f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

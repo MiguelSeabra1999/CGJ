@@ -25,7 +25,7 @@ glutposredisplay
 
 
 #include "GameObjectLib.h"
-
+#include"CarScene.h"
 
 using namespace GameObjectSpace;
 
@@ -79,8 +79,9 @@ char s[32];
 float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
 float* cameraLookAt = new float(9);
 int firstCameraIndex = 0;
-Camera* currentCam;
+//Camera* currentCam;
 bool mouseLock = false;
+CarScene* carScene;
 
 map<char, char> keys = {
 	{ 'w', false },
@@ -164,8 +165,8 @@ void changeSize(int w, int h) {
 	
 	WinX = w;
 	WinY = h;
-	currentCam->SetWidthHeightProj(WinX, WinY);
-	currentCam->UpdateProjection();
+	carScene->currentCam->SetWidthHeightProj(WinX, WinY);
+	carScene->currentCam->UpdateProjection();
 }
 
 
@@ -181,59 +182,33 @@ void renderScene(void) {
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-	currentCam->UpdateProjection();
+	carScene->currentCam->UpdateProjection();
 	
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
-	//lookAt(cameraLookAt[0], cameraLookAt[1], cameraLookAt[2], cameraLookAt[3], cameraLookAt[4], cameraLookAt[5], cameraLookAt[6], cameraLookAt[7], cameraLookAt[8]);
-	//lookAt(camX, camY, camZ, 0,0,0, 0,1,0);
+	lookAt(carScene->currentCam->lookAt[0], carScene->currentCam->lookAt[1], carScene->currentCam->lookAt[2], carScene->currentCam->lookAt[3], carScene->currentCam->lookAt[4], carScene->currentCam->lookAt[5], carScene->currentCam->lookAt[6], carScene->currentCam->lookAt[7], carScene->currentCam->lookAt[8]);
+
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
-
-	for(int i = 0; i < GameObject::n_lights; i++)
-	{
-		multMatixInverseByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
-		multMatixInverseByVector(GameObject::lights[i]->eye_coords_position,  mMatrix[VIEW], GameObject::lights[i]->position);
-	}
 
 	loc = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
 	glUniform1f(loc, fogginess);
 	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
-	int count = myGameObjects.size();
 
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	for (int i = 0; i < count; i++)
-	{
 
-		(*myGameObjects[i]).SendLightsToShader();
 
-		(*myGameObjects[i]).update();
-		(*myGameObjects[i]).draw();
-		if (!shader.isProgramValid()) {
-			printf("Program Not Valid!\n");
-			exit(1);
-		}
-	}
-	glDepthMask(GL_FALSE);
-	count = myTransparentGameObjects.size();
-	for (int i = 0; i < count; i++)
-	{
-
-		(*myTransparentGameObjects[i]).SendLightsToShader();
-		
-		(*myTransparentGameObjects[i]).update();
-		(*myTransparentGameObjects[i]).draw();
-		if (!shader.isProgramValid()) {
-			printf("Program Not Valid!\n");
-			exit(1);	
-		}
-	}
+	carScene->updateAndDraw();
 	glDepthMask(GL_TRUE);
+
+	if (!shader.isProgramValid()) {
+		printf("Program Not Valid!\n");
+		exit(1);
+	}
 	
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
 	glDisable(GL_DEPTH_TEST);
@@ -243,6 +218,14 @@ void renderScene(void) {
 	int m_viewport[4];
 	glGetIntegerv(GL_VIEWPORT, m_viewport);
 
+	//Update light positions
+	for (int i = 0; i < GameObject::n_lights; i++)
+	{
+		multMatixInverseByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
+		multMatixInverseByVector(GameObject::lights[i]->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->position);
+	}
+
+	carScene->sendLightsToShader();
 	//viewer at origin looking down at  negative z direction
 	pushMatrix(MODEL);
 	loadIdentity(MODEL);
@@ -286,8 +269,8 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			mouseLock = state;
 			player->forward(state);
 			keys['w'] = state;
-			if (currentCam->GetMovingAttr()) {
-				currentCam->SetPlayerMoving(state);
+			if (carScene->currentCam->GetMovingAttr()) {
+				carScene->currentCam->SetPlayerMoving(state);
 			}
 		}
 		break;
@@ -297,8 +280,8 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			mouseLock = state;
 			player->backward(state);
 			keys['s'] = state;
-			if (currentCam->GetMovingAttr()) {
-				currentCam->SetPlayerMoving(state);
+			if (carScene->currentCam->GetMovingAttr()) {
+				carScene->currentCam->SetPlayerMoving(state);
 			}
 		}
 		break;
@@ -322,44 +305,44 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 'l':case 'L':
 		if (state != keys['f'])
 		{
-			if (currentCam->GetMovingAttr()) {
-				currentCam->SetLerp(!currentCam->lerp);
+			if (carScene->currentCam->GetMovingAttr()) {
+				carScene->currentCam->SetLerp(!carScene->currentCam->lerp);
 			}
 		}
 		break;
 	case 'f':case 'F':
 		if (state != keys['f'])
 		{
-			currentCam->SetFollow(!currentCam->follow);
+			carScene->currentCam->SetFollow(!carScene->currentCam->follow);
 		}
 		break;
 	case '1':
 		if (state != keys['1'])
 		{
-			currentCam = (Camera*)myGameObjects[firstCameraIndex];
-			currentCam->SetCameraCharacteristics(CamType_t::perspective_t, followCameraPerspectiveArguments, WinX, WinY);
+			carScene->changeMainCamera('1');
+			carScene->currentCam->SetCameraCharacteristics(CamType_t::perspective_t, followCameraPerspectiveArguments, WinX, WinY);
 		}
 		break;
 	case '2':
 		if (state != keys['2'])
 		{
-			currentCam = (Camera*)myGameObjects[firstCameraIndex];
-			currentCam->SetCameraCharacteristics(CamType_t::ortho_t, followCameraOrthoArguments, WinX, WinY);
+			carScene->changeMainCamera('2');
+			carScene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, followCameraOrthoArguments, WinX, WinY);
 		}
 		break;
 	case '3':
 		if (state != keys['3'])
 		{
-			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
-			currentCam->SetCameraCharacteristics(CamType_t::perspective_t, fixedCameraPerspectiveArguments, WinX, WinY);
+			carScene->changeMainCamera('3');
+			carScene->currentCam->SetCameraCharacteristics(CamType_t::perspective_t, fixedCameraPerspectiveArguments, WinX, WinY);
 
 		}
 		break;
 	case '4':
 		if (state != keys['4'])
 		{
-			currentCam = (Camera*)myGameObjects[firstCameraIndex+1];
-			currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
+			carScene->changeMainCamera('4');
+			carScene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
 		}
 	
 
@@ -413,7 +396,7 @@ void processMouseMotion(int xx, int yy)
 
 	float deltaX, deltaY;
 	float rAux = 0.0f;
-	if((!mouseLock) && player->velocity==0 || !currentCam->lerp) {
+	if((!mouseLock) && player->velocity==0 || !carScene->currentCam->lerp) {
 	
 		deltaX = xx - startX;
 		deltaY = yy - startY;
@@ -422,12 +405,12 @@ void processMouseMotion(int xx, int yy)
 		startY = yy;
 	
 		// left mouse button: move camera
-		if (tracking == 1 && currentCam->GetMovingAttr()) {
+		if (tracking == 1 && carScene->currentCam->GetMovingAttr()) {
 			alpha -= (deltaX * 0.003f);
 			beta += (deltaY* 0.003f);
 		}
-		currentCam->alpha = alpha;
-		currentCam->beta = beta;
+		carScene->currentCam->alpha = alpha;
+		carScene->currentCam->beta = beta;
 	
 	}
 
@@ -496,160 +479,11 @@ GLuint setupShaders() {
 //
 void createGameObjects()
 {
-	PlayerCar* playerCar = new PlayerCar();
-	playerCar->transform.setScale(.2, .2, .2);
-	playerCar->transform.setPosition(0,.1,0);
-
-	myGameObjects.push_back((GameObject*)playerCar);
-	player = playerCar;
-
-	Cube* cube;
-	cube = new Cube();
-	cube->transform.setLocalScale(3,.6,1.7);
-	cube->transform.setLocalPosition(.5,.2,0);
-	cube->transform.setParent(&(playerCar->transform));
-
-	cube->setColor(1.0f,0.0f,0.0f, 0.1f);
-	//myTransparentGameObjects.push_back((GameObject*)cube);
-
-	cube = new Cube();
-	cube->transform.setLocalScale(1.4, .6, 1.7);
-	cube->transform.setLocalPosition(.69, .775, 0);
-	cube->transform.setParent(&(playerCar->transform));
-	
-	cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
-	//myTransparentGameObjects.push_back((GameObject*)cube);
-
-	cube = new Cube();
-	cube->transform.setLocalScale(.8, .8, 1.7);
-	cube->transform.setLocalPosition(1.4, .5, 0);
-	cube->transform.setRotation(0, 0, 45);
-	cube->transform.setParent(&(playerCar->transform));
-	cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
-	//myTransparentGameObjects.push_back((GameObject*)cube);
-
-	
-	Wheel* wheel = new Wheel();
-	wheel->transform.setLocalPosition(-0.5, 0, 1);
-	wheel->transform.setRotation(90, 0, 0);
-	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
-	wheel->transform.setParent(&(playerCar->transform));
-
-	//myGameObjects.push_back((GameObject*)wheel);
-
-	wheel = new Wheel();
-	wheel->transform.setLocalPosition(-0.5, 0, -1);
-	wheel->transform.setRotation(90,0, 0);
-	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
-	wheel->transform.setParent(&(playerCar->transform));
-
-	//myGameObjects.push_back((GameObject*)wheel);
-
-	wheel = new Wheel();
-	wheel->transform.setLocalPosition(1.5, 0, 1);
-	wheel->transform.setRotation(90, 0, 0);
-	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
-	wheel->transform.setParent(&(playerCar->transform));
-
-	//myGameObjects.push_back((GameObject*)wheel);
-
-	wheel = new Wheel();
-	wheel->transform.setLocalPosition(1.5, 0, -1);
-	wheel->transform.setRotation(90, 0, 0);
-	wheel->transform.setLocalScale(0.3, 0.3, 0.3);
-	wheel->transform.setParent(&(playerCar->transform));
-	
-	//myGameObjects.push_back((GameObject*)wheel);
+	carScene = new CarScene();
+	carScene->init(shader.getProgramIndex());
+	player = carScene->player;
 
 
-	float mapSize = 30;
-	cube = new Cube();
-	cube->transform.setScale(mapSize, 1, mapSize);
-	cube->transform.setPosition(0, -0.5, 0);
-	cube->setColor(0.0f, 0.3f, 0.0f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
-
-	cube = new Cube();
-	cube->transform.setScale(mapSize, 5, 1);
-	cube->transform.setPosition(0,0, mapSize/2);
-	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
-
-	cube = new Cube();
-	cube->transform.setScale(mapSize, 5, 1);
-	cube->transform.setPosition(0, 0, -mapSize / 2);
-	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
-
-	cube = new Cube();
-	cube->transform.setScale( 1,5 , mapSize);
-	cube->transform.setPosition(mapSize / 2, 0, 0);
-	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
-
-	cube = new Cube();
-	cube->transform.setScale(1, 5, mapSize);
-	cube->transform.setPosition(-mapSize / 2, 0, 0);
-	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-	myGameObjects.push_back((GameObject*)cube);
-
-	Orange* orange = new Orange(mapSize);
-	orange->transform.setPosition(1, .5, 0);
-	myGameObjects.push_back((GameObject*)orange);
-
-	firstCameraIndex = myGameObjects.size();
-	FollowCamera* followCamera = new FollowCamera( &(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
-	followCamera->transform.setParent(&(playerCar->transform));
-
-	myGameObjects.push_back((GameObject*)followCamera);
-
-	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera, CamType_t::perspective_t, fixedCameraPerspectiveArguments);
-	fixedCamera->transform.setParent(&(playerCar->transform));
-	myGameObjects.push_back((GameObject*)fixedCamera);
-	
-	currentCam = followCamera;
-
-	//Lights
-	LightSource* lightSource;
-	lightSource = new LightSource(LightType::global);
-	lightSource->light->color[0] = 0.2f;
-	lightSource->light->color[1] = 0.2f;
-	lightSource->light->color[2] = 0.2f;
-	myGameObjects.push_back((GameObject*)lightSource);
-
-
-	lightSource = new LightSource(LightType::directional);
-	lightSource->light->color[0] = 0.2f;
-	lightSource->light->color[1] = 0.2f;
-	lightSource->light->color[2] = 0.2f;
-	lightSource->light->direction[0] = .5f;
-	lightSource->light->direction[1] = .5f;
-
-	myGameObjects.push_back((GameObject*)lightSource);
-
-	
-	lightSource = new Headlight(playerCar);
-	lightSource->light->color[0] = 1;
-	lightSource->light->color[1] = 0.9f;
-	lightSource->light->color[2] = 0.2f;
-	lightSource->light->linear = 1;
-	//lightSource->transform.setLocalPosition(0, -0.2,-1);
-	lightSource->transform.setParent(&(playerCar->transform));
-	//myGameObjects.push_back((GameObject*)lightSource);
-
-	lightSource = new Headlight(playerCar);
-	lightSource->light->color[0] = 1;
-	lightSource->light->color[1] = 0.9f;
-	lightSource->light->color[2] = 0.2f;
-	lightSource->light->linear = 1;
-	//lightSource->transform.setLocalPosition(0, 0.2, 1);
-	lightSource->transform.setParent(&(playerCar->transform));
-//	myGameObjects.push_back((GameObject*)lightSource);
-
-
-
-	//GameObject::n_lights = 2;
-	
 
 }
 
@@ -668,23 +502,7 @@ void init()
 	/// Initialization of freetype library with font_name file
 	freeType_init(font_name);
 
-
-
-
 	createGameObjects();
-
-	int count = myGameObjects.size();
-	for(int i = 0; i < count; i++)
-	{
-		(*myGameObjects[i]).initDraw(shader.getProgramIndex());
-		(*myGameObjects[i]).start();
-	}
-	count = myTransparentGameObjects.size();
-	for (int i = 0; i < count; i++)
-	{
-		(*myTransparentGameObjects[i]).initDraw(shader.getProgramIndex());
-		(*myTransparentGameObjects[i]).start();
-	}
 
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);

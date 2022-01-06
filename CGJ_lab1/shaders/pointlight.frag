@@ -3,6 +3,7 @@
 out vec4 colorOut;
 in vec4 real_position;
 
+
 struct Materials {
 	vec4 diffuse;
 	vec4 ambient;
@@ -26,21 +27,27 @@ struct Light {
 	int type;
 };  
 
+
 #define MAX_LIGHTS 5
 uniform int n_lights;
 uniform Light lights[MAX_LIGHTS];
 uniform float fogginess;
+uniform sampler2D texStuff;
+uniform int texType;
 
 uniform Materials mat;
 
 in Data {
 	vec3 normal;
 	vec3 eye;
+	vec2 tex_coord;
 } DataIn;
 
 vec4 blinnPhong(Light source, vec3 normal, vec3 lightDir, vec3 eye)
 {
 	vec4 spec = vec4(0.0);
+	vec4 texel; 
+
 
 	float intensity =  max(dot(normal,lightDir),0.0);
 	
@@ -54,9 +61,17 @@ vec4 blinnPhong(Light source, vec3 normal, vec3 lightDir, vec3 eye)
 	{
 		return vec4(0.0,0.0,0.0,1);
 	}
+
+	if(texType==1) // modulate diffuse color with texel color
+	{
+		texel = texture(texStuff, DataIn.tex_coord);
+		return max(intensity * source.color * mat.diffuse * texel + spec , 0.07 * texel);
+		//return vec4(0.0,0.0,1.0,1.0);
+	}
 	
-	return max(intensity * source.color * mat.diffuse + spec,0);
-}
+		return max(intensity * source.color * mat.diffuse + spec,0);
+	
+	}
 
 float CalcAttenuation(Light source,float distance)
 {
@@ -125,6 +140,11 @@ void main()
 	vec4 fogColor = vec4(0.5,0.6,0.7,1);
 	resultColor = mix(fogColor, resultColor, fogAmount );
 
-	colorOut = resultColor;
+
+	/*if(texType==1){
+		colorOut = vec4(1.0, 0.0, 0.0, 1.0);
+	}else{*/
+		colorOut = resultColor;
+	//}
 }
 

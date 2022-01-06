@@ -54,12 +54,16 @@ PlayerCar* player;
 //External array storage defined in AVTmathLib.cpp
 
 
-
+GLint currentTextureEnum = GL_TEXTURE0;
 GLint pvm_uniformId;
 GLint vm_uniformId;
 GLint normal_uniformId;
 GLint tex_loc, tex_loc1, tex_loc2;
+GLint texMode_uniformId;
 GLint fogginess_uniformId;
+
+GLuint TextureArray[3];
+
 
 float fogginess = 0.05f;
 // Camera Position
@@ -199,6 +203,21 @@ void renderScene(void) {
 
 	loc = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
 	glUniform1f(loc, fogginess);
+
+	//Associar os Texture Units aos Objects Texture
+	//stone.tga loaded in TU0; checker.tga loaded in TU1;  lightwood.tga loaded in TU2
+
+	/*glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[0]);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[1]);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, TextureArray[2]);*/
+	glUniform1i(tex_loc, 0);
+
+
 	
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 	int count = myGameObjects.size();
@@ -207,6 +226,7 @@ void renderScene(void) {
 	{
 		
 		(*myGameObjects[i]).SendLightsToShader();
+
 		
 		(*myGameObjects[i]).update();
 		(*myGameObjects[i]).draw();
@@ -240,6 +260,7 @@ void renderScene(void) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glutSwapBuffers();
 }
 
@@ -440,23 +461,18 @@ GLuint setupShaders() {
 	// set semantics for the shader variables
 	glBindFragDataLocation(shader.getProgramIndex(), 0, "colorOut");
 	glBindAttribLocation(shader.getProgramIndex(), VERTEX_COORD_ATTRIB, "position");
+	glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
+
 	
 	glBindAttribLocation(shader.getProgramIndex(), NORMAL_ATTRIB, "normal");
 	glLinkProgram(shader.getProgramIndex());
-	//glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
 
 	pvm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_pvm");
 	vm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
 	fogginess_uniformId = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
-
-
-	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texmap");
-	tex_loc1 = glGetUniformLocation(shader.getProgramIndex(), "texmap1");
-	tex_loc2 = glGetUniformLocation(shader.getProgramIndex(), "texmap2");
-	
-
-
+	texMode_uniformId = glGetUniformLocation(shader.getProgramIndex(), "texType"); // different modes of texturing
+	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texStuff");
 
 	printf("InfoLog for Per Fragment Phong Lightning Shader\n%s\n\n", shader.getAllInfoLogs().c_str());
 
@@ -549,12 +565,16 @@ void createGameObjects()
 	cube->transform.setScale(mapSize, 1, mapSize);
 	cube->transform.setPosition(0, -0.5, 0);
 	cube->setColor(0.0f, 0.3f, 0.0f, 1.0f);
+	Texture* tex = new Texture("stone.tga", BlendType::modulate_multiply_t, &texMode_uniformId);
+	cube->components.push_back(tex);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
 	cube->transform.setScale(mapSize, 5, 1);
 	cube->transform.setPosition(0,0, mapSize/2);
 	cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
+	tex = new Texture("checker.png", BlendType::modulate_multiply_t, &texMode_uniformId);
+	cube->components.push_back(tex);
 	myGameObjects.push_back((GameObject*)cube);
 
 	cube = new Cube();
@@ -630,7 +650,9 @@ void createGameObjects()
 
 
 
-	//GameObject::n_lights = 2;
+
+
+	/*GameObject::n_lights = 2;*/
 	
 
 }

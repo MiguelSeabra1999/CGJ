@@ -171,6 +171,7 @@
     <ClCompile Include="CubeObj.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
+    <ClCompile Include="texture.cpp" />
     <ClCompile Include="Wheel.cpp" />
     <ClCompile Include="Texture_Loader.cpp" />
     <ClCompile Include="vsShaderLib.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="Orange.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />
     <ClInclude Include="RigidBody.h" />
@@ -209,6 +211,8 @@
     <None Include="shaders\pointlight.vert" />
     <None Include="shaders\text.frag" />
     <None Include="shaders\text.vert" />
+    <None Include="shaders\texture_demo.frag" />
+    <None Include="shaders\texture_demo.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

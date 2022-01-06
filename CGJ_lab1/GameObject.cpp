@@ -13,8 +13,6 @@ GameObject::GameObject()
 	shaderProgramIndex = 0;
 	transform.initZero();
 	material = new Material;
-
-
 }
 
 void GameObject::update()
@@ -24,19 +22,27 @@ void GameObject::update()
 
 	currentTime = static_cast<long int> (time(NULL));
 	deltaTime = currentTime - prevTime;
+	int mode = 0;
 	//cout << currentTime << endl;
 
 
 	int n = components.size();
 	for(int i = 0; i < n; i++)
 	{
+		
+		if(components[i]->getTextureMode()!=0)
+			mode = components[i]->getTextureMode();
+		
 		components[i]->update();
-	}
-					
+	}	
+	int texMode_uniformId = -1;
+		
+	texMode_uniformId = glGetUniformLocation(shaderProgramIndex, "texType");
+	glUniform1i(texMode_uniformId, mode); //modulate Phong color with texel color
+	cout << "MODE == " << mode << endl;
+	
 	transform.updateLocalTransform();
-
-
-
+	
 
 }
 void GameObject::start(){}
@@ -180,6 +186,7 @@ void GameObject::sendLightToShader(int i)
 	glUniform1i(loc, n_lights);
 	
 }
+
 
 
 

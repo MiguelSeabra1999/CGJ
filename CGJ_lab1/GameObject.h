@@ -1,4 +1,6 @@
 #pragma once
+#pragma comment(lib, "DevIL.lib")
+#pragma comment(lib, "ILU.lib")
 // include GLEW to access OpenGL 3.3 functions
 #include <GL/glew.h>
 // GLUT is the toolkit to interface with the OS
@@ -11,6 +13,8 @@
 #include "geometry.h"
 #include "avtFreeType.h"
 #include "Rigidbody.h"
+#include "Texture.h"
+#include "Texture_Loader.h"
 #include <ctime>
 #include "Light.h"
 using namespace std;
@@ -18,7 +22,6 @@ using namespace std;
 
 extern float mMatrix[COUNT_MATRICES][16];
 extern float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
-
 /// The normal matrix
 extern float mNormal3x3[9];
 
@@ -39,6 +42,7 @@ namespace GameObjectSpace {
 		float emissive[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		float shininess = 100.0f;
 		int texcount = 0;
+		int texMode_uniformId;
 
 		GameObject();
 		virtual void update();

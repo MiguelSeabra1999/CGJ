@@ -44,6 +44,9 @@
     <ClCompile Include="Wheel.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">
@@ -118,6 +121,9 @@
     <ClInclude Include="Headlight.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
@@ -137,6 +143,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="shaders\text.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\texture_demo.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\texture_demo.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

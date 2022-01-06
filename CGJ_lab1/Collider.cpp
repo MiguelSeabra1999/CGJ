@@ -17,6 +17,7 @@ using namespace std;
 		}
 		bool Collider::checkCollision(Collider* other, Collision* Collision)
 		{
+			//cout << "abstract Check";
 			return false;
 		}
 		ColliderType Collider::getColliderType()
@@ -98,6 +99,7 @@ using namespace std;
 		}
 		bool AABB::checkCollision(Collider* other, Collision* Collision)
 		{
+			cout << "Check";
 			if (other->getColliderType() == ColliderType::AABB)
 			{
 				return checkCollisionAABB((AABB*)other,  Collision);

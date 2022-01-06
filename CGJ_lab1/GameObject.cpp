@@ -237,6 +237,12 @@ void GameObject::sendLightToShader(int i)
 	
 }
 
+void GameObject::AddComponent(Component* comp)
+{
+	comp->owner = this;
+	GameObject::components.push_back(comp);
+}
+
 
 
 

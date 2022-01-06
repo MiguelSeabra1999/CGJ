@@ -5,6 +5,7 @@ void PhysicsEngine::CheckCollisions()
 	vector<Collision*> collisions;
 	bool hitSomething = false;
 	int n = Collider::allColliders.size();
+
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = i + 1; j < n; j++)

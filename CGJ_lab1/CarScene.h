@@ -49,13 +49,15 @@ namespace GameObjectSpace
 
 		void init(GLuint shaderIndex)
 		{
-
+			Collider* col;
 			//##############################  Car  ###############################################
 			PlayerCar* playerCar = new PlayerCar();
 			playerCar->transform.setScale(.2, .2, .2);
 			playerCar->transform.setPosition(0, .1, 0);
 			gameObjects.push_back((GameObject*)playerCar);
 			player = playerCar;
+			col = new Collider();
+			playerCar->AddComponent(col);
 
 			// ------- body --------
 
@@ -144,28 +146,38 @@ namespace GameObjectSpace
 			cube->transform.setScale(mapSize, 5, 1);
 			cube->transform.setPosition(0, 0, mapSize / 2);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
+			col = new Collider();
+			cube->AddComponent(col);
 			gameObjects.push_back((GameObject*)cube);
 
 			cube = new Cube();
 			cube->transform.setScale(mapSize, 5, 1);
 			cube->transform.setPosition(0, 0, -mapSize / 2);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
+			col = new Collider();
+			cube->AddComponent(col);
 			gameObjects.push_back((GameObject*)cube);
 
 			cube = new Cube();
 			cube->transform.setScale(1, 5, mapSize);
 			cube->transform.setPosition(mapSize / 2, 0, 0);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
+			col = new Collider();
+			cube->AddComponent(col);
 			gameObjects.push_back((GameObject*)cube);
 
 			cube = new Cube();
 			cube->transform.setScale(1, 5, mapSize);
 			cube->transform.setPosition(-mapSize / 2, 0, 0);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
+			col = new Collider();
+			cube->AddComponent(col);
 			gameObjects.push_back((GameObject*)cube);
 
 			Orange* orange = new Orange(mapSize);
 			orange->transform.setPosition(1, .5, 0);
+			col = new Collider();
+			cube->AddComponent(col);
 			gameObjects.push_back((GameObject*)orange);
 
 			//#################### Cameras ##############################

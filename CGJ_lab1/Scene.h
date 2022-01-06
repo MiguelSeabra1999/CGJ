@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 // GLUT is the toolkit to interface with the OS
 #include <GL/freeglut.h>
-
+#include "PhysicsEngine.h"
 namespace GameObjectSpace
 {
 	
@@ -15,10 +15,11 @@ namespace GameObjectSpace
 		vector<GameObject*> transparentGameObjects;
 
 		Camera* currentCam;
+		PhysicsEngine* physicsEngine;
 
 		virtual void init(GLuint shaderIndex)
 		{
-			//PhysicsEngine* engine = new PhysicsEngine();
+			physicsEngine = new PhysicsEngine();
 			int count = gameObjects.size();
 			for (int i = 0; i < count; i++)
 			{
@@ -36,6 +37,8 @@ namespace GameObjectSpace
 
 		void updateAndDraw()
 		{
+			
+			physicsEngine->update();
 			int count = gameObjects.size();
 			for (int i = 0; i < count; i++)
 			{

@@ -15,7 +15,7 @@
 #include "Texture.h"
 #include "Texture_Loader.h"
 //#include "ComponentLib.h"
-#include "RigidBody.h"
+#include "ComponentLib.h"
 #include <ctime>
 #include "Light.h"
 
@@ -58,6 +58,7 @@ namespace GameObjectSpace {
 		void SendLightsToShader();
 		void updateAndDrawSons();
 		void startAndInitDrawSons();
+		void AddComponent(Component* comp);
 
 	protected:
 		vector<struct MyMesh> myMeshes;

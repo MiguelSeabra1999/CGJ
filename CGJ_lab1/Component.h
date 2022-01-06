@@ -1,24 +1,19 @@
 #pragma once
-#include <GL/glew.h>
+namespace GameObjectSpace {
+	class GameObject;
 
-
-
-class Component
-{
-public:
-public:
-
-
-
-	virtual void update()
+	class Component
 	{
-	}
-	virtual void init()
-	{
-	}
-	virtual int getTextureMode() {
-		return 0;
-	}
+	public:
+		GameObject* owner;
 
-	
-};
+		virtual void update()
+		{
+
+		}
+		virtual void init()
+		{
+		}
+	};
+
+}

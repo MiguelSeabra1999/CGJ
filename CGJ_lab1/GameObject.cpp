@@ -12,6 +12,7 @@ GameObject::GameObject()
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	transform.initZero();
+	transform.setOwner(this);
 	material = new Material;
 }
 
@@ -43,13 +44,47 @@ void GameObject::update()
 	
 	transform.updateLocalTransform();
 	
+	}
+					
+	//transform.updateLocalTransform();
+	updateAndDrawSons();
+}
+
+void GameObject::updateAndDrawSons()
+{
+	int n_sons = transform.sons.size();
+	
+	for (int i = 0; i < n_sons; i++)
+	{
+
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->SendLightsToShader();
+		sonObject->update();
+		sonObject->draw();
+	}
 
 }
-void GameObject::start(){}
+void GameObject::startAndInitDrawSons()
+{
+	int n_sons = transform.sons.size();
+//	cout << "init " << n_sons << endl;
+	for (int i = 0; i < n_sons; i++)
+	{
+
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->start();
+		sonObject->initDraw(shaderProgramIndex);
+	}
+
+}
+void GameObject::start() {  }
 
 void GameObject::initDraw(GLuint myShaderProgramIndex)
 {
 	shaderProgramIndex = myShaderProgramIndex;
+	startAndInitDrawSons();
 }
 void GameObject::draw()
 {
@@ -61,8 +96,10 @@ void GameObject::draw()
 
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
+
 	for (int i = 0; i < myMeshesLen; i++)
 	{
+		
 		sendMaterialToShader(i);
 
 
@@ -80,6 +117,8 @@ void GameObject::draw()
 			float t[3];
 			multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
 			translate(MODEL, t );
+
+
 		}else
 		{
 			translate(MODEL, transform.globalTransform.pos);
@@ -91,6 +130,13 @@ void GameObject::draw()
 		rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
 		rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
 				
+		if(transform.parent!= nullptr)
+		{
+			float t2[4] = {0,0,0,1};
+			float result[4];
+			multMatixInverseByVector(result, mMatrix[MODEL], t2);
+			transform.globalTransform.setPosition(result[0], result[1], result[2]);
+		}
 
 		// send matrices to OGL
 		computeDerivedMatrix(PROJ_VIEW_MODEL);
@@ -138,6 +184,8 @@ void GameObject::setColor(float r, float g, float b, float alpha)
 	diff[2] = amb[2] = b;
 	diff[3] = amb[3] = alpha;
 
+		
+
 }
 
 void GameObject::sendMaterialToShader(int i)
@@ -147,6 +195,8 @@ void GameObject::sendMaterialToShader(int i)
 	glUniform4fv(loc, 1, myMeshes[i].mat.ambient);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.diffuse");
 	glUniform4fv(loc, 1, myMeshes[i].mat.diffuse);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.emissive");
+	glUniform4fv(loc, 1, myMeshes[i].mat.emissive);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.specular");
 	glUniform4fv(loc, 1, myMeshes[i].mat.specular);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.shininess");

@@ -12,11 +12,13 @@
 #include "VertexAttrDef.h"
 #include "geometry.h"
 #include "avtFreeType.h"
-#include "Rigidbody.h"
 #include "Texture.h"
 #include "Texture_Loader.h"
+//#include "ComponentLib.h"
+#include "RigidBody.h"
 #include <ctime>
 #include "Light.h"
+
 using namespace std;
 
 
@@ -54,6 +56,8 @@ namespace GameObjectSpace {
 		void sendMaterialToShader(int i);
 		void sendLightToShader(int i);
 		void SendLightsToShader();
+		void updateAndDrawSons();
+		void startAndInitDrawSons();
 
 	protected:
 		vector<struct MyMesh> myMeshes;

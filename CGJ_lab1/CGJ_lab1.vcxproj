@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -167,11 +167,13 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="lightDemo.cpp" />
     <ClCompile Include="Orange.cpp" />
+    <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="PlayerCar.cpp" />
     <ClCompile Include="CubeObj.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Scene.h" />
     <ClCompile Include="Wheel.cpp" />
     <ClCompile Include="Texture_Loader.cpp" />
     <ClCompile Include="vsShaderLib.cpp" />
@@ -180,8 +182,10 @@
     <ClInclude Include="avtFreeType.h" />
     <ClInclude Include="AVTmathLib.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CarScene.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentLib.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="ft2build.h" />
@@ -195,6 +199,7 @@
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="Orange.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />
     <ClInclude Include="RigidBody.h" />

@@ -17,7 +17,6 @@ namespace GameObjectSpace{
 		PlayerCar();
 		void start();
 		void update();
-		void initDraw(GLuint myShaderProgramIndex);
 		void forward(bool state);
 		void backward(bool state);
 		void left(bool state);

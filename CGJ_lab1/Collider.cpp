@@ -15,7 +15,7 @@ using namespace std;
 		{
 
 		}
-		bool Collider::checkCollision(Collider* other)
+		bool Collider::checkCollision(Collider* other, Collision* Collision)
 		{
 			return false;
 		}
@@ -23,7 +23,7 @@ using namespace std;
 		{
 			return ColliderType::None;
 		}
-		//Returns if there is any collision, adds collisions to list, start is 0 to check all colliders
+		/*//Returns if there is any collision, adds collisions to list, start is 0 to check all colliders
 		bool Collider::checkCollisions(vector<Collider*> hits, int start)
 		{
 			bool hitSomething = false;
@@ -44,9 +44,9 @@ using namespace std;
 		bool Collider::checkCollisions(vector<Collider*> hits)
 		{
 			return checkCollisions(hits, 0);
-		}
-		void Collider::resolveCollisionAABB(AABB* box) {}
-		void Collider::checkAllCollisions()
+		}*/
+		//void Collider::resolveCollisionAABB(AABB* box) {}
+	/*	void Collider::checkAllCollisions()
 		{
 
 
@@ -69,12 +69,12 @@ using namespace std;
 
 
 		}
-
-		void Collider::correctPossition(float x, float y, float z)
+		*/
+		/** /void Collider::correctPossition(float x, float y, float z)
 		{
 
 		}
-
+		/**/
 
 
 
@@ -83,7 +83,7 @@ using namespace std;
 			Collider::Collider();
 
 		}
-		bool AABB::checkCollisionAABB(AABB* other)
+		bool AABB::checkCollisionAABB(AABB* other, Collision* Collision)
 		{
 			if (pos[0] < other->pos[0] + other->dim[0] &&
 				pos[0] + dim[0] > other->pos[0] &&
@@ -96,19 +96,27 @@ using namespace std;
 			}
 			return false;
 		}
-		bool AABB::checkCollision(Collider* other)
+		bool AABB::checkCollision(Collider* other, Collision* Collision)
+		{
+			if (other->getColliderType() == ColliderType::AABB)
+			{
+				return checkCollisionAABB((AABB*)other,  Collision);
+			}
+			return false;
+		}
+		/*bool AABB::resolveCollision(Collider* other)
 		{
 			if (other->getColliderType() == ColliderType::AABB)
 			{
 				return checkCollisionAABB((AABB*)other);
 			}
 			return false;
-		}
+		}*/
 		ColliderType AABB::getColliderType()
 		{
 			return ColliderType::AABB;
 		}
-		void AABB::resolveCollisionAABB(AABB* other)
+		/*void AABB::resolveCollisionAABB(AABB* other)
 		{
 			//find easiest direction to project to
 
@@ -160,6 +168,6 @@ using namespace std;
 			float otherCorrectionPercent = 1 - thisCorrectionPercent;
 			correctPossition(-1 * otherCorrectionPercent * correction[0], -1 * otherCorrectionPercent * correction[1], -1 * otherCorrectionPercent * correction[2]);
 
-		}
+		}*/
 
 	

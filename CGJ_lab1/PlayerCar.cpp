@@ -20,11 +20,11 @@ using namespace GameObjectSpace;
 	}
 	void PlayerCar::start()
 	{
-
+		GameObject::start();
 	}
 	void PlayerCar::update()
 	{
-		GameObject::update();
+		
 
 
 		velocity += acceleration;
@@ -70,12 +70,9 @@ using namespace GameObjectSpace;
 			else
 				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed * turnMod * 100, 0);
 		}
-
+		GameObject::update();
 	}
-	void PlayerCar::initDraw(GLuint myShaderProgramIndex)
-	{
 
-	}
 	void PlayerCar::forward(bool state)
 	{
 

@@ -14,6 +14,9 @@ namespace GameObjectSpace {
 		virtual void init()
 		{
 		}
+		virtual int getTextureMode() {
+			return 0;
+		};
 	};
 
 }

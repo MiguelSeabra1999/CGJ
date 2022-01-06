@@ -7,7 +7,7 @@ namespace GameObjectSpace {
 		GameObject* target;
 		Headlight(GameObject* mTarget) : LightSource(LightType::spot)
 		{
-			LightSource::LightSource(LightType::spot);
+		//	LightSource::LightSource(LightType::spot);
 			target = mTarget;
 
 		}

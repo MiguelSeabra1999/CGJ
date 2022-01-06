@@ -10,9 +10,11 @@
 #include "VertexAttrDef.h"
 #include "geometry.h"
 #include "avtFreeType.h"
-#include "Rigidbody.h"
+//#include "ComponentLib.h"
+#include "RigidBody.h"
 #include <ctime>
 #include "Light.h"
+
 using namespace std;
 
 

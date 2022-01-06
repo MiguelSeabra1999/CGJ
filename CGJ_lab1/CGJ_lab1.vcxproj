@@ -167,6 +167,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="lightDemo.cpp" />
     <ClCompile Include="Orange.cpp" />
+    <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="PlayerCar.cpp" />
     <ClCompile Include="CubeObj.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="CarScene.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentLib.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="ft2build.h" />
@@ -195,6 +197,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="Orange.h" />
+    <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />
     <ClInclude Include="RigidBody.h" />

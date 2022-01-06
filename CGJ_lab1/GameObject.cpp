@@ -12,7 +12,7 @@ GameObject::GameObject()
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	transform.initZero();
-	transform.setOwner((void*)this);
+	transform.setOwner(this);
 	material = new Material;
 
 

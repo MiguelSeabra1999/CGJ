@@ -61,8 +61,11 @@ GLint vm_uniformId;
 GLint normal_uniformId;
 GLint tex_loc, tex_loc1, tex_loc2;
 GLint fogginess_uniformId;
-
-float fogginess = 0.05f;
+GLint fogColor_uniformId;
+//################################ FOG ###########################
+float fogginess = 0.1f;
+float fogColor[4] = { 0.5,0.6,0.7,1 };
+bool useFog = true;
 // Camera Position
 float camX, camY, camZ;
 
@@ -87,7 +90,8 @@ map<char, char> keys = {
 	{ 'w', false },
 	{ 'a', false },
 	{ 's', false },
-	{ 'd', false }
+	{ 'd', false },
+	{ 'q', false }
 };
 
 // Camera constants and values for easy definition
@@ -192,16 +196,18 @@ void renderScene(void) {
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
-	loc = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
-	glUniform1f(loc, fogginess);
-	
+	if(useFog)
+		glUniform1f(fogginess_uniformId, fogginess);
+	else
+		glUniform1f(fogginess_uniformId, 0);
+	glUniform4fv(fogColor_uniformId, 1, fogColor);
 	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
+	//############ UPDATE SCENE ####################;
 	carScene->updateAndDraw();
 	glDepthMask(GL_TRUE);
 
@@ -243,6 +249,20 @@ void renderScene(void) {
 	glDisable(GL_BLEND);
 
 	glutSwapBuffers();
+}
+void toggleFogginess()
+{
+	if (useFog)
+	{
+	
+		glClearColor(0,0,0, 1.0f);
+	}
+	else
+	{
+	
+		glClearColor(fogColor[0], fogColor[1], fogColor[2], 1.0f);
+	}
+	useFog = !useFog;
 }
 
 // ------------------------------------------------------------
@@ -344,9 +364,13 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			carScene->changeMainCamera('4');
 			carScene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
 		}
-	
-
-
+		break;
+	case 'q':case'Q':
+		if(state != keys['q'])
+		{
+			toggleFogginess();
+			break;
+		}
 	}
 }
 void processKeysDown(unsigned char key, int xx, int yy)
@@ -508,9 +532,11 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(fogColor[0],fogColor[1],fogColor[2], 1.0f);
 
 }
+
+
 
 
 // ------------------------------------------------------------
@@ -572,6 +598,7 @@ int main(int argc, char **argv) {
 
 	return(0);
 }
+
 
 
 

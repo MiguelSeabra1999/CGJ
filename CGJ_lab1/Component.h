@@ -1,15 +1,19 @@
 #pragma once
+namespace GameObjectSpace {
+	class GameObject;
 
-class Component
-{
-public:
-public:
+	class Component
+	{
+	public:
+		GameObject* owner;
 
-	virtual void update()
-	{
-		
-	}
-	virtual void init()
-	{
-	}
-};
+		virtual void update()
+		{
+
+		}
+		virtual void init()
+		{
+		}
+	};
+
+}

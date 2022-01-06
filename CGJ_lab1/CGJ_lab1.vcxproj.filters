@@ -47,6 +47,9 @@
     <ClCompile Include="Scene.h">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsEngine.cpp">
+      <Filter>PhysicsEngine\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">
@@ -124,6 +127,12 @@
     <ClInclude Include="CarScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsEngine.h">
+      <Filter>PhysicsEngine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentLib.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
@@ -173,6 +182,15 @@
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{42a6dd43-f164-4c60-91c8-efa3f45c03f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysicsEngine">
+      <UniqueIdentifier>{8490bb98-8f26-40d6-8fa4-ae2801ccbca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysicsEngine\Headers">
+      <UniqueIdentifier>{746ab480-1711-4b56-8372-f610147c37be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysicsEngine\Source">
+      <UniqueIdentifier>{b9ccee62-6cce-468b-8ee2-4232603deccc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

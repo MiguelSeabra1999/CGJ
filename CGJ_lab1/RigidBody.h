@@ -1,7 +1,7 @@
-
+#pragma once
 #include "AVTmathLib.h"
 #include "Transform.h"
-#include "Component.h"
+#include "ComponentLib.h"
 //#include "ComponentLib.h"
 namespace GameObjectSpace
 {

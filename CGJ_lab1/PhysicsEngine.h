@@ -17,17 +17,18 @@ namespace GameObjectSpace
 	
 		PhysicsEngine()
 		{
-			instance = this;
+			//instance = this;
 		}
 		void update()
 		{
+			
 			CheckCollisions();
 		}
 		void CheckCollisions();
 		
 
 	private:
-		static PhysicsEngine* instance;
+		//static PhysicsEngine* instance;
 	};
 }
 

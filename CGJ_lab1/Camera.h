@@ -48,6 +48,9 @@ namespace GameObjectSpace {
 			alpha = 0.0f;
 			beta = 0.0f;
 		};
+		virtual bool GetLerp() {
+			return lerp;
+		}
 
 	protected:
 		float projArgs[8];

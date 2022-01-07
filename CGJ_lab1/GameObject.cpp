@@ -1,9 +1,10 @@
 #include "GameObject.h"
-
+#include "Texture_Loader.h"
 using namespace GameObjectSpace;
 
 vector<Light*> GameObject::lights;
 int GameObject::n_lights;
+vector<GLuint*> GameObject::textureIds;
 
 GameObject::GameObject()
 {
@@ -11,11 +12,35 @@ GameObject::GameObject()
 	vm_uniformId = 0;
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
-	transform.initZero();
-	transform.setOwner(this);
 	material = new Material;
 
+	transform.initZero();
+	transform.setOwner(this);
 
+
+
+
+}
+
+
+int GameObject::initTexture(const char* textureName)
+{
+	 GLuint* id = new GLuint;
+	glGenTextures(1, id);
+	
+	Texture2D_Loader(id, textureName, 0);
+	GameObject::textureIds.push_back(id);
+	
+	return GameObject::textureIds.size()-1;
+	
+	
+}
+
+void GameObject::BindTexture()
+{
+	//cout << textureId << endl;
+	//glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[textureId]));
 }
 
 void GameObject::update()
@@ -80,16 +105,21 @@ void GameObject::draw()
 	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
-
+	useTexture_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture");
 
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
 
+	if(textureId == -1)
+		glUniform1i(useTexture_uniformId,  false);
+	else
+		glUniform1i(useTexture_uniformId,  true);
 	for (int i = 0; i < myMeshesLen; i++)
 	{
 		
 		sendMaterialToShader(i);
-
+		if (textureId != -1)
+			BindTexture();
 
 		pushMatrix(MODEL);
 
@@ -149,6 +179,7 @@ void GameObject::draw()
 
 }
 
+
 void GameObject::SendLightsToShader()
 {
 	for (int j = 0; j < n_lights; j++)
@@ -163,7 +194,7 @@ void GameObject::initMaterial()
 	memcpy(material->specular, spec, 4 * sizeof(float));
 	memcpy(material->emissive, emissive, 4 * sizeof(float));
 	material->shininess = shininess;
-	material->texCount = texcount;
+	//material->texCount = texcount;
 }
 void GameObject::setColor(float r, float g, float b, float alpha)
 {

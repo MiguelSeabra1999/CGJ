@@ -248,6 +248,7 @@ void renderScene(void) {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
+	glBindTexture(GL_TEXTURE_2D,0);
 	glutSwapBuffers();
 }
 void toggleFogginess()
@@ -468,18 +469,14 @@ GLuint setupShaders() {
 	glBindAttribLocation(shader.getProgramIndex(), VERTEX_COORD_ATTRIB, "position");
 	
 	glBindAttribLocation(shader.getProgramIndex(), NORMAL_ATTRIB, "normal");
+	glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
+
 	glLinkProgram(shader.getProgramIndex());
-	//glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
 
 	pvm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_pvm");
 	vm_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shader.getProgramIndex(), "m_normal");
 	fogginess_uniformId = glGetUniformLocation(shader.getProgramIndex(), "fogginess");
-
-
-	tex_loc = glGetUniformLocation(shader.getProgramIndex(), "texmap");
-	tex_loc1 = glGetUniformLocation(shader.getProgramIndex(), "texmap1");
-	tex_loc2 = glGetUniformLocation(shader.getProgramIndex(), "texmap2");
 	
 
 

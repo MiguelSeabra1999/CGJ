@@ -29,6 +29,7 @@ namespace GameObjectSpace {
 
 	class GameObject {
 	public:
+
 		long int currentTime;
 		long int prevTime = 0;
 		long int deltaTime = 0;
@@ -42,9 +43,12 @@ namespace GameObjectSpace {
 		float spec[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
 		float emissive[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		float shininess = 100.0f;
-		int texcount = 0;
+
+		static vector<GLuint*> textureIds;
+		int textureId = -1;
 
 		GameObject();
+		static int initTexture(const char* textureName);
 		virtual void update();
 		virtual void start();
 		virtual void initDraw(GLuint myShaderProgramIndex);
@@ -57,6 +61,7 @@ namespace GameObjectSpace {
 		void updateAndDrawSons();
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
+		void BindTexture();
 
 	protected:
 		vector<struct MyMesh> myMeshes;
@@ -66,5 +71,7 @@ namespace GameObjectSpace {
 		GLuint shaderProgramIndex;
 		GLint model_uniformId;
 		GLint view_uniformId;
+		//GLuint textureID_uniformId;
+		GLint useTexture_uniformId;
 	};
 }

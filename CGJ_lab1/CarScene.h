@@ -47,8 +47,17 @@ namespace GameObjectSpace
 			150.0f, //far
 		};
 
+		void loadTextures()
+		{
+			GameObject::initTexture("lightwood.tga");
+		}
+
 		void init(GLuint shaderIndex)
 		{
+		
+			loadTextures();
+
+
 			Collider* col;
 			AABB* aabb;
 			//##############################  Car  ###############################################
@@ -67,6 +76,7 @@ namespace GameObjectSpace
 			cube->transform.setLocalPosition(.5, .2, 0);
 			cube->transform.setParent(&(playerCar->transform));
 			cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
+			cube->textureId = 0;
 
 
 			cube = new Cube();

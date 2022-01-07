@@ -42,19 +42,25 @@ namespace GameObjectSpace
 			int count = gameObjects.size();
 			for (int i = 0; i < count; i++)
 			{
-
-				//(*myGameObjects[i]).SendLightsToShader();
-				(*gameObjects[i]).update();
-				(*gameObjects[i]).draw();
+				if((*gameObjects[i]).diff[3] >= 1)
+				{
+					//(*myGameObjects[i]).SendLightsToShader();
+					(*gameObjects[i]).update();
+					(*gameObjects[i]).draw();
+				}
+				else { cout << "c"; }
 
 			}
 			glDepthMask(GL_FALSE);
-			count = transparentGameObjects.size();
+	
 			for (int i = 0; i < count; i++)
 			{
-				//(*myTransparentGameObjects[i]).SendLightsToShader();
-				(*transparentGameObjects[i]).update();
-				(*transparentGameObjects[i]).draw();
+				if ((*gameObjects[i]).diff[3] < 1)
+				{
+					//(*myTransparentGameObjects[i]).SendLightsToShader();
+					(*gameObjects[i]).update();
+					(*gameObjects[i]).draw();
+				}
 
 			}
 			glDepthMask(GL_TRUE);

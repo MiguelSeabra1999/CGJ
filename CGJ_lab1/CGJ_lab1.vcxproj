@@ -215,6 +215,11 @@
     <None Include="shaders\text.frag" />
     <None Include="shaders\text.vert" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\New folder\checker.png" />
+    <Image Include="..\..\..\..\Desktop\New folder\lightwood.tga" />
+    <Image Include="..\..\..\..\Desktop\New folder\stone.tga" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

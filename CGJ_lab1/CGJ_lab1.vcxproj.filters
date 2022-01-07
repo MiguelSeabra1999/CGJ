@@ -192,5 +192,19 @@
     <Filter Include="PhysicsEngine\Source">
       <UniqueIdentifier>{b9ccee62-6cce-468b-8ee2-4232603deccc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{1196c5e1-5836-4311-a18a-cbeb42acce1f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\New folder\checker.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\New folder\lightwood.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\New folder\stone.tga">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

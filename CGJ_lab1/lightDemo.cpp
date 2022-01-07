@@ -209,7 +209,7 @@ void renderScene(void) {
 
 	//############ UPDATE SCENE ####################;
 	carScene->updateAndDraw();
-	glDepthMask(GL_TRUE);
+	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {
 		printf("Program Not Valid!\n");
@@ -530,7 +530,7 @@ void init()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(fogColor[0],fogColor[1],fogColor[2], 1.0f);
-
+	glDepthMask(GL_TRUE);
 }
 
 

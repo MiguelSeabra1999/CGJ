@@ -136,8 +136,9 @@ void main()
 	// clamp(fogAmount, 0, 1.0); necessary only if linear
 
 	resultColor = mix(fogColor, resultColor, fogAmount );
+	resultColor = resultColor + mat.emissive;
 	resultColor = vec4(resultColor.rgb, mat.diffuse.a);
 
-	colorOut = resultColor + mat.emissive;
+	colorOut = resultColor;
 }
 

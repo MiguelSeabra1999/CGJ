@@ -62,9 +62,7 @@ void Orange::initDraw(GLuint myShaderProgramIndex)
 	GameObject::initDraw(myShaderProgramIndex);
 	MyMesh amesh;
 	amesh = createSphere(radius, 3);
-	diff[0] = 0.8f;
-	diff[1] = 0.7f;
-	diff[2] = 0.0f;
+	
 	GameObject::initMaterial();
 	amesh.mat = *material;
 	myMeshes.push_back(amesh);

@@ -1,6 +1,7 @@
 #pragma once
+#include "GameObject.h"
 namespace GameObjectSpace {
-	class GameObject;
+
 
 	class Component
 	{

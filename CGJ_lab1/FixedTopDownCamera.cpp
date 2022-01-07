@@ -71,9 +71,9 @@ void FixedTopDownCamera::SetCameraLookAt()
 		lookAt[5] = GameObject::transform.parent->globalTransform.pos[2];
 	}
 	else {
-		lookAt[0] = center[0];
-		lookAt[1] = 0;
-		lookAt[2] = center[2];
+		lookAt[3] = center[0];
+		lookAt[4] = 0;
+		lookAt[5] = center[2];
 	}
 
 	

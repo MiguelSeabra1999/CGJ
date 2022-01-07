@@ -50,15 +50,15 @@ namespace GameObjectSpace
 		void init(GLuint shaderIndex)
 		{
 			Collider* col;
+			AABB* aabb;
 			//##############################  Car  ###############################################
 			PlayerCar* playerCar = new PlayerCar();
 			playerCar->transform.setScale(.2, .2, .2);
 			playerCar->transform.setPosition(0, .1, 0);
-			gameObjects.push_back((GameObject*)playerCar);
+			aabb = new AABB();
+			playerCar->AddComponent(aabb);
 			player = playerCar;
-			col = new Collider();
-			playerCar->AddComponent(col);
-
+			gameObjects.push_back((GameObject*)playerCar);
 			// ------- body --------
 
 			Cube* cube;
@@ -146,38 +146,38 @@ namespace GameObjectSpace
 			cube->transform.setScale(mapSize, 5, 1);
 			cube->transform.setPosition(0, 0, mapSize / 2);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-			col = new Collider();
-			cube->AddComponent(col);
+			aabb = new AABB();
+			cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
 
 			cube = new Cube();
 			cube->transform.setScale(mapSize, 5, 1);
 			cube->transform.setPosition(0, 0, -mapSize / 2);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-			col = new Collider();
-			cube->AddComponent(col);
+			aabb = new AABB();
+			cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
 
 			cube = new Cube();
 			cube->transform.setScale(1, 5, mapSize);
 			cube->transform.setPosition(mapSize / 2, 0, 0);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-			col = new Collider();
-			cube->AddComponent(col);
+			//aabb = new AABB();
+			//cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
 
 			cube = new Cube();
 			cube->transform.setScale(1, 5, mapSize);
 			cube->transform.setPosition(-mapSize / 2, 0, 0);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-			col = new Collider();
-			cube->AddComponent(col);
+			//aabb = new AABB();
+			//cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
 
 			Orange* orange = new Orange(mapSize);
 			orange->transform.setPosition(1, .5, 0);
-			col = new Collider();
-			cube->AddComponent(col);
+			/*aabb = new AABB();
+			cube->AddComponent(aabb);*/
 			gameObjects.push_back((GameObject*)orange);
 
 			//#################### Cameras ##############################
@@ -185,10 +185,10 @@ namespace GameObjectSpace
 			followCamera->transform.setParent(&(playerCar->transform));
 
 			cameras.push_back((Camera*)followCamera);
-			gameObjects.push_back((GameObject*)followCamera);
+		
 
 			FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera, CamType_t::perspective_t, fixedCameraPerspectiveArguments);
-			fixedCamera->transform.setParent(&(playerCar->transform));
+			//fixedCamera->transform.setParent(&(playerCar->transform));
 			cameras.push_back((Camera*)fixedCamera);
 			gameObjects.push_back((GameObject*)fixedCamera);
 

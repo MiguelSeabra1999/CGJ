@@ -25,6 +25,8 @@ extern float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
 extern float mNormal3x3[9];
 
 namespace GameObjectSpace {
+	class Component;
+
 	class GameObject {
 	public:
 		long int currentTime;

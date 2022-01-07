@@ -81,11 +81,16 @@ using namespace std;
 
 	AABB::AABB()
 		{
-			Collider::Collider();
-
+			dim[0] = 1;
+			dim[1] = 1;
+			dim[2] = 1;
 		}
 		bool AABB::checkCollisionAABB(AABB* other, Collision* Collision)
 		{
+			pos[0] = owner->transform.globalTransform.pos[0];
+			pos[1] = owner->transform.globalTransform.pos[1];
+			pos[2] = owner->transform.globalTransform.pos[2];
+
 			if (pos[0] < other->pos[0] + other->dim[0] &&
 				pos[0] + dim[0] > other->pos[0] &&
 				pos[1] < other->pos[1] + other->dim[1] &&
@@ -99,7 +104,7 @@ using namespace std;
 		}
 		bool AABB::checkCollision(Collider* other, Collision* Collision)
 		{
-			cout << "Check";
+			//cout << "Check";
 			if (other->getColliderType() == ColliderType::AABB)
 			{
 				return checkCollisionAABB((AABB*)other,  Collision);

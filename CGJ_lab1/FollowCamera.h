@@ -23,7 +23,7 @@ namespace GameObjectSpace {
 		void SetCameraPosition();
 		void SetCameraLookAt();
 		float GetCameraRadius();
-		void SetCameraRadius();
+		void SetCameraRad();
 		void UpdateCameraPosition();
 		void SetAngles();
 		void UpdateAngles();

@@ -287,7 +287,8 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 'w':case 'W':
 		if(state != keys['w'])
 		{
-			mouseLock = state;
+			if(carScene->currentCam->GetLerp())
+				mouseLock = state;
 			player->forward(state);
 			keys['w'] = state;
 			if (carScene->currentCam->GetMovingAttr()) {
@@ -298,7 +299,9 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 's':case 'S':
 		if (state != keys['s'])
 		{
-			mouseLock = state;
+			if (carScene->currentCam->GetLerp())
+				mouseLock = state;
+
 			player->backward(state);
 			keys['s'] = state;
 			if (carScene->currentCam->GetMovingAttr()) {

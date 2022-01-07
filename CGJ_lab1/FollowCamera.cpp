@@ -11,7 +11,7 @@ FollowCamera::FollowCamera(Transform * parent)
 	transform.setParent(parent);
 	SetCameraPosition();
 	SetCameraLookAt();
-	SetCameraRadius();
+	SetCameraRad();
 	SetAngles();
 	lerp = true;
 
@@ -28,7 +28,7 @@ FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8]) {
 	SetCameraType(t);
 	SetCameraPosition();
 	SetCameraLookAt();
-	SetCameraRadius();
+	SetCameraRad();
 	SetAngles();
 	lerp = true;
 }
@@ -59,7 +59,7 @@ void FollowCamera::UpdateCameraPosition()
 	// o alpha funciona ao inverso aka -alpha
 	// mudar o playerMoving para ver se o carro ainda tem aceleracao
 	// fazer o lerp ao contrario qdo se faz marcha atras
-	SetCameraRadius();
+	SetCameraRad();
 	UpdateAngles();
 
 
@@ -82,7 +82,7 @@ void FollowCamera::UpdateCameraPosition()
 	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
 	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + radius * cos(alpha) * cos(beta);
 
-	SetCameraRadius();
+	SetCameraRad();
 	SetZeta();
 
 
@@ -106,7 +106,7 @@ void FollowCamera::SetCameraLookAt()
 	lookAt[8] = 0;
 }
 
-void FollowCamera::SetCameraRadius() {
+void FollowCamera::SetCameraRad() {
 	rad[0] = lookAt[3] - lookAt[0];
 	rad[1] = lookAt[4] - lookAt[1];
 	rad[2] = lookAt[5] - lookAt[2];
@@ -118,11 +118,11 @@ float FollowCamera::GetCameraRadius() {
 }
 
 void FollowCamera::SetAngles() {
-	float yzProj[3] = {0.0f, rad[1], rad[2]};
-	float xzProj[3] = { rad[0], 0.0f, rad[2] };
+	float yzProj[3] = {0.0f, verticalDist, horizontalDist};
+	float xzProj[3] = { 0, 0.0f, horizontalDist };
 	float zz[3] = { 0.0f, 0.0f, 1.0f };
 
-	alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj)));
+	alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI/2;
 	beta = acos(dotProduct(zz, yzProj)/ (length(zz)*length(yzProj)));
 }
 

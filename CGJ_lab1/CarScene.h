@@ -182,8 +182,7 @@ namespace GameObjectSpace
 
 			//#################### Cameras ##############################
 			FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
-			followCamera->transform.setParent(&(playerCar->transform));
-
+			//followCamera->transform.setParent(&(playerCar->transform));
 			cameras.push_back((Camera*)followCamera);
 		
 

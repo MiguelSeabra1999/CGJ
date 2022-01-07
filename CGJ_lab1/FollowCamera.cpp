@@ -8,7 +8,7 @@ FollowCamera::FollowCamera(Transform * parent)
 	Camera::Camera();
 	radius = sqrt(verticalDist*verticalDist + horizontalDist * horizontalDist);
 	moving = true;
-	GameObject::transform.parent = parent;
+	transform.setParent(parent);
 	SetCameraPosition();
 	SetCameraLookAt();
 	SetCameraRadius();
@@ -22,7 +22,8 @@ FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8]) {
 	Camera::Camera(t, args);
 	radius = sqrt(verticalDist * verticalDist + horizontalDist * horizontalDist);
 	moving = true;
-	GameObject::transform.parent = parent;
+	transform.setParent(parent);
+	
 	SetProjArgs(args);
 	SetCameraType(t);
 	SetCameraPosition();
@@ -31,6 +32,8 @@ FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8]) {
 	SetAngles();
 	lerp = true;
 }
+
+
 
 void FollowCamera::update()
 {
@@ -62,14 +65,16 @@ void FollowCamera::UpdateCameraPosition()
 
 	if (lerp) {
 		PlayerCar * car = (PlayerCar*)GameObject::transform.parent->gameObject;
+		
 		if (car->velocity>0) {
 			if (zeta > threshhold) { alpha -= zeta/angularConstantForLerp; }
 			else if (zeta < -threshhold) { alpha -= zeta/angularConstantForBackWardsLerp; }
 
 		}
 		else if (car->velocity < 0) {
-			if (zeta < PI-threshhold && zeta>0) { alpha += (PI-zeta) / angularConstantForBackWardsLerp; }
-			else if (zeta > -PI+threshhold && zeta<0) { alpha += -(PI+zeta) / angularConstantForBackWardsLerp; }
+			
+			if (zeta < PI- threshhold && zeta>0) { alpha += (PI-zeta) / angularConstantForBackWardsLerp; }
+			else if (zeta > -PI+ threshhold && zeta<0 ) { alpha += -(PI+zeta) / angularConstantForBackWardsLerp; }
 		}
 	}
 

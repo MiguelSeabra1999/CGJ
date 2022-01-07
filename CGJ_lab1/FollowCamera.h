@@ -10,7 +10,8 @@ namespace GameObjectSpace {
 		float rad[3];
 		bool playerMoving = false;
 		float zeta = 0.0f;
-		float threshhold = 0.02f;
+		float threshhold = 0.0005f;
+
 		float angularConstantForLerp = 30.0f;
 		float angularConstantForBackWardsLerp = 20.0f;
 

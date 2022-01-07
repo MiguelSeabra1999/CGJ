@@ -44,12 +44,11 @@ namespace GameObjectSpace
 			{
 				if((*gameObjects[i]).diff[3] >= 1)
 				{
+					//cout << (*gameObjects[i]).diff[3] << endl;
 					//(*myGameObjects[i]).SendLightsToShader();
 					(*gameObjects[i]).update();
 					(*gameObjects[i]).draw();
 				}
-				else { cout << "c"; }
-
 			}
 			glDepthMask(GL_FALSE);
 	
@@ -57,6 +56,7 @@ namespace GameObjectSpace
 			{
 				if ((*gameObjects[i]).diff[3] < 1)
 				{
+					//cout << (*gameObjects[i]).diff[3] << endl;
 					//(*myTransparentGameObjects[i]).SendLightsToShader();
 					(*gameObjects[i]).update();
 					(*gameObjects[i]).draw();

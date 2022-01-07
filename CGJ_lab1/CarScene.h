@@ -69,29 +69,35 @@ namespace GameObjectSpace
 			player = playerCar;
 			gameObjects.push_back((GameObject*)playerCar);
 			// ------- body --------
-
+			//base
 			Cube* cube;
 			cube = new Cube();
 			cube->transform.setLocalScale(3, .6, 1.7);
 			cube->transform.setLocalPosition(.5, .2, 0);
 			cube->transform.setParent(&(playerCar->transform));
-			cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
+			cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 			cube->textureId = 0;
 
-
+			//roof
 			cube = new Cube();
-			cube->transform.setLocalScale(1.4, .6, 1.7);
-			cube->transform.setLocalPosition(.69, .775, 0);
+			cube->transform.setLocalScale(1.4, .1, 1.7);
+			cube->transform.setLocalPosition(.69, 1.02, 0);
 			cube->transform.setParent(&(playerCar->transform));
-			cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
+			cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 
-
+			//glass
+			cube = new Cube();
+			cube->transform.setLocalScale(1.4, .5, 1.7);
+			cube->transform.setLocalPosition(.69, .725, 0);
+			cube->transform.setParent(&(playerCar->transform));
+			cube->setColor(0.5f, 0.5f, 0.8f, 0.4f);
+			//back
 			cube = new Cube();
 			cube->transform.setLocalScale(.8, .8, 1.7);
 			cube->transform.setLocalPosition(1.4, .5, 0);
 			cube->transform.setRotation(0, 0, 45);
 			cube->transform.setParent(&(playerCar->transform));
-			cube->setColor(1.0f, 0.0f, 0.0f, 0.1f);
+			cube->setColor(1.0f, 0.0f, 0.0f, 1.0f);
 
 			// ------ Wheels --------
 
@@ -186,6 +192,9 @@ namespace GameObjectSpace
 
 			Orange* orange = new Orange(mapSize);
 			orange->transform.setPosition(1, .5, 0);
+			orange->setColor(1,1,1, 0.5f);
+
+
 			/*aabb = new AABB();
 			cube->AddComponent(aabb);*/
 			gameObjects.push_back((GameObject*)orange);

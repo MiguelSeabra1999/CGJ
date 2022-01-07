@@ -72,10 +72,27 @@ void GameObject::updateAndDrawSons()
 
 		Transform* sonTransform = transform.sons.at(i);
 		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
-		sonObject->SendLightsToShader();
-		sonObject->update();
-		sonObject->draw();
+		if(sonObject->diff[3] >= 1)
+		{
+			sonObject->SendLightsToShader();
+			sonObject->update();
+			sonObject->draw();
+		}
 	}
+	glDepthMask(GL_FALSE);
+	for (int i = 0; i < n_sons; i++)
+	{
+
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		if (sonObject->diff[3] < 1)
+		{
+			sonObject->SendLightsToShader();
+			sonObject->update();
+			sonObject->draw();
+		}
+	}
+	glDepthMask(GL_TRUE);
 
 }
 void GameObject::startAndInitDrawSons()

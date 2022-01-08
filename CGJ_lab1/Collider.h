@@ -2,6 +2,8 @@
 
 #include "AVTmathLib.h"
 #include "ComponentLib.h"
+
+
 namespace GameObjectSpace
 {
 
@@ -17,7 +19,7 @@ namespace GameObjectSpace
 	{
 
 	public:
-	
+		GameObject* cube;
 		float inverseMass = 0;
 		static vector<Collider*> allColliders;
 		Collider();
@@ -49,6 +51,7 @@ namespace GameObjectSpace
 		bool checkCollisionAABB(AABB* other, Collision* Collision);
 		bool checkCollision(Collider* other, Collision* Collision);
 		ColliderType getColliderType();
+		void update();
 		//void resolveCollisionAABB(AABB* other);
 		
 

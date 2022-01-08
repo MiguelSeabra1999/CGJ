@@ -14,7 +14,7 @@ void PhysicsEngine::CheckCollisions()
 			if (Collider::allColliders[i]->checkCollision(Collider::allColliders[j], col))
 			{
 				//collisions.push_back(col);
-				//cout << "Collision";
+				cout << "Collision";
 			}
 		}
 	}

@@ -7,7 +7,7 @@ using namespace GameObjectSpace;
 
 	PlayerCar::PlayerCar()
 	{
-		GameObject::GameObject();
+		 //GameObject::GameObject();
 		inputDir[0] = 0;
 		inputDir[1] = 0;
 		velocity = 0.0f;

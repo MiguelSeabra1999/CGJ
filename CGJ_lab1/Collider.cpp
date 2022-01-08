@@ -1,19 +1,27 @@
 #include "Collider.h"
+#include "CubeObj.h"
 using namespace GameObjectSpace;
 using namespace std;
 
 		vector<Collider*> Collider::allColliders;
 		Collider::Collider()
 		{
+			cube = (GameObject*) new Cube();
+			cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+			cube->transform.setPosition(0,0,0);
+			
 			Component::Component();
 			Collider::allColliders.push_back(this);
 		}
 		void Collider::update()
 		{
+
 		}
 		void Collider::init()
 		{
-
+		
+			//cube->transform.setParent(& (owner->transform));
+			//cube->initDraw(owner->shaderIndex);
 		}
 		bool Collider::checkCollision(Collider* other, Collision* Collision)
 		{
@@ -80,101 +88,113 @@ using namespace std;
 
 
 	AABB::AABB()
+	{
+		dim[0] = 5;
+		dim[1] = 5;
+		dim[2] = 5;
+	}
+	void AABB::update()
+	{
+		pos[0] =  owner->transform.globalTransform.pos[0];
+		pos[1] =  owner->transform.globalTransform.pos[1];
+		pos[2] =  owner->transform.globalTransform.pos[2];
+		dim[0] = owner->transform.globalTransform.scale[0];
+		dim[1] = owner->transform.globalTransform.scale[1];
+		dim[2] = owner->transform.globalTransform.scale[2];
+		cube->transform.setPosition(pos[0], pos[1], pos[2]);
+		cube->transform.setScale(dim[0], dim[1], dim[2]);
+
+		//cube->draw();
+		
+	}
+	bool AABB::checkCollisionAABB(AABB* other, Collision* Collision)
+	{
+
+
+		if (pos[0] < other->pos[0] + other->dim[0] &&
+			pos[0] + dim[0] > other->pos[0] &&
+			pos[1] < other->pos[1] + other->dim[1] &&
+			pos[1] + dim[1] > other->pos[1] &&
+			pos[2] < other->pos[2] + other->dim[2] &&
+			pos[2] + dim[2] > other->pos[2])
 		{
-			dim[0] = 1;
-			dim[1] = 1;
-			dim[2] = 1;
+			return true;
 		}
-		bool AABB::checkCollisionAABB(AABB* other, Collision* Collision)
+		return false;
+	}
+	bool AABB::checkCollision(Collider* other, Collision* Collision)
+	{
+		//cout << "Check";
+		if (other->getColliderType() == ColliderType::AABB)
 		{
-			pos[0] = owner->transform.globalTransform.pos[0];
-			pos[1] = owner->transform.globalTransform.pos[1];
-			pos[2] = owner->transform.globalTransform.pos[2];
-
-			if (pos[0] < other->pos[0] + other->dim[0] &&
-				pos[0] + dim[0] > other->pos[0] &&
-				pos[1] < other->pos[1] + other->dim[1] &&
-				pos[1] + dim[1] > other->pos[1] &&
-				pos[2] < other->pos[2] + other->dim[2] &&
-				pos[2] + dim[2] > other->pos[2])
-			{
-				return true;
-			}
-			return false;
+			return checkCollisionAABB((AABB*)other,  Collision);
 		}
-		bool AABB::checkCollision(Collider* other, Collision* Collision)
+		return false;
+	}
+	/*bool AABB::resolveCollision(Collider* other)
+	{
+		if (other->getColliderType() == ColliderType::AABB)
 		{
-			//cout << "Check";
-			if (other->getColliderType() == ColliderType::AABB)
-			{
-				return checkCollisionAABB((AABB*)other,  Collision);
-			}
-			return false;
+			return checkCollisionAABB((AABB*)other);
 		}
-		/*bool AABB::resolveCollision(Collider* other)
+		return false;
+	}*/
+	ColliderType AABB::getColliderType()
+	{
+		return ColliderType::AABB;
+	}
+	/*void AABB::resolveCollisionAABB(AABB* other)
+	{
+		//find easiest direction to project to
+
+		int dir[3] = { 1,0,0 };
+		float minDist = 10000;
+		//each projection is a possible translation that solves the collision
+		float projectionRight = abs(pos[0] - other->pos[0] + other->dim[0]);
+		minDist = projectionRight;
+		float projectionLeft = abs(pos[0] + dim[0] - other->pos[0]);
+		if (projectionLeft < minDist)
 		{
-			if (other->getColliderType() == ColliderType::AABB)
-			{
-				return checkCollisionAABB((AABB*)other);
-			}
-			return false;
-		}*/
-		ColliderType AABB::getColliderType()
-		{
-			return ColliderType::AABB;
+			dir[0] = -1; dir[1] = 0; dir[2] = 0;
+			minDist = projectionLeft;
 		}
-		/*void AABB::resolveCollisionAABB(AABB* other)
+
+		float projectionUp = abs(pos[1] - other->pos[1] + other->dim[1]);
+		if (projectionUp < minDist)
 		{
-			//find easiest direction to project to
+			dir[0] = 0; dir[1] = 1; dir[2] = 0;
+			minDist = projectionUp;
+		}
+		float projectionDown = abs(pos[1] + dim[1] - other->pos[1]);
+		if (projectionDown < minDist)
+		{
+			dir[0] = -1; dir[1] = -1; dir[2] = 0;
+			minDist = projectionDown;
+		}
 
-			int dir[3] = { 1,0,0 };
-			float minDist = 10000;
-			//each projection is a possible translation that solves the collision
-			float projectionRight = abs(pos[0] - other->pos[0] + other->dim[0]);
-			minDist = projectionRight;
-			float projectionLeft = abs(pos[0] + dim[0] - other->pos[0]);
-			if (projectionLeft < minDist)
-			{
-				dir[0] = -1; dir[1] = 0; dir[2] = 0;
-				minDist = projectionLeft;
-			}
+		float projectionForward = abs(pos[2] - other->pos[2] + other->dim[2]);
+		if (projectionForward < minDist)
+		{
+			dir[0] = 0; dir[1] = 0; dir[2] = -1;
+			minDist = projectionForward;
+		}
+		float projectionBack = abs(pos[2] + dim[2] - other->pos[2]);
+		if (projectionBack < minDist)
+		{
+			dir[0] = 0; dir[1] = 0; dir[2] = -1;
+			minDist = projectionBack;
+		}
 
-			float projectionUp = abs(pos[1] - other->pos[1] + other->dim[1]);
-			if (projectionUp < minDist)
-			{
-				dir[0] = 0; dir[1] = 1; dir[2] = 0;
-				minDist = projectionUp;
-			}
-			float projectionDown = abs(pos[1] + dim[1] - other->pos[1]);
-			if (projectionDown < minDist)
-			{
-				dir[0] = -1; dir[1] = -1; dir[2] = 0;
-				minDist = projectionDown;
-			}
+		float nudge = 0.01;
+		float correction[3] = { dir[0] * minDist + nudge, dir[1] * minDist + nudge , dir[2] * minDist + nudge };
 
-			float projectionForward = abs(pos[2] - other->pos[2] + other->dim[2]);
-			if (projectionForward < minDist)
-			{
-				dir[0] = 0; dir[1] = 0; dir[2] = -1;
-				minDist = projectionForward;
-			}
-			float projectionBack = abs(pos[2] + dim[2] - other->pos[2]);
-			if (projectionBack < minDist)
-			{
-				dir[0] = 0; dir[1] = 0; dir[2] = -1;
-				minDist = projectionBack;
-			}
+		//selfcorrection = inverseMass / (both inverse masses)     *      correction
+		// other correction = other inverse mass / (both inverse masses)    * correction
+		float thisCorrectionPercent = inverseMass / (inverseMass + other->inverseMass);
+		correctPossition(thisCorrectionPercent * correction[0], thisCorrectionPercent * correction[1], thisCorrectionPercent * correction[2]);
+		float otherCorrectionPercent = 1 - thisCorrectionPercent;
+		correctPossition(-1 * otherCorrectionPercent * correction[0], -1 * otherCorrectionPercent * correction[1], -1 * otherCorrectionPercent * correction[2]);
 
-			float nudge = 0.01;
-			float correction[3] = { dir[0] * minDist + nudge, dir[1] * minDist + nudge , dir[2] * minDist + nudge };
-
-			//selfcorrection = inverseMass / (both inverse masses)     *      correction
-			// other correction = other inverse mass / (both inverse masses)    * correction
-			float thisCorrectionPercent = inverseMass / (inverseMass + other->inverseMass);
-			correctPossition(thisCorrectionPercent * correction[0], thisCorrectionPercent * correction[1], thisCorrectionPercent * correction[2]);
-			float otherCorrectionPercent = 1 - thisCorrectionPercent;
-			correctPossition(-1 * otherCorrectionPercent * correction[0], -1 * otherCorrectionPercent * correction[1], -1 * otherCorrectionPercent * correction[2]);
-
-		}*/
+	}*/
 
 	

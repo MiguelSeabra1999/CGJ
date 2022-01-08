@@ -6,10 +6,10 @@ using namespace GameObjectSpace;
 
 Orange::Orange(float mapSize)
 {
-	GameObject::GameObject();
+	//GameObject::GameObject();
 
 	rigidbody = new RigidBody(&transform);
-	GameObject::components.push_back(rigidbody);
+	AddComponent(rigidbody);
 	moveInRandomDirection();
 
 	bounds = mapSize / 2;
@@ -24,6 +24,7 @@ void Orange::start()
 void Orange::update()
 {
 	GameObject::update();
+	//transform.globalTransform.pos[0] += 0.1f;
 	GameObject::transform.globalTransform.rotate(2, 5, 3);
 	if(!respawning)
 	{
@@ -37,7 +38,7 @@ void Orange::update()
 	{
 		respawn();
 	}
-
+	//cout << transform.globalTransform.pos[0] << " " << transform.globalTransform.pos[2];
 }
 
 void Orange::queueRespawn()

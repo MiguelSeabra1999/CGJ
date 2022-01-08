@@ -7,7 +7,7 @@ namespace GameObjectSpace {
 	{
 	public:
 		Cube();
-		void start();
+	
 		void update();
 		void initDraw(GLuint myShaderProgramIndex);
 	};

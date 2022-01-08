@@ -60,22 +60,33 @@ void GameObject::update()
 	}
 					
 	//transform.updateLocalTransform();
-	updateAndDrawSons();
+	updateSons();
 }
+void GameObject::updateSons()
+{
+	int n_sons = transform.sons.size();
 
-void GameObject::updateAndDrawSons()
+	for (int i = 0; i < n_sons; i++)
+	{
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->update();
+
+	}
+}
+void GameObject::drawSons()
 {
 	int n_sons = transform.sons.size();
 	
 	for (int i = 0; i < n_sons; i++)
 	{
-
+		//cout << "im in sons" << endl;
 		Transform* sonTransform = transform.sons.at(i);
 		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
 		if(sonObject->diff[3] >= 1)
 		{
 			sonObject->SendLightsToShader();
-			sonObject->update();
+			//sonObject->update();
 			sonObject->draw();
 		}
 	}
@@ -88,7 +99,7 @@ void GameObject::updateAndDrawSons()
 		if (sonObject->diff[3] < 1)
 		{
 			sonObject->SendLightsToShader();
-			sonObject->update();
+			//sonObject->update();
 			sonObject->draw();
 		}
 	}
@@ -98,7 +109,7 @@ void GameObject::updateAndDrawSons()
 void GameObject::startAndInitDrawSons()
 {
 	int n_sons = transform.sons.size();
-//	cout << "init " << n_sons << endl;
+
 	for (int i = 0; i < n_sons; i++)
 	{
 
@@ -115,10 +126,14 @@ void GameObject::initDraw(GLuint myShaderProgramIndex)
 {
 	shaderProgramIndex = myShaderProgramIndex;
 	startAndInitDrawSons();
+	int n = components.size();
+	for (int i = 0; i < n; i++)
+	{
+		components[i]->init();
+	}
 }
 void GameObject::draw()
 {
-
 	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
@@ -131,51 +146,54 @@ void GameObject::draw()
 		glUniform1i(useTexture_uniformId,  false);
 	else
 		glUniform1i(useTexture_uniformId,  true);
+	
+	int n_sons = transform.sons.size();
+	
+
+	
+	if (textureId != -1)
+		BindTexture();
+
+	pushMatrix(MODEL);
+
+	/**/
+	if (transform.parent != nullptr)
+	{
+		memcpy(mMatrix[MODEL], transform.parent->mModel, 16 * sizeof(float));
+		float t[3];
+		multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
+		translate(MODEL, t );
+	}
+	else
+	{
+		translate(MODEL, transform.globalTransform.pos);
+	}
+
+	rotate(MODEL, transform.globalTransform.rot[0], 1, 0, 0);
+	rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
+	rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
+	memcpy(transform.mModel, mMatrix[MODEL], 16*sizeof(float));
+
+
+	
+	scale(MODEL, transform.globalTransform.scale);
+		
+	
+	
+	if(transform.parent!= nullptr)
+	{
+		float t2[4] = {0,0,0,1};
+		float result[4];
+		multMatixTransposeByVector(result, mMatrix[MODEL], t2);
+		transform.globalTransform.setPosition(result[0], result[1], result[2]);
+	}
+
 	for (int i = 0; i < myMeshesLen; i++)
 	{
-		
 		sendMaterialToShader(i);
-		if (textureId != -1)
-			BindTexture();
-
-		pushMatrix(MODEL);
-
-
-		if (transform.parent != nullptr)
-		{
-			translate(MODEL, transform.parent->globalTransform.pos);
-					
-			rotate(MODEL, transform.parent->globalTransform.rot[0], 1, 0, 0);
-			rotate(MODEL, transform.parent->globalTransform.rot[1], 0, 1, 0);
-			rotate(MODEL, transform.parent->globalTransform.rot[2], 0, 0, 1);
-
-			float t[3];
-			multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
-			translate(MODEL, t );
-
-
-		}else
-		{
-			translate(MODEL, transform.globalTransform.pos);
-		}
-				
-		scale(MODEL, transform.globalTransform.scale);
-
-		rotate(MODEL, transform.globalTransform.rot[0], 1, 0, 0);
-		rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
-		rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
-				
-		if(transform.parent!= nullptr)
-		{
-			float t2[4] = {0,0,0,1};
-			float result[4];
-			multMatixInverseByVector(result, mMatrix[MODEL], t2);
-			transform.globalTransform.setPosition(result[0], result[1], result[2]);
-		}
-
 		// send matrices to OGL
 		computeDerivedMatrix(PROJ_VIEW_MODEL);
-		
+
 		glUniformMatrix4fv(vm_uniformId, 1, GL_FALSE, mCompMatrix[VIEW_MODEL]);
 		glUniformMatrix4fv(pvm_uniformId, 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
 		computeNormalMatrix3x3();
@@ -186,13 +204,13 @@ void GameObject::draw()
 		// Render mesh
 		glBindVertexArray(myMeshes[i].vao);
 
-				
+
 		glDrawElements(myMeshes[i].type, myMeshes[i].numIndexes, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
-
-		popMatrix(MODEL);
-	
 	}
+	popMatrix(MODEL);
+	
+	drawSons();
 
 }
 

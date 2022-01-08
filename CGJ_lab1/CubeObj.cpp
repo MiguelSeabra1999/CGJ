@@ -8,12 +8,9 @@ using namespace GameObjectSpace;
 
 Cube::Cube()
 {
-	GameObject::GameObject();
+	
 }
-void Cube::start()
-{
 
-}
 void Cube::update()
 {
 	GameObject::update();

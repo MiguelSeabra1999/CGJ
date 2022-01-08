@@ -43,7 +43,7 @@ namespace GameObjectSpace {
 		float spec[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
 		float emissive[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		float shininess = 100.0f;
-
+		int shaderIndex;
 		static vector<GLuint*> textureIds;
 		int textureId = -1;
 
@@ -58,7 +58,8 @@ namespace GameObjectSpace {
 		void sendMaterialToShader(int i);
 		void sendLightToShader(int i);
 		void SendLightsToShader();
-		void updateAndDrawSons();
+		void updateSons();
+		void drawSons();
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
 		void BindTexture();

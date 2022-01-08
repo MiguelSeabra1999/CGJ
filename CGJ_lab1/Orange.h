@@ -7,9 +7,9 @@ namespace GameObjectSpace {
 	{
 	public:
 		float radius = 1;
-		float minStartSpeed = 0.00006;
-		float maxStartSpeed = 0.0001;
-		float acceleration = 0.0001;
+		float minStartSpeed = 0.06;
+		float maxStartSpeed = 0.1;
+		float acceleration = 0.001;
 		long int respawnTime = 0;
 		bool respawning = false;
 

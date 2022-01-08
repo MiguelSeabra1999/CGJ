@@ -64,10 +64,11 @@ namespace GameObjectSpace
 			PlayerCar* playerCar = new PlayerCar();
 			playerCar->transform.setScale(.2, .2, .2);
 			playerCar->transform.setPosition(0, .1, 0);
-			aabb = new AABB();
-			playerCar->AddComponent(aabb);
+			//aabb = new AABB();
+			//playerCar->AddComponent(aabb);
 			player = playerCar;
 			gameObjects.push_back((GameObject*)playerCar);
+			//gameObjects.push_back((GameObject*)aabb->cube);
 			// ------- body --------
 			//base
 			Cube* cube;
@@ -157,22 +158,25 @@ namespace GameObjectSpace
 			cube->transform.setPosition(0, -0.5, 0);
 			cube->setColor(0.0f, 0.3f, 0.0f, 1.0f);
 			gameObjects.push_back((GameObject*)cube);
+	
 
 			cube = new Cube();
 			cube->transform.setScale(mapSize, 5, 1);
 			cube->transform.setPosition(0, 0, mapSize / 2);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-			aabb = new AABB();
-			cube->AddComponent(aabb);
+			//aabb = new AABB();
+			//cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
+			//gameObjects.push_back((GameObject*)aabb->cube);
 
 			cube = new Cube();
 			cube->transform.setScale(mapSize, 5, 1);
 			cube->transform.setPosition(0, 0, -mapSize / 2);
 			cube->setColor(0.0f, 0.3f, 0.3f, 1.0f);
-			aabb = new AABB();
-			cube->AddComponent(aabb);
+			//aabb = new AABB();
+			//cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
+			//gameObjects.push_back((GameObject*)aabb->cube);
 
 			cube = new Cube();
 			cube->transform.setScale(1, 5, mapSize);
@@ -181,6 +185,7 @@ namespace GameObjectSpace
 			//aabb = new AABB();
 			//cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
+			//gameObjects.push_back((GameObject*)aabb->cube);
 
 			cube = new Cube();
 			cube->transform.setScale(1, 5, mapSize);
@@ -189,15 +194,16 @@ namespace GameObjectSpace
 			//aabb = new AABB();
 			//cube->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)cube);
+			//gameObjects.push_back((GameObject*)aabb->cube);
 
 			Orange* orange = new Orange(mapSize);
 			orange->transform.setPosition(1, .5, 0);
 			orange->setColor(1,1,1, 0.5f);
-
-
-			/*aabb = new AABB();
-			cube->AddComponent(aabb);*/
+		//	aabb = new AABB();
+		//	orange->AddComponent(aabb);
 			gameObjects.push_back((GameObject*)orange);
+		//	gameObjects.push_back((GameObject*)aabb->cube);
+
 
 			//#################### Cameras ##############################
 			FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);

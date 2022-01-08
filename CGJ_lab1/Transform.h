@@ -159,6 +159,7 @@ namespace GameObjectSpace
 		GameObject* gameObject;
 		SimpleTransform localTransform;
 		SimpleTransform globalTransform;
+		float mModel[16];
 
 		void initZero()
 		{

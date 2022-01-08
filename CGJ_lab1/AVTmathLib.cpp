@@ -126,6 +126,8 @@ void addVectors(float* result, float* a, float* b, int size)
 	}
 }
 
+
+
 void multMatixByVector(float* result, float* mat,  float* vec)
 {
 	float auxVec[4];
@@ -142,7 +144,7 @@ void multMatixByVector(float* result, float* mat,  float* vec)
 		result[i] = sum;
 	}
 }
-void multMatixInverseByVector(float* result, float* mat, float* vec)
+void multMatixTransposeByVector(float* result, float* mat, float* vec)
 {
 	float auxVec[4];
 	auxVec[0] = vec[0]; auxVec[1] = vec[1]; auxVec[2] = vec[2]; auxVec[3] = vec[3];

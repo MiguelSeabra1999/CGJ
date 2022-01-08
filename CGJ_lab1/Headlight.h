@@ -28,6 +28,7 @@ namespace GameObjectSpace {
 		}
 		void initDraw(GLuint myShaderProgramIndex)
 		{
+			
 			LightSource::initDraw(myShaderProgramIndex);
 			MyMesh amesh;
 			amesh = createTorus(0,.25, 10, 10);

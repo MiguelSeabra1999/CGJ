@@ -227,8 +227,8 @@ void renderScene(void) {
 	//Update light positions
 	for (int i = 0; i < GameObject::n_lights; i++)
 	{
-		multMatixInverseByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
-		multMatixInverseByVector(GameObject::lights[i]->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->position);
+		multMatixTransposeByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
+		multMatixTransposeByVector(GameObject::lights[i]->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->position);
 	}
 
 	carScene->sendLightsToShader();

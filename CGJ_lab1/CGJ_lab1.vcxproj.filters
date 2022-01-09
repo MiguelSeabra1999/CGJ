@@ -50,6 +50,9 @@
     <ClCompile Include="PhysicsEngine.cpp">
       <Filter>PhysicsEngine\Source</Filter>
     </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">

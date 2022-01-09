@@ -9,9 +9,10 @@ namespace GameObjectSpace {
 		float radius = 1;
 		float minStartSpeed = 0.06;
 		float maxStartSpeed = 0.1;
-		float acceleration = 0.001;
+		float acceleration = 0.1;
 		long int respawnTime = 0;
 		bool respawning = false;
+		float dir[3];
 
 		RigidBody* rigidbody;
 		float bounds;

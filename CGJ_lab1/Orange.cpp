@@ -18,12 +18,16 @@ Orange::Orange(float mapSize)
 void Orange::start()
 {
 	GameObject::start();
+	respawn();
 }
 void Orange::update()
 {
 	GameObject::update();
 	//transform.globalTransform.pos[0] += 0.1f;
 	GameObject::transform.globalTransform.rotate(2, 5, 3);
+
+	rigidbody->addForce(transform.localTransform.forward, acceleration);
+
 	if(!respawning)
 	{
 		if (abs(transform.globalTransform.pos[0]) > bounds || abs(transform.globalTransform.pos[1]) > bounds || abs(transform.globalTransform.pos[2]) > bounds)
@@ -36,6 +40,7 @@ void Orange::update()
 	{
 		respawn();
 	}
+
 	//cout << transform.globalTransform.pos[0] << " " << transform.globalTransform.pos[2];
 }
 
@@ -77,13 +82,15 @@ void Orange::moveInRandomDirection()
 {
 	
 	float angle = randomRange(0, 360);
-	GameObject::transform.globalTransform.setRotation(0, 0, 0);
-	GameObject::transform.globalTransform.rotate(0,angle,0);
-
+	GameObject::transform.localTransform.setRotation(0, 0, 0);
+	GameObject::transform.localTransform.rotate(0,angle,0);
+	
+	/** /
 	rigidbody->setVelocity(transform.globalTransform.forward);
 	multVectorConstant(rigidbody->velocity, rigidbody->velocity, maxStartSpeed);
 	rigidbody->setAcceleration(transform.globalTransform.forward);
 	multVectorConstant(rigidbody->acceleration, rigidbody->acceleration, acceleration);
+	/**/
 }
 
 

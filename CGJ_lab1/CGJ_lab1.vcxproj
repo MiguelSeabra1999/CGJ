@@ -172,6 +172,7 @@
     <ClCompile Include="CubeObj.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Scene.h" />
     <ClCompile Include="Wheel.cpp" />
     <ClCompile Include="Texture_Loader.cpp" />

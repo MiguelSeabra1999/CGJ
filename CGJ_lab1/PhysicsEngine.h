@@ -1,5 +1,6 @@
 #pragma once
 #include "Collider.h"
+#include "RigidBody.h"
 namespace GameObjectSpace
 {
 	class Collision
@@ -14,18 +15,16 @@ namespace GameObjectSpace
 	class PhysicsEngine//singleton
 	{
 	public:
-	
+		
 		PhysicsEngine()
 		{
 			//instance = this;
 		}
-		void update()
-		{
-			
-			CheckCollisions();
-		}
+		void update();
+
 		void CheckCollisions();
-		
+
+		void UpdatePositions();
 
 	private:
 		//static PhysicsEngine* instance;

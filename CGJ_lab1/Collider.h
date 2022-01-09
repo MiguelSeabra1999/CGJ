@@ -22,8 +22,8 @@ namespace GameObjectSpace
 		GameObject* cube;
 		float inverseMass = 0;
 		static vector<Collider*> allColliders;
-		Collider();
-	
+		Collider(GameObject * owner);
+
 		virtual void update();
 		virtual void init();
 		virtual bool checkCollision(Collider* other, Collision* Collision);
@@ -47,7 +47,8 @@ namespace GameObjectSpace
 		float pos[3]; //the corner that has the largest X and lowest Z and Y
 		float dim[3];
 		
-		AABB();
+		AABB(GameObject * owner);
+		void setDim(float x, float y, float z);
 		bool checkCollisionAABB(AABB* other, Collision* Collision);
 		bool checkCollision(Collider* other, Collision* Collision);
 		ColliderType getColliderType();

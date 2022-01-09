@@ -4,14 +4,17 @@ using namespace GameObjectSpace;
 using namespace std;
 
 		vector<Collider*> Collider::allColliders;
-		Collider::Collider()
+		Collider::Collider(GameObject * owner):Component(owner)
 		{
+
 			cube = (GameObject*) new Cube();
-			cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			cube->transform.setPosition(0,0,0);
+			cube->setColor(1.0f, 1.0f, 1.0f, 0.2f);
 			
-			Component::Component();
+			
+		
 			Collider::allColliders.push_back(this);
+
+
 		}
 		void Collider::update()
 		{
@@ -19,7 +22,7 @@ using namespace std;
 		}
 		void Collider::init()
 		{
-		
+
 			//cube->transform.setParent(& (owner->transform));
 			//cube->initDraw(owner->shaderIndex);
 		}
@@ -87,22 +90,34 @@ using namespace std;
 
 
 
-	AABB::AABB()
+	AABB::AABB(GameObject* owner) :Collider(owner)
 	{
-		dim[0] = 5;
-		dim[1] = 5;
-		dim[2] = 5;
+		
+		dim[0] = owner->transform.localTransform.scale[0];
+		dim[1] = owner->transform.localTransform.scale[1];
+		dim[2] = owner->transform.localTransform.scale[2];
+		pos[0] = owner->transform.globalTransform.pos[0];
+		pos[1] = owner->transform.globalTransform.pos[1];
+		pos[2] = owner->transform.globalTransform.pos[2];
 	}
+	void AABB::setDim(float x, float y, float z) {
+		dim[0] = x;
+		dim[1] = y;
+		dim[2] = z;
+	}
+	
 	void AABB::update()
 	{
+
 		pos[0] =  owner->transform.globalTransform.pos[0];
 		pos[1] =  owner->transform.globalTransform.pos[1];
 		pos[2] =  owner->transform.globalTransform.pos[2];
-		dim[0] = owner->transform.globalTransform.scale[0];
-		dim[1] = owner->transform.globalTransform.scale[1];
-		dim[2] = owner->transform.globalTransform.scale[2];
-		cube->transform.setPosition(pos[0], pos[1], pos[2]);
-		cube->transform.setScale(dim[0], dim[1], dim[2]);
+		cout << "dim: " << dim[0] << ", " << dim[1] << ", " << dim[2] << endl;
+
+		cube->transform.setPosition(pos[0] , pos[1], pos[2]);
+		cube->transform.setScale(dim[2], dim[1], dim[0]);
+
+		
 
 		//cube->draw();
 		

@@ -8,6 +8,9 @@ namespace GameObjectSpace {
 	public:
 		GameObject* owner;
 
+		Component(GameObject* owner) { Component::owner = owner; }
+		Component(){};
+
 		virtual void update()
 		{
 

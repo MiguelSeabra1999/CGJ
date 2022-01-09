@@ -8,13 +8,11 @@ Orange::Orange(float mapSize)
 {
 	//GameObject::GameObject();
 
-	rigidbody = new RigidBody(&transform);
+	rigidbody = new RigidBody(&transform, this);
 	AddComponent(rigidbody);
 	moveInRandomDirection();
 
 	bounds = mapSize / 2;
-
-	
 
 }
 void Orange::start()
@@ -77,7 +75,7 @@ void Orange::goToRandomPos()
 
 void Orange::moveInRandomDirection()
 {
-
+	
 	float angle = randomRange(0, 360);
 	GameObject::transform.globalTransform.setRotation(0, 0, 0);
 	GameObject::transform.globalTransform.rotate(0,angle,0);

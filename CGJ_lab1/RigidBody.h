@@ -17,10 +17,11 @@ namespace GameObjectSpace
 		bool applyVelocity = true;
 		float mass;
 
-		RigidBody(Transform* objectTransform)
+		RigidBody(Transform* objectTransform, GameObject * owner)
 		{
 			init();
 			transform = objectTransform;
+			Component::Component(owner);
 
 		}
 

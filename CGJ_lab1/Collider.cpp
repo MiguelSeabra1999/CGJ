@@ -115,7 +115,7 @@ using namespace std;
 		cout << "dim: " << dim[0] << ", " << dim[1] << ", " << dim[2] << endl;
 
 		cube->transform.setPosition(pos[0] , pos[1], pos[2]);
-		cube->transform.setScale(dim[2], dim[1], dim[0]);
+		cube->transform.setScale(dim[0], dim[1], dim[2]);
 
 		
 

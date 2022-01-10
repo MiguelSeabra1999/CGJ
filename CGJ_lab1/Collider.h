@@ -26,7 +26,7 @@ namespace GameObjectSpace
 
 		virtual void update();
 		virtual void init();
-		virtual bool checkCollision(Collider* other, Collision* Collision);
+		virtual bool checkCollision(Collider* other, Collision** Collision);
 		virtual ColliderType getColliderType();
 
 		//Returns if there is any collision, adds collisions to list, start is 0 to check all colliders
@@ -49,10 +49,11 @@ namespace GameObjectSpace
 		
 		AABB(GameObject * owner);
 		void setDim(float x, float y, float z);
-		bool checkCollisionAABB(AABB* other, Collision* Collision);
-		bool checkCollision(Collider* other, Collision* Collision);
+		bool checkCollisionAABB(AABB* other, Collision** Collision);
+		bool checkCollision(Collider* other, Collision** Collision);
 		ColliderType getColliderType();
 		void update();
+		void CalcPenetration(AABB* other, float* penetration);
 		//void resolveCollisionAABB(AABB* other);
 		
 

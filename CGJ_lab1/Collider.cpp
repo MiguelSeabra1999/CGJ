@@ -1,5 +1,6 @@
 #include "Collider.h"
 #include "CubeObj.h"
+#include "PhysicsEngine.h"
 using namespace GameObjectSpace;
 using namespace std;
 
@@ -26,9 +27,9 @@ using namespace std;
 			//cube->transform.setParent(& (owner->transform));
 			//cube->initDraw(owner->shaderIndex);
 		}
-		bool Collider::checkCollision(Collider* other, Collision* Collision)
+		bool Collider::checkCollision(Collider* other, Collision** Collision)
 		{
-			//cout << "abstract Check";
+			cout << "warning, Collision checked on a collider, Collision should be checked on types such as AABB";
 			return false;
 		}
 		ColliderType Collider::getColliderType()
@@ -122,7 +123,7 @@ using namespace std;
 		//cube->draw();
 		
 	}
-	bool AABB::checkCollisionAABB(AABB* other, Collision* Collision)
+	bool AABB::checkCollisionAABB(AABB* other, Collision** collision)
 	{
 
 
@@ -133,11 +134,52 @@ using namespace std;
 			pos[2] < other->pos[2] + other->dim[2] &&
 			pos[2] + dim[2] > other->pos[2])
 		{
+			float penetration[3];
+			CalcPenetration(other, penetration);
+			*collision =  new Collision(this,other,penetration);
+		
 			return true;
 		}
 		return false;
 	}
-	bool AABB::checkCollision(Collider* other, Collision* Collision)
+	void AABB::CalcPenetration(AABB* other,float* penetration)
+	{
+		//r <- possible direction to move the AABB in order to stop penetration
+		float r1, r2;
+		penetration[0] = penetration[1] = penetration[2] = 0;
+		//ps: im not using a for loop here because it might be slower depending on the compiler. Because o jump instructions
+		//but every if statement is the same expect for constant index
+		if (pos[0] < other->pos[0] + other->dim[0] && pos[0] + dim[0] > other->pos[0])
+		{
+			r1 = pos[0] - other->pos[0] + other->dim[0];
+			r2 = pos[0] + dim[0] - other->pos[0];
+			if(abs(r1) > abs(r2))
+				penetration[0] = r2;
+			else
+				penetration[0] = r1;
+		}
+		/** /
+		if(	pos[1] < other->pos[1] + other->dim[1] && pos[1] + dim[1] > other->pos[1])
+		{
+			r1 = pos[1] < other->pos[1] + other->dim[1];
+			r2 = pos[1] + dim[1] - other->pos[1];
+			if (abs(r1) > abs(r2))
+				penetration[1] = r2;
+			else
+				penetration[1] = r1;
+		}
+		/**/
+		if(	pos[2] < other->pos[2] + other->dim[2] && pos[2] + dim[2] > other->pos[2])
+		{
+			r1 = pos[2] - other->pos[2] + other->dim[2];
+			r2 = pos[2] + dim[2] - other->pos[2];
+			if (abs(r1) > abs(r2))
+				penetration[2] = r2;
+			else
+				penetration[2] = r1;
+		}
+	}
+	bool AABB::checkCollision(Collider* other, Collision** Collision)
 	{
 		//cout << "Check";
 		if (other->getColliderType() == ColliderType::AABB)

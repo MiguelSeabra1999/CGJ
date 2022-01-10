@@ -31,6 +31,10 @@ namespace GameObjectSpace
 			pos[1] += y;
 			pos[2] += z;
 		}
+		void translate(float* pos)
+		{
+			translate(pos[0], pos[1], pos[2]);
+		}
 		void setRotation(float x, float y, float z)
 		{
 			rot[0] = x;

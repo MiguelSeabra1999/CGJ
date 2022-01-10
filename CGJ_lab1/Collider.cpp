@@ -146,9 +146,13 @@ using namespace std;
 		inZ = CheckInBound(pos[2], dim[2]/2, other->pos[2], other->dim[2]/2);
 
 
-
 		if (inX && inY && inZ)
+		{
+			float penetration[3];
+			CalcPenetration(other, penetration);
+			*collision = new Collision(this, other, penetration);
 			return true;
+		}
 		return false;
 	}
 

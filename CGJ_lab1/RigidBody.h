@@ -2,10 +2,11 @@
 #include "AVTmathLib.h"
 #include "Transform.h"
 #include "ComponentLib.h"
-//#include "ComponentLib.h"
+#include "Collider.h"
+
 namespace GameObjectSpace
 {
-	
+	class Collider;
 	class RigidBody : public Component
 	{
 	public:
@@ -16,10 +17,12 @@ namespace GameObjectSpace
 		float allForces[3];
 		Transform* transform;
 		bool applyVelocity = true;
-		float mass;
+		float mass = 1;
+		float inverseMass = 1;
 		static vector<RigidBody*> allRigidBodies;
+		Collider* collider;
 
-		RigidBody(Transform* objectTransform, GameObject* owner);
+		RigidBody(GameObject* owner);
 		void init();
 
 		void update();
@@ -46,5 +49,8 @@ namespace GameObjectSpace
 		void addForce(float* force, float scalingFactor);
 		void addForce(float x, float y, float z);
 		void setAllForcesZero();
+		const char* GetType();
+		void setMass(float new_mass);
+		
 	};
 }

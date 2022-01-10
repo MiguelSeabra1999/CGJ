@@ -60,12 +60,15 @@ namespace GameObjectSpace
 
 			Collider* col;
 			AABB* aabb;
+			RigidBody* rb;
 			//##############################  Car  ###############################################
 			PlayerCar* playerCar = new PlayerCar();
 			playerCar->transform.setScale(.2, .2, .2);
 			playerCar->transform.setPosition(0, .1, 0);
 			aabb = new AABB(playerCar);
 			playerCar->AddComponent(aabb);
+			rb = new RigidBody(playerCar);
+			playerCar->AddComponent(rb);
 			player = playerCar;
 			gameObjects.push_back((GameObject*)playerCar);
 			gameObjects.push_back((GameObject*)aabb->cube);
@@ -162,7 +165,7 @@ namespace GameObjectSpace
 			//butter
 			cube = new Cube();
 			cube->transform.setScale(1, 1, 3);
-			cube->transform.setPosition(0, 0, 0);
+			cube->transform.setPosition(2, 0, 2);
 			cube->setColor(0.0f, 0.3f, 1.0f, 1.0f);
 			aabb = new AABB(cube);
 			cube->AddComponent(aabb);

@@ -34,7 +34,15 @@ float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
 /// The normal matrix
 float mNormal3x3[9];
 
-
+float  sign(float n)
+{
+	if (n > 0)
+		return 1;
+	if (n < 0)
+		return -1;
+	else
+		return 0;
+}
 int randomRange(int minInclusive, int maxExclusive)
 {
 	int random = minInclusive + rand() % (maxExclusive - minInclusive);

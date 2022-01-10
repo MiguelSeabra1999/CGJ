@@ -50,7 +50,7 @@
 		void addVectors(float* result, float* a, float* b, int size);
 
 		void multVectorConstant(float* result, float* a, float b);
-
+		float sign(float n);
 		/** Similar to glTranslate*. 
 		  *
 		  * \param aType any value from MatrixTypes

@@ -59,8 +59,20 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 {
 	float r1[3], r2[3];
 	
-	multVectorConstant(r1, collision->penetrationVector, 0.5f );//when implementing mass this value needs to be the weighted mass average of the object
-	multVectorConstant(r2, collision->penetrationVector, -0.5f);
+	float w1 = 0, w2 = 0;//inverse masses
+
+	if(collision->collider1->rigidbody != nullptr)
+	{
+		w1 = collision->collider1->rigidbody->inverseMass;
+	}
+	if (collision->collider2->rigidbody != nullptr)
+	{
+		w2 = collision->collider2->rigidbody->inverseMass;
+	}
+	if (w1 == 0 && w2 == 0)
+		return;
+	multVectorConstant(r1, collision->penetrationVector, w1/(w1+w2));//when implementing mass this value needs to be the weighted mass average of the object
+	multVectorConstant(r2, collision->penetrationVector, -1*w2/(w1 + w2));
 	collision->collider1->owner->transform.globalTransform.translate(r1);
 	collision->collider2->owner->transform.globalTransform.translate(r2);
 	

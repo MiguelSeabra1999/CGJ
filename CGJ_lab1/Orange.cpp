@@ -8,7 +8,7 @@ Orange::Orange(float mapSize)
 {
 	//GameObject::GameObject();
 
-	rigidbody = new RigidBody(&transform, this);
+	rigidbody = new RigidBody(this);
 	AddComponent(rigidbody);
 	moveInRandomDirection();
 

@@ -2,7 +2,7 @@
 
 #include "AVTmathLib.h"
 #include "ComponentLib.h"
-
+#include "RigidBody.h"
 
 namespace GameObjectSpace
 {
@@ -14,13 +14,14 @@ namespace GameObjectSpace
 
 	class AABB;
 	class Collision;
+	class RigidBody;
 
 	class Collider :public Component
 	{
 
 	public:
 		GameObject* cube;
-		float inverseMass = 0;
+		RigidBody* rigidbody;
 		static vector<Collider*> allColliders;
 		Collider(GameObject * owner);
 
@@ -37,7 +38,7 @@ namespace GameObjectSpace
 		void checkAllCollisions();
 		/**/
 		//void correctPossition(float x, float y, float z);
-		
+		const char* GetType();
 
 	};
 
@@ -46,6 +47,7 @@ namespace GameObjectSpace
 	public:
 		float pos[3]; //the corner that has the largest X and lowest Z and Y
 		float dim[3];
+		
 		
 		AABB(GameObject * owner);
 		void setDim(float x, float y, float z);

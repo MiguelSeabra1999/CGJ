@@ -48,6 +48,7 @@ namespace GameObjectSpace {
 		int textureId = -1;
 
 		GameObject();
+		Component* GetComponent(const char* type);
 		static int initTexture(const char* textureName);
 		virtual void update();
 		virtual void start();

@@ -1,6 +1,7 @@
 #include "Collider.h"
 #include "CubeObj.h"
 #include "PhysicsEngine.h"
+#include "AVTmathLib.h"
 using namespace GameObjectSpace;
 using namespace std;
 
@@ -10,17 +11,24 @@ using namespace std;
 
 			cube = (GameObject*) new Cube();
 			cube->setColor(1.0f, 1.0f, 1.0f, 0.2f);
-			
-			
-		
 			Collider::allColliders.push_back(this);
 
+			rigidbody = (RigidBody*)owner->GetComponent("RigidBody");
+			if(rigidbody != nullptr)
+			{
+				rigidbody->collider = this;
+			}
 
 		}
 		void Collider::update()
 		{
 
 		}
+		const char* Collider::GetType()
+		{
+			return "Collider";
+		}
+
 		void Collider::init()
 		{
 
@@ -173,38 +181,67 @@ using namespace std;
 	{
 		//r <- possible direction to move the AABB in order to stop penetration
 		float r1, r2;
+		float x = 0, y = 0, z = 0;
+		float minValue = 0;
 		penetration[0] = penetration[1] = penetration[2] = 0;
 		//ps: im not using a for loop here because it might be slower depending on the compiler. Because o jump instructions
 		//but every if statement is the same expect for constant index
-		if (pos[0] < other->pos[0] + other->dim[0] && pos[0] + dim[0] > other->pos[0])
+		if (CheckInBound(pos[0], dim[0] / 2, other->pos[0], other->dim[0] / 2))
 		{
-			r1 = pos[0] - other->pos[0] + other->dim[0];
-			r2 = pos[0] + dim[0] - other->pos[0];
+			r1 =  (other->pos[0] + other->dim[0] / 2) - (pos[0] - dim[0] / 2);
+			r2 =  (other->pos[0] - other->dim[0] / 2) - (pos[0] + dim[0] / 2);
 			if(abs(r1) > abs(r2))
 				penetration[0] = r2;
 			else
 				penetration[0] = r1;
+			minValue = abs(penetration[0]);
+			
 		}
-		/** /
-		if(	pos[1] < other->pos[1] + other->dim[1] && pos[1] + dim[1] > other->pos[1])
+		/**/
+		if(CheckInBound(pos[1], dim[1] / 2, other->pos[1], other->dim[1] / 2))
 		{
-			r1 = pos[1] < other->pos[1] + other->dim[1];
-			r2 = pos[1] + dim[1] - other->pos[1];
+			r1 = (other->pos[1] + other->dim[1] / 2) - (pos[1] - dim[1] / 2);
+			r2 = (other->pos[1] - other->dim[1] / 2) - (pos[1] + dim[1] / 2);
 			if (abs(r1) > abs(r2))
 				penetration[1] = r2;
 			else
 				penetration[1] = r1;
+			if(minValue == 0 || abs(penetration[1]) < minValue)
+				minValue = abs(penetration[1]);
+	
 		}
 		/**/
-		if(	pos[2] < other->pos[2] + other->dim[2] && pos[2] + dim[2] > other->pos[2])
+		if(CheckInBound(pos[2], dim[2] / 2, other->pos[2], other->dim[2] / 2))
 		{
-			r1 = pos[2] - other->pos[2] + other->dim[2];
-			r2 = pos[2] + dim[2] - other->pos[2];
+			r1 = (other->pos[2] + other->dim[2] / 2) - (pos[2] - dim[2] / 2);
+			r2 = (other->pos[2] - other->dim[2] / 2) - (pos[2] + dim[2] / 2);
 			if (abs(r1) > abs(r2))
 				penetration[2] = r2;
 			else
 				penetration[2] = r1;
+			if (minValue == 0 || abs(penetration[2]) < minValue)
+				minValue = abs(penetration[2]);
 		}
+		/**/
+		//cout << endl << "ogLine: " << penetration[0] << "," << penetration[1] << "," << penetration[2] << endl;
+		if (abs(penetration[0]) != minValue)
+			penetration[0] = 0;
+		if (abs(penetration[1]) != minValue)
+			penetration[1] = 0;
+		if (abs(penetration[2]) != minValue)
+			penetration[2] = 0;
+		/** /
+		if (penetration[0] != 0)
+			penetration[0] += sign(penetration[0]) * 0.1f;
+		if (penetration[1] != 0)
+			penetration[1] += sign(penetration[1]) * 0.01f;
+		if (penetration[2] != 0)
+			penetration[2] += sign(penetration[2]) * 0.01f;
+		/**/
+		cout << endl << "newLine: " << penetration[0] << "," << penetration[1] << "," << penetration[2] << endl;
+
+
+	
 	}
 	bool AABB::checkCollision(Collider* other, Collision** Collision)
 	{

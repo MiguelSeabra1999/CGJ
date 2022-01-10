@@ -4,11 +4,17 @@
 //#include "ComponentLib.h"
 using namespace GameObjectSpace;
 vector<RigidBody*> RigidBody::allRigidBodies;
-RigidBody::RigidBody(Transform* objectTransform, GameObject* owner) :Component(owner)
+RigidBody::RigidBody(GameObject* owner) :Component(owner)
 {
+	transform = &(owner->transform);
 	init();
-	transform = objectTransform;
 	RigidBody::allRigidBodies.push_back(this);
+
+	collider = (Collider*)owner->GetComponent("Collider");
+	if (collider != nullptr)
+	{
+		collider->rigidbody = this;
+	}
 }
 void RigidBody::init()
 {
@@ -28,6 +34,11 @@ void RigidBody::update()
 		addVectors(transform->globalTransform.pos, transform->globalTransform.pos, velocity, 3);
 		addVectors(transform->globalTransform.rot, transform->globalTransform.rot, angularVelocity, 3);
 	}/**/
+}
+
+const char* RigidBody::GetType()
+{
+	return "RigidBody";
 }
 
 void RigidBody::setVelocity(float x, float y, float z)
@@ -147,4 +158,10 @@ void RigidBody::setAllForcesZero()
 	allForces[0] = 0;
 	allForces[1] = 0;
 	allForces[2] = 0;
+}
+void RigidBody::setMass(float new_mass)
+{
+	inverseMass = 1 / new_mass;
+	mass = new_mass;
+
 }

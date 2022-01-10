@@ -21,7 +21,16 @@ GameObject::GameObject()
 
 
 }
-
+Component* GameObject::GetComponent(const char* type)
+{
+	int n = components.size();
+	for(int i = 0; i < n; i++)
+	{
+		if (components[i]->GetType() == type)
+			return components[i];
+	}
+	return nullptr;
+}
 
 int GameObject::initTexture(const char* textureName)
 {

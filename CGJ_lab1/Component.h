@@ -18,6 +18,10 @@ namespace GameObjectSpace {
 		virtual void init()
 		{
 		}
+		virtual const char* GetType()
+		{
+			return "";
+		}
 	};
 
 }

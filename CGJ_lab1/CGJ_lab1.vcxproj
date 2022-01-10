@@ -162,6 +162,7 @@
     <ClCompile Include="avtFreeType.cpp" />
     <ClCompile Include="AVTmathLib.cpp" />
     <ClCompile Include="basic_geometry.cpp" />
+    <ClCompile Include="CarScene.cpp" />
     <ClCompile Include="FixedTopDownCamera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameObject.cpp" />

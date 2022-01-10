@@ -238,9 +238,9 @@ void CarScene::init(GLuint shaderIndex)
 
 	Scene::init(shaderIndex);
 
-	for (GameObject* obj : gameObjects) {
+	/** /for (GameObject* obj : gameObjects) {
 		obj->currentScene = this;
-	}
+	}/**/
 }
 
 void CarScene::changeMainCamera(unsigned char code)

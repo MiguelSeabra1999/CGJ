@@ -53,6 +53,9 @@
     <ClCompile Include="RigidBody.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="CarScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">

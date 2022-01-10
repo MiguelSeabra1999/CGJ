@@ -113,7 +113,6 @@ using namespace std;
 		pos[0] =  owner->transform.globalTransform.pos[0];
 		pos[1] =  owner->transform.globalTransform.pos[1];
 		pos[2] =  owner->transform.globalTransform.pos[2];
-		cout << "dim: " << dim[0] << ", " << dim[1] << ", " << dim[2] << endl;
 
 		cube->transform.setPosition(pos[0] , pos[1], pos[2]);
 		cube->transform.setScale(dim[0], dim[1], dim[2]);
@@ -127,7 +126,7 @@ using namespace std;
 	{
 
 
-		if (pos[0] < other->pos[0] + other->dim[0] &&
+		/** /if (pos[0] < other->pos[0] + other->dim[0] &&
 			pos[0] + dim[0] > other->pos[0] &&
 			pos[1] < other->pos[1] + other->dim[1] &&
 			pos[1] + dim[1] > other->pos[1] &&
@@ -139,8 +138,32 @@ using namespace std;
 			*collision =  new Collision(this,other,penetration);
 		
 			return true;
-		}
+		}/**/
+		bool inX, inY, inZ;
+		
+		inX = CheckInBound(pos[0], dim[0]/2, other->pos[0], other->dim[0]/2);
+		inY = CheckInBound(pos[1], dim[1]/2, other->pos[1], other->dim[1]/2);
+		inZ = CheckInBound(pos[2], dim[2]/2, other->pos[2], other->dim[2]/2);
+
+
+
+		if (inX && inY && inZ)
+			return true;
 		return false;
+	}
+
+	bool AABB::CheckInBound(float pos, float dim, float otherPos, float otherDim) {
+		if (
+			(
+				(pos + dim <= otherPos + otherDim
+					&& pos + dim >= otherPos - otherDim)
+				|| (pos - dim >= otherPos - otherDim
+					&& pos - dim <= otherPos + otherDim)
+				)
+			) return true;
+		return false;
+
+
 	}
 	void AABB::CalcPenetration(AABB* other,float* penetration)
 	{
@@ -254,4 +277,11 @@ using namespace std;
 
 	}*/
 
+
 	
+/** /Collision in x = 1, inY = 1, inZ = 1
+pos = 1.6025, 0.1, 0  dim = 0.8, 1, 0.2
+otherPos = 0, 0, 0  otherDim = 1.1, 1, 3.1
+
+
+/**/

@@ -161,11 +161,12 @@ namespace GameObjectSpace
 			gameObjects.push_back((GameObject*)cube);
 			//butter
 			cube = new Cube();
-			cube->transform.setScale(1, 1, 1);
-			cube->transform.setPosition(5, 0, 5 / 2);
+			cube->transform.setScale(1, 1, 3);
+			cube->transform.setPosition(0, 0, 0);
 			cube->setColor(0.0f, 0.3f, 1.0f, 1.0f);
 			aabb = new AABB(cube);
 			cube->AddComponent(aabb);
+			aabb->setDim(1.1, 1.1, 3.1);
 			gameObjects.push_back((GameObject*)cube);
 			gameObjects.push_back((GameObject*)aabb->cube);
 

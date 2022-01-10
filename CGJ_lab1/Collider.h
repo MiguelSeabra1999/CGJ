@@ -51,6 +51,7 @@ namespace GameObjectSpace
 		void setDim(float x, float y, float z);
 		bool checkCollisionAABB(AABB* other, Collision** Collision);
 		bool checkCollision(Collider* other, Collision** Collision);
+		bool CheckInBound(float pos, float dim, float otherPos, float otherDim);
 		ColliderType getColliderType();
 		void update();
 		void CalcPenetration(AABB* other, float* penetration);

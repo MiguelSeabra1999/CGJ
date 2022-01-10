@@ -50,6 +50,7 @@ namespace GameObjectSpace
 		AABB(GameObject * owner);
 		void setDim(float x, float y, float z);
 		bool checkCollisionAABB(AABB* other, Collision* Collision);
+		bool CheckInBound(float pos, float dim, float otherPos, float otherDim);
 		bool checkCollision(Collider* other, Collision* Collision);
 		ColliderType getColliderType();
 		void update();

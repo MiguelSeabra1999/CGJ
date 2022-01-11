@@ -10,7 +10,7 @@ namespace GameObjectSpace
 	class RigidBody : public Component
 	{
 	public:
-		float velocity[3];
+		float velocity[3] = {0};
 		float acceleration[3];
 		float angularVelocity[3];
 		float angularAcceleration[3];

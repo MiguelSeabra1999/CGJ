@@ -55,13 +55,16 @@ namespace GameObjectSpace {
 		virtual void start();
 		virtual void initDraw(GLuint myShaderProgramIndex);
 		void draw();
+		void transparentDraw();
+		void opaqueDraw();
 		void initMaterial();
 		void setColor(float r, float g, float b, float alpha);
 		void sendMaterialToShader(int i);
 		void sendLightToShader(int i);
 		void SendLightsToShader();
 		void updateSons();
-		void drawSons();
+		void drawOpaqueSons();
+		void drawTransparentSons();
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
 		void BindTexture();

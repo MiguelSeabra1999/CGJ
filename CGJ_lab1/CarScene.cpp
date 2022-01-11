@@ -22,12 +22,15 @@ void CarScene::init(GLuint shaderIndex)
 
 	Collider* col;
 	AABB* aabb;
+	RigidBody* rb;
 	//##############################  Car  ###############################################
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
 	playerCar->transform.setPosition(0, .1, 0);
 	aabb = new AABB(playerCar);
 	playerCar->AddComponent(aabb);
+	rb = new RigidBody(playerCar);
+	playerCar->AddComponent(rb);
 	player = playerCar;
 	gameObjects.push_back((GameObject*)playerCar);
 	gameObjects.push_back((GameObject*)aabb->cube);
@@ -53,10 +56,10 @@ void CarScene::init(GLuint shaderIndex)
 
 	//glass
 	cube = new Cube();
-	cube->transform.setLocalScale(1.4, .5, 1.7);
+	cube->transform.setLocalScale(1.4, .5, 1.6);
 	cube->transform.setLocalPosition(.69, .725, 0);
 	cube->transform.setParent(&(playerCar->transform));
-	cube->setColor(0.5f, 0.5f, 0.8f, 0.4f);
+	cube->setColor(0.5f, 1.0f, 1.0f, 0.6f);
 	//back
 	cube = new Cube();
 	cube->transform.setLocalScale(.8, .8, 1.7);
@@ -142,7 +145,7 @@ void CarScene::init(GLuint shaderIndex)
 	//butter
 	cube = new Cube();
 	cube->transform.setScale(1, 1, 3);
-	cube->transform.setPosition(0, 0, 0);
+	cube->transform.setPosition(0, 0, 3);
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	aabb = new AABB(cube);
 	cube->AddComponent(aabb);
@@ -197,9 +200,9 @@ void CarScene::init(GLuint shaderIndex)
 	orange->transform.setPosition(1, .5, 0);
 	orange->setColor(1, 1, 1, 0.5f);
 	aabb = new AABB(orange);
-	orange->AddComponent(aabb);
+	//orange->AddComponent(aabb);
 	gameObjects.push_back((GameObject*)orange);
-	gameObjects.push_back((GameObject*)aabb->cube);
+	//gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(1, 1, 1);
 
 

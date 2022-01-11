@@ -87,7 +87,27 @@ void GameObject::updateSons()
 
 	}
 }
-void GameObject::drawSons()
+void GameObject::drawTransparentSons()
+{
+	
+	int n_sons = transform.sons.size();
+	for (int i = 0; i < n_sons; i++)
+	{
+		
+		glDepthMask(GL_FALSE);
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		if (sonObject->diff[3] < 1)
+		{
+			
+			sonObject->SendLightsToShader();
+			//sonObject->update();
+			sonObject->transparentDraw();
+		}
+		glDepthMask(GL_TRUE);
+	}
+}
+void GameObject::drawOpaqueSons()
 {
 	int n_sons = transform.sons.size();
 	
@@ -100,23 +120,12 @@ void GameObject::drawSons()
 		{
 			sonObject->SendLightsToShader();
 			//sonObject->update();
-			sonObject->draw();
+			sonObject->opaqueDraw();
 		}
 	}
-	glDepthMask(GL_FALSE);
-	for (int i = 0; i < n_sons; i++)
-	{
+	//glDepthMask(GL_FALSE);
 
-		Transform* sonTransform = transform.sons.at(i);
-		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
-		if (sonObject->diff[3] < 1)
-		{
-			sonObject->SendLightsToShader();
-			//sonObject->update();
-			sonObject->draw();
-		}
-	}
-	glDepthMask(GL_TRUE);
+	//glDepthMask(GL_TRUE);
 
 }
 void GameObject::startAndInitDrawSons()
@@ -144,6 +153,19 @@ void GameObject::initDraw(GLuint myShaderProgramIndex)
 	{
 		components[i]->init();
 	}
+}
+
+void GameObject:: opaqueDraw()
+{
+	if (diff[3] >= 1)
+		draw();
+	drawOpaqueSons();
+}
+void GameObject::transparentDraw()
+{
+	
+	draw();
+	drawTransparentSons();
 }
 void GameObject::draw()
 {
@@ -240,7 +262,7 @@ void GameObject::draw()
 	}
 	popMatrix(MODEL);
 	
-	drawSons();
+	//drawSons();
 
 }
 

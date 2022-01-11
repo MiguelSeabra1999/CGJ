@@ -105,6 +105,7 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 	float dot;
 	if (collision->collider1->rigidbody != nullptr)
 	{
+
 		normalize(r1, r1, 3);
 		dot = dotProduct(r1, collision->collider1->rigidbody->velocity, 3);
 		multVectorConstant(r1, r1, -1*dot);
@@ -112,10 +113,11 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 	}
 	if (collision->collider2->rigidbody != nullptr)
 	{
+
 		normalize(r2, r2, 3);
 		dot = dotProduct(r2, collision->collider2->rigidbody->velocity, 3);
 		multVectorConstant(r2, r2, -1*dot);
-		collision->collider1->rigidbody->addImpulse(r2,restituition*2);
+		collision->collider2->rigidbody->addImpulse(r2,restituition*2);
 		
 	}
 	

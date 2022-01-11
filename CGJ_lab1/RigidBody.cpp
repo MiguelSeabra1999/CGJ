@@ -23,6 +23,7 @@ void RigidBody::init()
 	setAngularVelocity(0, 0, 0);
 	setAcceleration(0, 0, 0);
 	setAngularAcceleration(0, 0, 0);
+	setAllForcesZero();
 }
 
 void RigidBody::update()

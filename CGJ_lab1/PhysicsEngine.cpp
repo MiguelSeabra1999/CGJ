@@ -25,13 +25,15 @@ void PhysicsEngine::CheckCollisions(vector<Collision*>* collisions)
 	{
 		for (int j = i + 1; j < n; j++)
 		{
+			if (Collider::allColliders[j]->rigidbody == nullptr && Collider::allColliders[j]->rigidbody == nullptr)
+				continue;
 			Collision* col = nullptr;
 			if (Collider::allColliders[i]->checkCollision(Collider::allColliders[j], &col))
 			{
 				collisions->push_back(col);
 				Collider::allColliders[i]->owner->OnCollisionEnter();
 				Collider::allColliders[j]->owner->OnCollisionEnter();
-				cout << "Collision";
+		
 			}
 		}
 	}

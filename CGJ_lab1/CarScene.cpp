@@ -199,7 +199,7 @@ void CarScene::init(GLuint shaderIndex)
 	Orange* orange = new Orange(mapSize);
 	orange->transform.setPosition(1, .5, 0);
 	orange->setColor(1, 1, 1, 0.5f);
-	aabb = new AABB(orange);
+	//aabb = new AABB(orange);
 	//orange->AddComponent(aabb);
 	gameObjects.push_back((GameObject*)orange);
 	//gameObjects.push_back((GameObject*)aabb->cube);

@@ -64,6 +64,7 @@ namespace GameObjectSpace {
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
 		void BindTexture();
+		virtual void OnCollisionEnter(){}
 
 	protected:
 		vector<struct MyMesh> myMeshes;

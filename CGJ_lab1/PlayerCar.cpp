@@ -21,55 +21,20 @@ using namespace GameObjectSpace;
 	void PlayerCar::start()
 	{
 		GameObject::start();
+		rigidbody = (RigidBody*)GetComponent("RigidBody");
 	}
 	void PlayerCar::update()
 	{
+
+
+			
+		if (velocity > 0)
+			GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed  * 100, 0);
+		else
+			GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed  * 100, 0);
 		
-
-
-		velocity += acceleration;
-		if (acceleration == 0)
-		{
-			if (velocity > 0)
-			{
-				velocity -= friction;
-				if (velocity < 0)
-					velocity = 0;
-			}
-			else if (velocity < 0)
-			{
-				velocity += friction;
-				if (velocity > 0)
-					velocity = 0;
-			}
-		}
-
-		if (velocity > maxSpeed)
-			velocity = maxSpeed;
-		if (velocity < -maxSpeed)
-			velocity = -maxSpeed;
-
-
-		GameObject::transform.globalTransform.translate(-1 * transform.globalTransform.right[0] * velocity, 0, -1 * transform.globalTransform.right[2] * velocity);
-		//cout <<   "" << -1 * transform.globalTransform.right[0] * velocity << "," << 0 <<  "," << -1 * transform.globalTransform.right[2] * velocity << " \n";
-		//GameObject::transform.globalTransform.translate(inputDir[0]*speed, 0, 0);
-		if(velocity != 0)
-		{
-			float speedPercent = velocity / maxSpeed;
-			float turnMod;
-			if(speedPercent > 0.3)
-				turnMod = (1 - speedPercent) * turnSpeedVelocityMod;
-			else
-				turnMod = speedPercent * turnSpeedVelocityMod;
-			//speedPercent = max(0.1f,speedPercent);
-			
-
-			
-			if (velocity > 0)
-				GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed * turnMod * 100, 0);
-			else
-				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed * turnMod * 100, 0);
-		}
+		//rigidbody->addForce(-1 * transform.globalTransform.right[0] * velocity, 0, -1 * transform.globalTransform.right[2] * velocity);
+		rigidbody->addForce(-1 * transform.globalTransform.right[0] * acceleration, 0, -1 * transform.globalTransform.right[2] * acceleration);
 		GameObject::update();
 	}
 
@@ -116,5 +81,10 @@ using namespace GameObjectSpace;
 			inputDir[1] -= 1;
 		else
 			inputDir[1] += 1;
+	}
+
+	void PlayerCar::OnCollisionEnter()
+	{
+		velocity = 0;
 	}
 	

@@ -19,6 +19,7 @@ namespace GameObjectSpace
 		bool applyVelocity = true;
 		float mass = 1;
 		float inverseMass = 1;
+		float damping = 0.05f;
 		static vector<RigidBody*> allRigidBodies;
 		Collider* collider;
 
@@ -48,7 +49,11 @@ namespace GameObjectSpace
 		void addForce(float* force);
 		void addForce(float* force, float scalingFactor);
 		void addForce(float x, float y, float z);
+		void addImpulse(float* force);
+		void addImpulse(float* force, float scalingFactor);
+		void addImpulse(float x, float y, float z);
 		void setAllForcesZero();
+		void setVelocitiesZero();
 		const char* GetType();
 		void setMass(float new_mass);
 		

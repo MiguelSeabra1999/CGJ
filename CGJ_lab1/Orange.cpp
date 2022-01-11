@@ -59,6 +59,7 @@ void Orange::respawn()
 	initDraw(shaderProgramIndex);
 	goToRandomPos();
 	moveInRandomDirection();
+	rigidbody->setVelocitiesZero();
 
 }
 void Orange::initDraw(GLuint myShaderProgramIndex)

@@ -1,4 +1,5 @@
 #include"Scene.h"
+#include "Texture_Loader.h"
 namespace GameObjectSpace
 {
 	class CarScene : public Scene
@@ -56,7 +57,7 @@ namespace GameObjectSpace
 		{
 		
 			loadTextures();
-
+			LoadMap();
 
 			Collider* col;
 			AABB* aabb;
@@ -283,6 +284,35 @@ namespace GameObjectSpace
 				currentCam = cameras[1];
 
 			}
+		}
+
+		void LoadMap()
+		{
+			GLuint* textureArray;
+			Texture2D_Loader(textureArray, "map.png", 0)
+			/** /
+			ILuint ImgId = 0;
+			ilGenImages(1, &ImgId);
+			ilBindImage(ImgId);
+			ilLoadImage("map.png");
+			ILint width = ilGetInteger(IL_IMAGE_WIDTH);
+			ILint height = ilGetInteger(IL_IMAGE_HEIGHT);
+			BYTE* pixmap = new BYTE[width * height * 3];
+			ilCopyPixels(0, 0, 0, width, height, 1, IL_PNG,
+				IL_BYTE, pixmap);
+
+			for(int h = 0; h < height; h++)
+			{
+				for(int w = 0; w < width; w++)
+				{
+					
+					cout << (int)pixmap[(height * width + width) * 3 ] << ", ";
+				}
+				cout << endl;
+			}
+			ilBindImage(0);
+			ilDeleteImage(ImgId);
+			/**/
 		}
 	};
 }

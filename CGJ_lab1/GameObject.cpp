@@ -45,6 +45,7 @@ int GameObject::initTexture(const char* textureName)
 	
 }
 
+
 void GameObject::BindTexture()
 {
 	//cout << textureId << endl;

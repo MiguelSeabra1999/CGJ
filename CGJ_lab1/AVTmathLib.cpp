@@ -133,7 +133,29 @@ void addVectors(float* result, float* a, float* b, int size)
 		result[i] = a[i] + b[i];
 	}
 }
+float dotProduct(float* a, float* b, int size)
+{
+	float sum = 0;
+	for(int i = 0; i < size; i++)
+	{
+		sum += a[i] * b[i];
+	}
+	return sum;
+}
+void normalize(float* result, float* v, int size)
+{
+	float sum = 0;
+	for (int i = 0; i < size; i++)
+	{
+		sum += v[i]*v[i];
+	}
+	float squareSum = sqrt(sum);
+	for (int i = 0; i < size; i++)
+	{
+		result[i] = v[i] / squareSum;
+	}
 
+}
 
 
 void multMatixByVector(float* result, float* mat,  float* vec)

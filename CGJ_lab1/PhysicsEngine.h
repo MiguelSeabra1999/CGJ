@@ -45,6 +45,8 @@ namespace GameObjectSpace
 
 		void SolveCollision(Collision* collision);
 
+		void UpdateVelocities();
+
 	//private:
 		//static PhysicsEngine* instance;
 	};

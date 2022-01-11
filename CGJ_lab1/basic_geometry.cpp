@@ -11,6 +11,7 @@ Basic Revolution Geometry
 #include <stdlib.h>
 #include <vector>
 
+
 // include GLEW to access OpenGL 3.3 functions
 #include <GL/glew.h>
 
@@ -20,6 +21,8 @@ Basic Revolution Geometry
 #include "VertexAttrDef.h"
 #include "geometry.h"
 #include "cube.h"
+#include <iostream>
+
 
 
 GLuint VboId[2];
@@ -66,6 +69,62 @@ MyMesh createQuad(float size_x, float size_y) {
 	amesh.type = GL_TRIANGLES;
 	return(amesh);
 }
+
+
+MyMesh createCube(float size_x, float size_y) {
+
+	MyMesh amesh;
+	amesh.numIndexes = faceCount * 3;
+
+	float vert[16 * 6];
+
+	memcpy(vert, vertices, 16 * 6 * sizeof(float));
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 6; j++) {
+			if ((i*6 +j) % 4 == 0.0f) {
+				vert[(i * 6) + j] *= size_x;
+			}
+			if (((i*6+ j) % 4) == 2.0f) {
+				vert[(i * 6) + j] *= size_y;
+			}
+		}
+	}
+
+	glGenVertexArrays(1, &(amesh.vao));
+	glBindVertexArray(amesh.vao);
+
+	glGenBuffers(2, VboId);
+	glBindBuffer(GL_ARRAY_BUFFER, VboId[0]);
+
+	//contactenra verticces normals + texCoords + tangents
+	float* allData = new float[sizeof(vertices) + sizeof(normals) + sizeof(texCoords) + sizeof(tangents)];
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(texCoords) + sizeof(tangents), allData, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vert);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices), sizeof(normals), normals);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals), sizeof(texCoords), texCoords);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertices) + sizeof(normals) + sizeof(texCoords), sizeof(tangents), tangents);
+
+	glEnableVertexAttribArray(VERTEX_COORD_ATTRIB);
+	glVertexAttribPointer(VERTEX_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, 0);
+	glEnableVertexAttribArray(NORMAL_ATTRIB);
+	glVertexAttribPointer(NORMAL_ATTRIB, 4, GL_FLOAT, 0, 0, (void*)sizeof(vertices));
+	glEnableVertexAttribArray(TEXTURE_COORD_ATTRIB);
+	glVertexAttribPointer(TEXTURE_COORD_ATTRIB, 4, GL_FLOAT, 0, 0, (void*)(sizeof(vertices) + sizeof(normals)));
+	glEnableVertexAttribArray(TANGENT_ATTRIB);
+	glVertexAttribPointer(TANGENT_ATTRIB, 4, GL_FLOAT, 0, 0, (void*)(sizeof(vertices) + sizeof(normals) + sizeof(texCoords)));
+
+	//index buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VboId[1]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * amesh.numIndexes, faceIndex, GL_STATIC_DRAW);
+
+	// unbind the VAO
+	glBindVertexArray(0);
+
+	amesh.type = GL_TRIANGLES;
+	return(amesh);
+}
+
 
 MyMesh createCube() {
 

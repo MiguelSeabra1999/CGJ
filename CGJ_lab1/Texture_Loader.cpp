@@ -33,6 +33,7 @@ void Texture2D_Loader(unsigned int *textureArray, const char *strFileName, int I
 	ilConvertImage(GL_RGBA, GL_UNSIGNED_BYTE);  //Image converted to GL_RGBA  of type unsigned byte
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
+	glGenerateMipmap(GL_TEXTURE_2D);
 	ilDeleteImages(1, &ImageId);
 	ilDisable(IL_ORIGIN_SET);
 }

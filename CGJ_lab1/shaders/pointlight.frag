@@ -34,7 +34,10 @@ uniform vec4 fogColor;
 
 uniform Materials mat;
 uniform sampler2D texmap;
+uniform sampler2D texmap1;
 uniform bool useTexture;
+uniform bool useTexture2;
+
 
 in Data {
 	vec3 normal;
@@ -61,13 +64,19 @@ vec4 blinnPhong(Light source, vec3 normal, vec3 lightDir, vec3 eye)
 	
 	
 	vec4 texel; 
+	vec4 texel1;
+
 	if(useTexture)
 		texel = texture(texmap, DataIn.tex_coord);
 	else
 		texel = vec4(1.0);
 
-	return max(intensity * source.color * mat.diffuse + spec,0) * texel;
-	//return max(intensity * source.color * mat.diffuse * texel + spec,0.07 * texel);
+	if(useTexture)
+		texel1 = texture(texmap1, DataIn.tex_coord);
+	else
+		texel1 = vec4(1.0);
+
+	return max(intensity * source.color * mat.diffuse + spec,0) * texel * texel1;
 }
 
 float CalcAttenuation(Light source,float distance)

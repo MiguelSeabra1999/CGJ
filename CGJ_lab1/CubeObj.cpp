@@ -21,7 +21,13 @@ void Cube::initDraw(GLuint myShaderProgramIndex)
 {
 	GameObject::initDraw(myShaderProgramIndex);
 	MyMesh amesh;
-	amesh = createCube();
+	if(!resizable)
+		amesh = createCube();
+	else {
+		//transform.setScale(1.0f, 1.0f, 1.0f);
+		amesh = createCube(size_x, size_y);
+	}
+
 	GameObject::initMaterial();
 	amesh.mat = *material;
 	myMeshes.push_back(amesh);

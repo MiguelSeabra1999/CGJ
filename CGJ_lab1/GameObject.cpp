@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Texture_Loader.h"
+#include "Scene.h"
 using namespace GameObjectSpace;
 
 vector<Light*> GameObject::lights;
@@ -13,12 +14,8 @@ GameObject::GameObject()
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	material = new Material;
-
 	transform.initZero();
 	transform.setOwner(this);
-
-
-
 
 }
 Component* GameObject::GetComponent(const char* type)
@@ -34,22 +31,28 @@ Component* GameObject::GetComponent(const char* type)
 
 int GameObject::initTexture(const char* textureName)
 {
-	 GLuint* id = new GLuint;
+	GLuint* id = new GLuint;
 	glGenTextures(1, id);
-	
 	Texture2D_Loader(id, textureName, 0);
 	GameObject::textureIds.push_back(id);
-	
 	return GameObject::textureIds.size()-1;
-	
-	
 }
 
 void GameObject::BindTexture()
 {
-	//cout << textureId << endl;
-	//glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[textureId]));
+	if (textureId != -1) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[textureId]));
+		if (secondTextureId != -1) {
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[secondTextureId]));
+		}
+	}
+	else {
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+
 }
 
 void GameObject::update()
@@ -147,19 +150,36 @@ void GameObject::draw()
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
 	useTexture_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture");
+	useTexture_two_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture2");
+	tex_loc = glGetUniformLocation(shaderProgramIndex, "texmap");
+	tex_loc1 = glGetUniformLocation(shaderProgramIndex, "texmap1");
 
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
 
-	if(textureId == -1)
+	if (textureId == -1) {
+		glUniform1i(tex_loc, 0);
 		glUniform1i(useTexture_uniformId,  false);
-	else
+	}
+	else {
+		glUniform1i(tex_loc, 0);
 		glUniform1i(useTexture_uniformId,  true);
+	}
+
+	if (secondTextureId == -1) {
+		glUniform1i(tex_loc1, 0);
+		glUniform1i(useTexture_two_uniformId, false);
+	}
+	else {
+		glUniform1i(tex_loc1, 1);
+		glUniform1i(useTexture_two_uniformId, true);
+	}
 	
+
 	int n_sons = transform.sons.size();
 	
 
-	
+
 	if (textureId != -1)
 		BindTexture();
 
@@ -234,10 +254,19 @@ void GameObject::SendLightsToShader()
 
 void GameObject::initMaterial()
 {
+
 	memcpy(material->diffuse, diff, 4 * sizeof(float));
 	memcpy(material->specular, spec, 4 * sizeof(float));
 	memcpy(material->emissive, emissive, 4 * sizeof(float));
 	material->shininess = shininess;
+
+	int sizeMeshes = myMeshes.size();
+	for (int i = 0; i < sizeMeshes; i++) {
+		memcpy(myMeshes[i].mat.diffuse, diff, 4 * sizeof(float));
+		memcpy(myMeshes[i].mat.specular, spec, 4 * sizeof(float));
+		memcpy(myMeshes[i].mat.emissive, emissive, 4 * sizeof(float));
+		myMeshes[i].mat.shininess = shininess;
+	}
 	//material->texCount = texcount;
 }
 void GameObject::setColor(float r, float g, float b, float alpha)
@@ -246,9 +275,6 @@ void GameObject::setColor(float r, float g, float b, float alpha)
 	diff[1] = amb[1] = g;
 	diff[2] = amb[2] = b;
 	diff[3] = amb[3] = alpha;
-
-		
-
 }
 
 void GameObject::sendMaterialToShader(int i)

@@ -26,10 +26,10 @@ extern float mNormal3x3[9];
 
 namespace GameObjectSpace {
 	class Component;
-
+	class Scene;
 	class GameObject {
 	public:
-
+		Scene* currentScene = nullptr;
 		long int currentTime;
 		long int prevTime = 0;
 		long int deltaTime = 0;
@@ -46,6 +46,7 @@ namespace GameObjectSpace {
 		int shaderIndex;
 		static vector<GLuint*> textureIds;
 		int textureId = -1;
+		int secondTextureId = -1;
 
 		GameObject();
 		Component* GetComponent(const char* type);
@@ -75,5 +76,9 @@ namespace GameObjectSpace {
 		GLint view_uniformId;
 		//GLuint textureID_uniformId;
 		GLint useTexture_uniformId;
+		GLint useTexture_two_uniformId;
+		GLint tex_loc;
+		GLint tex_loc1;
+
 	};
 }

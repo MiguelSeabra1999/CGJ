@@ -6,7 +6,7 @@
 
 namespace GameObjectSpace
 {
-
+	class Scene;
 	enum class ColliderType {
 		None,
 		AABB

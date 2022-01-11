@@ -23,6 +23,7 @@ struct MyMesh {
 	};
 
 MyMesh createCube();
+MyMesh createCube(float size_x, float size_y);
 MyMesh createQuad(float size_x, float size_y);
 MyMesh createSphere(float radius, int divisions);
 MyMesh createTorus(float innerRadius, float outerRadius, int rings, int sides);

@@ -11,6 +11,7 @@ namespace GameObjectSpace
 	class Scene
 	{
 	public:
+		bool useGizmos;
 		vector<GameObject*> gameObjects;
 		vector<GameObject*> transparentGameObjects;
 
@@ -19,6 +20,7 @@ namespace GameObjectSpace
 
 		virtual void init(GLuint shaderIndex)
 		{
+			useGizmos = false;
 			physicsEngine = new PhysicsEngine();
 			int count = gameObjects.size();
 			for (int i = 0; i < count; i++)

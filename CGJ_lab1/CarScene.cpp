@@ -7,6 +7,8 @@ void CarScene::loadTextures()
 	GameObject::initTexture("lightwood.tga");
 	GameObject::initTexture("plastic.jpg");
 	GameObject::initTexture("butter.jpg");
+	GameObject::initTexture("Grass2.jpg");
+	GameObject::initTexture("stripes.jpg");
 }
 
 void CarScene::init(GLuint shaderIndex)
@@ -127,9 +129,12 @@ void CarScene::init(GLuint shaderIndex)
 
 	float mapSize = 30;
 	cube = new Cube();
-	cube->transform.setScale(mapSize, 1, mapSize);
+	cube->setResizable(mapSize, mapSize);
+	//cube->transform.setScale(mapSize, 1, mapSize);
 	cube->transform.setPosition(0, -0.5, 0);
-	cube->setColor(0.0f, 0.3f, 0.0f, 1.0f);
+	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	cube->textureId = 0;
+	cube->secondTextureId = 4;
 	gameObjects.push_back((GameObject*)cube);
 	//butter
 	cube = new Cube();
@@ -238,9 +243,9 @@ void CarScene::init(GLuint shaderIndex)
 
 	Scene::init(shaderIndex);
 
-	/** /for (GameObject* obj : gameObjects) {
+	for (GameObject* obj : gameObjects) {
 		obj->currentScene = this;
-	}/**/
+	}
 }
 
 void CarScene::changeMainCamera(unsigned char code)

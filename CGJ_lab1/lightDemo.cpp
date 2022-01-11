@@ -375,6 +375,13 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			toggleFogginess();
 			break;
 		}
+	case 'u':case'U':
+		if (state != keys['u'])
+		{
+			carScene->useGizmos = !carScene->useGizmos;
+			cout << carScene->useGizmos << endl;
+			break;
+		}
 	}
 }
 void processKeysDown(unsigned char key, int xx, int yy)

@@ -2,6 +2,7 @@
 #include "CubeObj.h"
 #include "PhysicsEngine.h"
 #include "AVTmathLib.h"
+#include "Scene.h"
 using namespace GameObjectSpace;
 using namespace std;
 
@@ -10,9 +11,8 @@ using namespace std;
 		{
 
 			cube = (GameObject*) new Cube();
-			cube->setColor(1.0f, 1.0f, 1.0f, 0.2f);
+			cube->setColor(1.0f, 1.0f, 1.0f, 0.0f);
 			Collider::allColliders.push_back(this);
-
 			rigidbody = (RigidBody*)owner->GetComponent("RigidBody");
 			if(rigidbody != nullptr)
 			{
@@ -22,7 +22,15 @@ using namespace std;
 		}
 		void Collider::update()
 		{
-
+			//cout << owner->currentScene->useGizmos << endl;
+			if (owner->currentScene->useGizmos) {
+				cube->setColor(1.0f, 1.0f, 1.0f, 0.2f);
+				cube->initMaterial();
+			}
+			else {
+				cube->setColor(1.0f, 1.0f, 1.0f, 0.0f);
+				cube->initMaterial();
+			}
 		}
 		const char* Collider::GetType()
 		{
@@ -117,7 +125,7 @@ using namespace std;
 	
 	void AABB::update()
 	{
-
+		Collider::update();
 		pos[0] =  owner->transform.globalTransform.pos[0];
 		pos[1] =  owner->transform.globalTransform.pos[1];
 		pos[2] =  owner->transform.globalTransform.pos[2];
@@ -238,7 +246,7 @@ using namespace std;
 		if (penetration[2] != 0)
 			penetration[2] += sign(penetration[2]) * 0.01f;
 		/**/
-		cout << endl << "newLine: " << penetration[0] << "," << penetration[1] << "," << penetration[2] << endl;
+		//cout << endl << "newLine: " << penetration[0] << "," << penetration[1] << "," << penetration[2] << endl;
 
 
 	

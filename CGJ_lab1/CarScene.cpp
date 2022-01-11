@@ -9,6 +9,9 @@ void CarScene::loadTextures()
 	GameObject::initTexture("butter.jpg");
 	GameObject::initTexture("Grass2.jpg");
 	GameObject::initTexture("stripes.jpg");
+
+
+
 }
 
 void CarScene::init(GLuint shaderIndex)

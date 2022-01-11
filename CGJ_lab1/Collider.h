@@ -22,6 +22,7 @@ namespace GameObjectSpace
 	public:
 		GameObject* cube;
 		RigidBody* rigidbody;
+		float restitution = 1;
 		static vector<Collider*> allColliders;
 		Collider(GameObject * owner);
 

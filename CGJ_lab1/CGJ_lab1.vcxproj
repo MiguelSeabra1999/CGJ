@@ -221,6 +221,7 @@
     <Image Include="..\..\..\..\Desktop\New folder\checker.png" />
     <Image Include="..\..\..\..\Desktop\New folder\lightwood.tga" />
     <Image Include="..\..\..\..\Desktop\New folder\stone.tga" />
+    <Image Include="map.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

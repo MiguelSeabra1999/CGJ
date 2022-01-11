@@ -38,6 +38,7 @@ int GameObject::initTexture(const char* textureName)
 	return GameObject::textureIds.size()-1;
 }
 
+
 void GameObject::BindTexture()
 {
 	if (textureId != -1) {

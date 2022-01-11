@@ -159,9 +159,33 @@ void RigidBody::setAllForcesZero()
 	allForces[1] = 0;
 	allForces[2] = 0;
 }
+void RigidBody::setVelocitiesZero()
+{
+	velocity[0] = 0;
+	velocity[1] = 0;
+	velocity[2] = 0;
+}
 void RigidBody::setMass(float new_mass)
 {
 	inverseMass = 1 / new_mass;
 	mass = new_mass;
 
+}
+void RigidBody::addImpulse(float* force)
+{
+	velocity[0] += force[0];
+	velocity[1] += force[1];
+	velocity[2] += force[2];
+}
+void RigidBody::addImpulse(float* force, float scalingFactor)
+{
+	velocity[0] += scalingFactor*force[0];
+	velocity[1] += scalingFactor*force[1];
+	velocity[2] += scalingFactor*force[2];
+}
+void RigidBody::addImpulse(float x, float y, float z)
+{
+	velocity[0] += x;
+	velocity[1] += y;
+	velocity[2] += z;
 }

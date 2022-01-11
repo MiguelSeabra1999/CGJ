@@ -48,7 +48,8 @@
 
 		void multVectors(float* result, float* a, float* b, int size);
 		void addVectors(float* result, float* a, float* b, int size);
-
+		float dotProduct(float* a, float* b, int size);
+		void normalize(float* result,float* v, int size);
 		void multVectorConstant(float* result, float* a, float b);
 		float sign(float n);
 		/** Similar to glTranslate*. 

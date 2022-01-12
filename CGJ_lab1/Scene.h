@@ -6,9 +6,13 @@
 #include <GL/freeglut.h>
 #include "PhysicsEngine.h"
 #include "ComponentLib.h"
+#include "TimeUtil.h"
+
+
+
+
 namespace GameObjectSpace
 {
-	
 	class Scene
 	{
 	public:
@@ -18,71 +22,13 @@ namespace GameObjectSpace
 		GLuint shaderIndex;
 		Camera* currentCam;
 		PhysicsEngine* physicsEngine;
+		static TimeUtil* timeUtil;
 
-		virtual void init(GLuint _shaderIndex)
-		{
-			shaderIndex = _shaderIndex;
-			useGizmos = false;
-			physicsEngine = new PhysicsEngine();
-			int count = gameObjects.size();
-			for (int i = 0; i < count; i++)
-			{
-				(*gameObjects[i]).initDraw(shaderIndex);
-				(*gameObjects[i]).start();
-			}
-			count = transparentGameObjects.size();
-			for (int i = 0; i < count; i++)
-			{
-				(*transparentGameObjects[i]).initDraw(shaderIndex);
-				(*transparentGameObjects[i]).start();
-			}
-		}
-
-
-		void updateAndDraw()
-		{
-			
-			physicsEngine->update();
-			int count = gameObjects.size();
-			for (int i = 0; i < count; i++)
-			{
-					(*gameObjects[i]).update();
-					(*gameObjects[i]).opaqueDraw();
-			}
-			glDepthMask(GL_FALSE);
-			
-			count = gameObjects.size();
-			for (int i = 0; i < count; i++)
-			{
-					(*gameObjects[i]).transparentDraw();
-			}
-			glDepthMask(GL_TRUE);
-		}
-		void sendLightsToShader()
-		{
-			int count = gameObjects.size();
-			for (int i = 0; i < count; i++)
-			{
-				(*gameObjects[i]).SendLightsToShader();
-			}
-			count = transparentGameObjects.size();
-			for (int i = 0; i < count; i++)
-			{
-				(*transparentGameObjects[i]).SendLightsToShader();
-			}
-		}
-
-		virtual void changeMainCamera(unsigned char code) {}
-		void destroy()
-		{
-			Collider::allColliders.clear();
-			RigidBody::allRigidBodies.clear();
-			gameObjects.clear();
-		}
-		virtual void restart()
-		{
-			destroy();
-			init(shaderIndex);
-		}
+		virtual void init(GLuint _shaderIndex);
+		void updateAndDraw();
+		void sendLightsToShader();
+		virtual void changeMainCamera(unsigned char code);
+		void destroy();
+		virtual void restart();
 	};
 }

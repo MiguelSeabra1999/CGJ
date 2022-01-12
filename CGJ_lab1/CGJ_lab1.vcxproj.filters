@@ -56,6 +56,9 @@
     <ClCompile Include="CarScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">
@@ -68,9 +71,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="geometry.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
@@ -137,6 +137,9 @@
       <Filter>PhysicsEngine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="ComponentLib.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

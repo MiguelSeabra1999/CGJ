@@ -150,7 +150,6 @@ void refresh(int value)
 {
 	glutTimerFunc(1000/60, refresh, 0);
 	glutPostRedisplay();
-
 }
 
 // ------------------------------------------------------------
@@ -180,7 +179,7 @@ void changeSize(int w, int h) {
 //
 
 void renderScene(void) {
-
+	if (carScene != nullptr) carScene->timeUtil->updateCycle();
 	GLint loc;
 
 	FrameCount++;
@@ -227,8 +226,8 @@ void renderScene(void) {
 	//Update light positions
 	for (int i = 0; i < GameObject::n_lights; i++)
 	{
-		multMatixTransposeByVector(GameObject::lights[i]->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->direction);
-		multMatixTransposeByVector(GameObject::lights[i]->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->position);
+		multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
+		multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
 	}
 
 	carScene->sendLightsToShader();
@@ -287,7 +286,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		carScene->restart();
 		break;
 	case 'c':
-		printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
+		//printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
 		break;
 	case 'm': glEnable(GL_MULTISAMPLE); break;
 	case 'n': glDisable(GL_MULTISAMPLE); break;
@@ -386,11 +385,51 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		if (state != keys['u'])
 		{
 			carScene->useGizmos = !carScene->useGizmos;
-			cout << carScene->useGizmos << endl;
+			//cout << carScene->useGizmos << endl;
 			break;
 		}
+	case 'i':case'I':
+		if (state != keys['i'])
+		{
+			GameObject::turnLightOfTypeOff(LightType::directional);
+			break;
+		}
+		break;
+
+	case 'o': case 'O':
+
+		if (state != keys['o']) {
+			GameObject::turnLightOfTypeOff(LightType::spot);
+			break;
+		}
+		break;
+
+	case 'p': case 'P':
+
+		if (state != keys['p']) {
+			GameObject::turnLightOfTypeOff(LightType::point);
+			break;
+		}
+		break;
+
+		
+	case 'y': case 'Y':
+
+		if (state != keys['y']) {
+			cout << "init = " << carScene->timeUtil->GetInitTime() << endl;
+			cout << "delta = " << carScene->timeUtil->GetTimeSinceLastFrame() << endl;
+			cout << "frame = " << carScene->timeUtil->GetTimeOfLastFrame() << endl;
+			cout << "current = " << carScene->timeUtil->GetTimeSinceInit() << endl;
+			break;
+		}
+		break;
 	}
+
+
+
+	
 }
+
 void processKeysDown(unsigned char key, int xx, int yy)
 {
 	processKeys(key, xx, yy, true);
@@ -417,6 +456,8 @@ void processMouseButtons(int button, int state, int xx, int yy)
 			tracking = 1;
 		else if (button == GLUT_RIGHT_BUTTON)
 			tracking = 2;
+
+		
 	}
 
 	//stop tracking the mouse

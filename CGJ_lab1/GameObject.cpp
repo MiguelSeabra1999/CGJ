@@ -1,9 +1,10 @@
 #include "GameObject.h"
 #include "Texture_Loader.h"
 #include "Scene.h"
+#include "LightSource.h"
 using namespace GameObjectSpace;
 
-vector<Light*> GameObject::lights;
+vector<LightSource*> GameObject::lights;
 int GameObject::n_lights;
 vector<GLuint*> GameObject::textureIds;
 
@@ -14,8 +15,10 @@ GameObject::GameObject()
 	normal_uniformId = 0;
 	shaderProgramIndex = 0;
 	material = new Material;
+	n_lights = lights.size();
 	transform.initZero();
 	transform.setOwner(this);
+
 
 }
 Component* GameObject::GetComponent(const char* type)
@@ -128,6 +131,21 @@ void GameObject::drawOpaqueSons()
 	//glDepthMask(GL_TRUE);
 
 }
+
+void GameObject::turnLightOfTypeOff(LightType t) {
+	for (int j = 0; j < GameObject::lights.size(); j++) {
+		LightSource* l2 = GameObject::lights[j];
+		if (l2->light->type == (int)t) {
+			l2->on = !l2->on;
+			if (l2->on) GameObject::n_lights++;
+			else GameObject::n_lights--;
+
+		}
+	}
+
+};
+
+
 void GameObject::startAndInitDrawSons()
 {
 	int n_sons = transform.sons.size();
@@ -269,9 +287,13 @@ void GameObject::draw()
 
 void GameObject::SendLightsToShader()
 {
-	for (int j = 0; j < n_lights; j++)
+	int i = 0;
+	for (int j = 0; j < lights.size(); j++)
 	{
-		sendLightToShader(j);
+		if (lights[j]->on) {
+			sendLightToShader(i, j);
+			i++;
+		}
 	}
 }
 
@@ -316,33 +338,33 @@ void GameObject::sendMaterialToShader(int i)
 
 }
 
-void GameObject::sendLightToShader(int i)
+void GameObject::sendLightToShader(int i, int j)
 {
 	GLint loc;
 
 	loc = glGetUniformLocation(shaderProgramIndex,(const GLchar*) ("lights[" + to_string(i) + "].position").c_str());
-	glUniform4fv(loc, 1, lights[i]->eye_coords_position);
+	glUniform4fv(loc, 1, lights[j]->light->eye_coords_position);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].color").c_str());
-	glUniform4fv(loc, 1, lights[i]->color);
+	glUniform4fv(loc, 1, lights[j]->light->color);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].direction").c_str());
-	glUniform4fv(loc, 1, lights[i]->eye_coords_direction);
+	glUniform4fv(loc, 1, lights[j]->light->eye_coords_direction);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].cos_angle").c_str());
-	glUniform1f(loc, lights[i]->cos_angle);
+	glUniform1f(loc, lights[j]->light->cos_angle);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].type").c_str());
-	glUniform1i(loc, lights[i]->type);
+	glUniform1i(loc, lights[j]->light->type);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].constant").c_str());
-	glUniform1f(loc, lights[i]->constant);
+	glUniform1f(loc, lights[j]->light->constant);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].linear").c_str());
-	glUniform1f(loc, lights[i]->linear);
+	glUniform1f(loc, lights[j]->light->linear);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].quadratic").c_str());
-	glUniform1f(loc, lights[i]->quadratic);
+	glUniform1f(loc, lights[j]->light->quadratic);
 
 	loc = glGetUniformLocation(shaderProgramIndex, "n_lights");
 	glUniform1i(loc, n_lights);

@@ -1,5 +1,5 @@
 #include "PlayerCar.h"
-
+#include "Scene.h"
 
 using namespace GameObjectSpace;
 
@@ -29,12 +29,28 @@ using namespace GameObjectSpace;
 
 			
 		if (velocity > 0)
-			GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed  * 100, 0);
+		{
+			if(handbreaking)
+				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * ((1 + handbrakeTurnPercent) * turnSpeed), 0);
+			else
+				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed , 0);
+		}
 		else
-			GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed  * 100, 0);
-		
+		{
+			if(handbreaking)
+				GameObject::transform.globalTransform.rotate(0, inputDir[1] * ((1+handbrakeTurnPercent)*turnSpeed), 0);
+			else
+				GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed , 0);
+		}
+		float rot[16];
+		genRotationMatrix_Y(rot,0.5f* inputDir[1]);	
+		multMatixByVector(rigidbody->velocity,rot, rigidbody->velocity);
+	
 		//rigidbody->addForce(-1 * transform.globalTransform.right[0] * velocity, 0, -1 * transform.globalTransform.right[2] * velocity);
-		rigidbody->addForce(-1 * transform.globalTransform.right[0] * acceleration, 0, -1 * transform.globalTransform.right[2] * acceleration);
+		if (handbreaking)
+			rigidbody->addForce(-1 * transform.globalTransform.right[0] * (acceleration - 0.001), 0, -1 * transform.globalTransform.right[2] * acceleration);
+		else
+			rigidbody->addForce(-1 * transform.globalTransform.right[0] * acceleration, 0, -1 * transform.globalTransform.right[2] * acceleration);
 		GameObject::update();
 	}
 
@@ -88,3 +104,13 @@ using namespace GameObjectSpace;
 		velocity = 0;
 	}
 	
+
+	void PlayerCar::OnTriggerEnter()
+	{
+		currentScene->restart();
+	}
+	void PlayerCar::handbreak(bool state)
+	{
+		handbreaking = state;
+		
+	}

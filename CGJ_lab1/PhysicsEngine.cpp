@@ -30,9 +30,17 @@ void PhysicsEngine::CheckCollisions(vector<Collision*>* collisions)
 			Collision* col = nullptr;
 			if (Collider::allColliders[i]->checkCollision(Collider::allColliders[j], &col))
 			{
-				collisions->push_back(col);
-				Collider::allColliders[i]->owner->OnCollisionEnter();
-				Collider::allColliders[j]->owner->OnCollisionEnter();
+				if(Collider::allColliders[i]->isTrigger || Collider::allColliders[j]->isTrigger)
+				{
+					Collider::allColliders[i]->owner->OnTriggerEnter();
+					Collider::allColliders[j]->owner->OnTriggerEnter();
+				}
+				else
+				{
+					collisions->push_back(col);
+					Collider::allColliders[i]->owner->OnCollisionEnter();
+					Collider::allColliders[j]->owner->OnCollisionEnter();
+				}
 		
 			}
 		}
@@ -51,9 +59,8 @@ void PhysicsEngine::UpdateVelocities()
 		rb->velocity[0] += rb->allForces[0] / rb->mass;
 		rb->velocity[1] += rb->allForces[1] / rb->mass;
 		rb->velocity[2] += rb->allForces[2] / rb->mass;
-		rb->velocity[0] *= 1 - rb->damping;
-		rb->velocity[1] *= 1 - rb->damping;
-		rb->velocity[2] *= 1 - rb->damping;
+		if(rb->damping != 0)
+			rb->dampenVelocity();
 
 		rb->setAllForcesZero();
 	}
@@ -112,7 +119,7 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 
 		multVectorConstant(r1, r1, -1*dot);
 		collision->collider1->rigidbody->addImpulse(r1,restituition*2);
-		cout << "update 1 ";
+	
 	}
 	if (collision->collider2->rigidbody != nullptr)
 	{
@@ -122,7 +129,7 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 		
 		//multVectorConstant(r2, r2, dot);
 		collision->collider2->rigidbody->addImpulse(r2,restituition*2);
-		cout << "update 2 ";
+		
 	}
 	cout << endl;
 	

@@ -23,6 +23,7 @@ namespace GameObjectSpace
 		GameObject* cube;
 		RigidBody* rigidbody;
 		float restitution = 1;
+		bool isTrigger = false;
 		static vector<Collider*> allColliders;
 		Collider(GameObject * owner);
 

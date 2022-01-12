@@ -71,6 +71,8 @@ namespace GameObjectSpace {
 		void BindTexture();
 		virtual void OnCollisionEnter(){}
 		static void turnLightOfTypeOff(LightType t);
+		virtual void OnTriggerEnter() {}
+
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;

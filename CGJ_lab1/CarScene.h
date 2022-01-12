@@ -55,7 +55,7 @@ namespace GameObjectSpace
 
 		void changeMainCamera(unsigned char code) override;
 		void loadMap();
-		void restart();
+		//void restart();
 
 	};
 }

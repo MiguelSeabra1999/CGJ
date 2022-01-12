@@ -91,7 +91,9 @@ map<char, char> keys = {
 	{ 'a', false },
 	{ 's', false },
 	{ 'd', false },
-	{ 'q', false }
+	{ 'q', false },
+	{ ' ', false}
+
 };
 
 // Camera constants and values for easy definition
@@ -279,12 +281,12 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		glutLeaveMainLoop();
 		break;
 	case 'r':
-		/** /
+		/**/
 		carScene->destroy();
 		carScene->loadTextures();
 		createGameObjects();
 		/**/
-		carScene->restart();
+		//carScene->restart();
 		break;
 	case 'c':
 		printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
@@ -389,6 +391,12 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			cout << carScene->useGizmos << endl;
 			break;
 		}
+	case ' ':
+		if (state != keys[' '])
+		{
+			player->handbreak(state);
+			keys[' '] = state;
+		}
 	}
 }
 void processKeysDown(unsigned char key, int xx, int yy)
@@ -417,6 +425,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
 			tracking = 1;
 		else if (button == GLUT_RIGHT_BUTTON)
 			tracking = 2;
+
 	}
 
 	//stop tracking the mouse
@@ -428,7 +437,10 @@ void processMouseButtons(int button, int state, int xx, int yy)
 		else {
 		}
 		tracking = 0;
+	
 	}
+
+	
 }
 
 // Track mouse motion while buttons are pressed

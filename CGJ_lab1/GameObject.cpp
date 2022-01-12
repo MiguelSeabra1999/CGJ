@@ -271,6 +271,7 @@ void GameObject::SendLightsToShader()
 {
 	for (int j = 0; j < n_lights; j++)
 	{
+		
 		sendLightToShader(j);
 	}
 }

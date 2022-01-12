@@ -26,7 +26,7 @@ struct Light {
 	int type;
 };  
 
-#define MAX_LIGHTS 5
+#define MAX_LIGHTS 10
 uniform int n_lights;
 uniform Light lights[MAX_LIGHTS];
 uniform float fogginess;

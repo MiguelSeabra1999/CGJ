@@ -77,6 +77,8 @@ namespace GameObjectSpace
 		{
 			Collider::allColliders.clear();
 			RigidBody::allRigidBodies.clear();
+			GameObject::lights.clear();
+			GameObject::n_lights = 0;
 			gameObjects.clear();
 		}
 		virtual void restart()

@@ -149,6 +149,8 @@ void normalize(float* result, float* v, int size)
 	{
 		sum += v[i]*v[i];
 	}
+	if (sum == 0)
+		return;
 	float squareSum = sqrt(sum);
 	for (int i = 0; i < size; i++)
 	{

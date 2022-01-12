@@ -36,7 +36,7 @@ namespace GameObjectSpace {
 			GameObject::n_lights += 1;
 		}
 
-		void start()
+		virtual void start()
 		{
 
 			if (transform.parent == nullptr)
@@ -57,21 +57,25 @@ namespace GameObjectSpace {
 
 		}
 
-		void update()
+		virtual void update()
 		{
 			GameObject::update();
-
 			light->position[0] = transform.globalTransform.pos[0];
 			light->position[1] = transform.globalTransform.pos[1];
-			light->position[2] = transform.globalTransform.pos[2];
-		
-			
+			light->position[2] = transform.globalTransform.pos[2];	
 		}
 		void LightSource::initDraw(GLuint myShaderProgramIndex)
 		{
 			GameObject::initDraw(myShaderProgramIndex);
 	
 
+		}
+		void setColor(float r, float g, float b, float alpha)
+		{
+			GameObject::setColor(r, g, b, alpha);
+			light->color[0] = r;
+			light->color[1] = g;
+			light->color[2] = b;
 		}
 
 	};

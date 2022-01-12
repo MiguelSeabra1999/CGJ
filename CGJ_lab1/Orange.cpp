@@ -9,6 +9,7 @@ Orange::Orange(float mapSize)
 	//GameObject::GameObject();
 
 	rigidbody = new RigidBody(this);
+	rigidbody->damping = 0;
 	AddComponent(rigidbody);
 	moveInRandomDirection();
 
@@ -66,7 +67,7 @@ void Orange::initDraw(GLuint myShaderProgramIndex)
 {
 	GameObject::initDraw(myShaderProgramIndex);
 	MyMesh amesh;
-	amesh = createSphere(radius, 3);
+	amesh = createSphere(radius, 10);
 	
 	GameObject::initMaterial();
 	amesh.mat = *material;
@@ -75,8 +76,8 @@ void Orange::initDraw(GLuint myShaderProgramIndex)
 
 void Orange::goToRandomPos()
 {
-	randomRange(-bounds, bounds);
-	transform.setPosition(0, 0.5, 0);
+	float pos = randomRange(-bounds, bounds);
+	transform.setPosition(pos/4, 0.5, pos/4);
 }
 
 void Orange::moveInRandomDirection()

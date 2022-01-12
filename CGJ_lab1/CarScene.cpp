@@ -30,7 +30,7 @@ void CarScene::init(GLuint shaderIndex)
 	aabb = new AABB(playerCar);
 	playerCar->AddComponent(aabb);
 	rb = new RigidBody(playerCar);
-
+	//rb->damping = 0.04f;
 	playerCar->AddComponent(rb);
 	player = playerCar;
 	gameObjects.push_back((GameObject*)playerCar);
@@ -153,9 +153,10 @@ void CarScene::init(GLuint shaderIndex)
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	aabb = new AABB(cube);
 	
+
 	cube->AddComponent(aabb);
 	rb = new RigidBody(cube);
-	rb->damping = 0.01f;
+	rb->damping = 0.0003f;
 	rb->setMass(0.1f);
 	cube->AddComponent(rb);
 	aabb->setDim(1.1, 1.1, 3.1);
@@ -163,7 +164,7 @@ void CarScene::init(GLuint shaderIndex)
 	gameObjects.push_back((GameObject*)aabb->cube);
 	cube->textureId = 2;
 
-
+	/** /
 	cube = new Cube();
 	cube->transform.setScale(mapSize, 5, 1);
 	cube->transform.setPosition(0, 0, mapSize / 2);
@@ -204,17 +205,18 @@ void CarScene::init(GLuint shaderIndex)
 	gameObjects.push_back((GameObject*)cube);
 	gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(1.1, 5.1, mapSize + 0.1);
+	/**/
+
 
 	Orange* orange = new Orange(mapSize);
 	orange->transform.setPosition(1, .5, 0);
-	orange->setColor(1, 1, 1, 0.5f);
-	//aabb = new AABB(orange);
-	//orange->AddComponent(aabb);
+	orange->setColor(1.0f, 0.75f, 0.1f, 1.0f);
+	aabb = new AABB(orange);
+	aabb->isTrigger = true;
+	orange->AddComponent(aabb);
 	gameObjects.push_back((GameObject*)orange);
-	//gameObjects.push_back((GameObject*)aabb->cube);
+	gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(1, 1, 1);
-
-
 
 	//#################### Cameras ##############################
 	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
@@ -244,7 +246,7 @@ void CarScene::init(GLuint shaderIndex)
 	lightSource->light->color[2] = 0.4f;
 	lightSource->transform.setRotation(0, -90, 0);
 	gameObjects.push_back((GameObject*)lightSource);
-	/**/
+	/** /
 	lightSource = new LightSource(LightType::point);
 	lightSource->light->color[0] = 0.5f;
 	lightSource->light->color[1] = 0.09f;
@@ -254,7 +256,47 @@ void CarScene::init(GLuint shaderIndex)
 	lightSource->light->quadratic = .2;
 	gameObjects.push_back((GameObject*)lightSource);
 	/**/
+	BallLight* ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(-1, 3, -1);
+	ballLight->transform.globalTransform.setScale(0.5f,0.5f,0.5f);
+	ballLight->light->linear = .2;
+	ballLight->setColor(1,1,0,1);
+	gameObjects.push_back((GameObject*)ballLight);
 
+	ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(mapSize/3 ,1, 0);
+	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	ballLight->light->linear = .2;
+	ballLight->setColor(1, 0, 1, 1);
+	gameObjects.push_back((GameObject*)ballLight);
+
+	ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(-mapSize / 3, 1, 0);
+	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	ballLight->light->linear = .2;
+	ballLight->setColor(0, 1, 1, 1);
+	gameObjects.push_back((GameObject*)ballLight);
+
+	ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(0, 1, mapSize / 3);
+	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	ballLight->light->linear = .2;
+	ballLight->setColor(1, 0, 0, 1);
+	gameObjects.push_back((GameObject*)ballLight);
+
+	ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(0, 1, -mapSize / 3);
+	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	ballLight->light->linear = .2;
+	ballLight->setColor(0, 1, 0, 1);
+	gameObjects.push_back((GameObject*)ballLight);
+
+	ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(1,1, 1);
+	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	ballLight->light->linear = .2;
+	ballLight->setColor(0, 0, 1, 1);
+	gameObjects.push_back((GameObject*)ballLight);
 
 	Scene::init(shaderIndex);
 
@@ -297,20 +339,20 @@ void CarScene::loadMap()
 			int index = (i  * 96 + j*3);
 			if(map[index] == 1 && map[index + 1] == 0  && map[index + 2] == 0)
 			{
-				Cube* cube = new Cube();
-				cube->transform.setPosition(i-16, -0.2, j-16);
+				RoadLimit* cube = new RoadLimit();
+				cube->transform.setPosition(i-16, 0.2, j-16);
 				cube->setColor(1.0f, 0.5f, 0.5f,1.0f);
 			
 				AABB* aabb = new AABB(cube);
 				cube->AddComponent(aabb);
 
 				gameObjects.push_back((GameObject*)cube);
-
+				gameObjects.push_back((GameObject*)aabb->cube);
 			}
 		}
 	}
 }
-/**/
+/** /
 void CarScene::restart()
 {
 	player->transform.globalTransform.setPosition(0,0.1f,0);

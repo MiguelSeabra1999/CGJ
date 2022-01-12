@@ -56,6 +56,9 @@
     <ClCompile Include="CarScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="RoadLimit.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
@@ -71,9 +74,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="geometry.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
@@ -142,10 +142,10 @@
     <ClInclude Include="ComponentLib.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="RoadLimit.h">
-      <Filter>GameObjects\Headers</Filter>
+    <ClInclude Include="TimeUtil.h">
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="BallLight.h">
+    <ClInclude Include="RoadLimit.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>

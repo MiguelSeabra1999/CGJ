@@ -242,8 +242,14 @@ void renderScene(void) {
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
 	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
-	RenderText(shaderText, "This is a sample text", 25.0f, 25.0f, 1.0f, 0.5f, 0.8f, 0.2f);
-	RenderText(shaderText, "CGJ Light and Text Rendering Demo", 440.0f, 570.0f, 0.5f, 0.3, 0.7f, 0.9f);
+	
+	RenderText(shaderText, "Controls:",10.0f, 700.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Car: WASD, Space", 10.0f, 680.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Fog: Q", 10.0f, 660.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Lights: I,O,P", 10.0f, 640.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Camera: 1,2,3,4", 10.0f, 620.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Lerp: L", 10.0f, 600.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Follow: F", 10.0f, 580.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	popMatrix(PROJECTION);
 	popMatrix(VIEW);
 	popMatrix(MODEL);

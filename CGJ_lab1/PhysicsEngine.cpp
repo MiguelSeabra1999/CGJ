@@ -1,6 +1,8 @@
 #include "PhysicsEngine.h"
 #include "AVTmathLib.h"
+#include "Scene.h"
 using namespace GameObjectSpace;
+
 void PhysicsEngine::update()
 {
 
@@ -74,9 +76,10 @@ void PhysicsEngine::UpdatePositions()
 		RigidBody* rb = RigidBody::allRigidBodies[i];
 
 		//x = x + v;
-		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0];
-		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1];
-		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2];	
+		cout << Scene::timeUtil->GetTimeSinceLastFrame()<<endl;
+		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0];// *Scene::timeUtil->GetTimeSinceLastFrame();
+		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1];// *Scene::timeUtil->GetTimeSinceLastFrame();
+		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2];// *Scene::timeUtil->GetTimeSinceLastFrame();
 	}
 
 }

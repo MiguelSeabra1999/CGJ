@@ -19,7 +19,7 @@ private:
 public:
 
     void updateCycle() {
-        //cout << "here" << endl;
+        cout << "here" << endl;
         auto millisec_since_epoch = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
         time_of_last_frame = time_since_initialization;
         time_since_initialization = millisec_since_epoch - initialization_time;

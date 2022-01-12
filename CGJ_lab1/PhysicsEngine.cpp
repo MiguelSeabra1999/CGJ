@@ -25,8 +25,8 @@ void PhysicsEngine::CheckCollisions(vector<Collision*>* collisions)
 	{
 		for (int j = i + 1; j < n; j++)
 		{
-			if (Collider::allColliders[j]->rigidbody == nullptr && Collider::allColliders[j]->rigidbody == nullptr)
-				continue;
+		/**/	if (Collider::allColliders[i]->rigidbody == nullptr && Collider::allColliders[j]->rigidbody == nullptr)
+				continue;/**/
 			Collision* col = nullptr;
 			if (Collider::allColliders[i]->checkCollision(Collider::allColliders[j], &col))
 			{
@@ -69,10 +69,9 @@ void PhysicsEngine::UpdatePositions()
 		//x = x + v;
 		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0];
 		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1];
-		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2];
-
-	
+		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2];	
 	}
+
 }
 
 void PhysicsEngine::SolveCollision(Collision* collision)
@@ -110,18 +109,22 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 
 		normalize(r1, r1, 3);
 		dot = dotProduct(r1, collision->collider1->rigidbody->velocity, 3);
+
 		multVectorConstant(r1, r1, -1*dot);
 		collision->collider1->rigidbody->addImpulse(r1,restituition*2);
+		cout << "update 1 ";
 	}
 	if (collision->collider2->rigidbody != nullptr)
 	{
 
-		normalize(r2, r2, 3);
-		dot = dotProduct(r2, collision->collider2->rigidbody->velocity, 3);
-		multVectorConstant(r2, r2, -1*dot);
-		collision->collider2->rigidbody->addImpulse(r2,restituition*2);
+		//normalize(r2, r2, 3);
+		//dot = dotProduct(r2, collision->collider2->rigidbody->velocity, 3);
 		
+		//multVectorConstant(r2, r2, dot);
+		collision->collider2->rigidbody->addImpulse(r2,restituition*2);
+		cout << "update 2 ";
 	}
+	cout << endl;
 	
 }
 

@@ -1,22 +1,31 @@
 #include "CubeObj.h"
-
+#include "ComponentLib.h"
 
 using namespace GameObjectSpace;
 
 
 
 
-Cube::Cube()
+Cube::Cube():GameObject()
 {
 	
 }
-
 void Cube::update()
 {
 	GameObject::update();
+	RigidBody* rb = (RigidBody*)Cube::GetComponent("RigidBody");
+	if (rb != nullptr)
+	{
+		//cout << rb->velocity[0] << ", " << rb->velocity[1] << ", " << rb->velocity[2] << endl;
+	}
+	
+}
+void Cube::OnCollisionEnter()
+{
 
 
 }
+
 void Cube::initDraw(GLuint myShaderProgramIndex)
 {
 	GameObject::initDraw(myShaderProgramIndex);

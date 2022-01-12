@@ -90,7 +90,19 @@ float CalcAttenuation(Light source,float distance)
 
 vec4 GlobalLight(Light source)
 {
-	return mat.diffuse*source.color;
+	vec4 texel; 
+	vec4 texel1;
+
+	if(useTexture)
+		texel = texture(texmap, DataIn.tex_coord);
+	else
+		texel = vec4(1.0);
+
+	if(useTexture)
+		texel1 = texture(texmap1, DataIn.tex_coord);
+	else
+		texel1 = vec4(1.0);
+	return mat.diffuse*source.color * texel*texel1;
 }
 vec4 PointLight(Light source, vec3 lightDir, vec3 normal, vec3 eye)
 {

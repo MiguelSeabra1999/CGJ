@@ -29,7 +29,7 @@ namespace GameObjectSpace
 
 	};
 
-	class PhysicsEngine//singleton
+	class PhysicsEngine
 	{
 	public:
 		vector<Collision*> collisions;

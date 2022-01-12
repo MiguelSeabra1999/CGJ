@@ -9,7 +9,7 @@ RigidBody::RigidBody(GameObject* owner) :Component(owner)
 	transform = &(owner->transform);
 	init();
 	RigidBody::allRigidBodies.push_back(this);
-
+	
 	collider = (Collider*)owner->GetComponent("Collider");
 	if (collider != nullptr)
 	{

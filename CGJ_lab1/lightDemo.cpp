@@ -265,7 +265,7 @@ void toggleFogginess()
 	}
 	useFog = !useFog;
 }
-
+void createGameObjects();
 // ------------------------------------------------------------
 //
 // Events from the Keyboard
@@ -278,7 +278,14 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 27:
 		glutLeaveMainLoop();
 		break;
-
+	case 'r':
+		/** /
+		carScene->destroy();
+		carScene->loadTextures();
+		createGameObjects();
+		/**/
+		carScene->restart();
+		break;
 	case 'c':
 		printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
 		break;
@@ -514,8 +521,6 @@ void createGameObjects()
 	carScene->init(shader.getProgramIndex());
 	player = carScene->player;
 
-
-
 }
 
 void init()
@@ -533,8 +538,9 @@ void init()
 	/// Initialization of freetype library with font_name file
 	freeType_init(font_name);
 
-	createGameObjects();
 
+	createGameObjects();
+	carScene->loadTextures();
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

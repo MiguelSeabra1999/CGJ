@@ -5,6 +5,7 @@
 // GLUT is the toolkit to interface with the OS
 #include <GL/freeglut.h>
 #include "PhysicsEngine.h"
+#include "ComponentLib.h"
 namespace GameObjectSpace
 {
 	
@@ -14,12 +15,13 @@ namespace GameObjectSpace
 		bool useGizmos;
 		vector<GameObject*> gameObjects;
 		vector<GameObject*> transparentGameObjects;
-
+		GLuint shaderIndex;
 		Camera* currentCam;
 		PhysicsEngine* physicsEngine;
 
-		virtual void init(GLuint shaderIndex)
+		virtual void init(GLuint _shaderIndex)
 		{
+			shaderIndex = _shaderIndex;
 			useGizmos = false;
 			physicsEngine = new PhysicsEngine();
 			int count = gameObjects.size();
@@ -71,6 +73,16 @@ namespace GameObjectSpace
 		}
 
 		virtual void changeMainCamera(unsigned char code) {}
-
+		void destroy()
+		{
+			Collider::allColliders.clear();
+			RigidBody::allRigidBodies.clear();
+			gameObjects.clear();
+		}
+		virtual void restart()
+		{
+			destroy();
+			init(shaderIndex);
+		}
 	};
 }

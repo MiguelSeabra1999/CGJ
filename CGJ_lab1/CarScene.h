@@ -54,6 +54,8 @@ namespace GameObjectSpace
 		void init(GLuint shaderIndex);
 
 		void changeMainCamera(unsigned char code);
+		void loadMap();
+		void restart();
 
 	};
 }

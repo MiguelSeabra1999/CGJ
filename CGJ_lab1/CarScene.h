@@ -51,9 +51,9 @@ namespace GameObjectSpace
 		
 		void loadTextures();
 
-		void init(GLuint shaderIndex);
+		void init(GLuint shaderIndex) override;
 
-		void changeMainCamera(unsigned char code);
+		void changeMainCamera(unsigned char code) override;
 		void loadMap();
 		//void restart();
 

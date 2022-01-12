@@ -13,7 +13,6 @@
 //#include "ComponentLib.h"
 #include "ComponentLib.h"
 #include <ctime>
-#include "Light.h"
 
 using namespace std;
 
@@ -27,6 +26,8 @@ extern float mNormal3x3[9];
 namespace GameObjectSpace {
 	class Component;
 	class Scene;
+	class LightSource;
+	enum class LightType;
 	class GameObject {
 	public:
 		Scene* currentScene = nullptr;
@@ -35,7 +36,7 @@ namespace GameObjectSpace {
 		long int deltaTime = 0;
 		Transform transform;
 		vector<Component*> components;
-		static vector<Light*> lights;
+		static vector<LightSource*> lights;
 		static int n_lights;
 		Material* material = nullptr;
 		float amb[4] = { 0.2f, 0.15f, 0.1f, 1.0f };
@@ -60,7 +61,7 @@ namespace GameObjectSpace {
 		void initMaterial();
 		void setColor(float r, float g, float b, float alpha);
 		void sendMaterialToShader(int i);
-		void sendLightToShader(int i);
+		void sendLightToShader(int i, int j);
 		void SendLightsToShader();
 		void updateSons();
 		void drawOpaqueSons();
@@ -69,6 +70,7 @@ namespace GameObjectSpace {
 		void AddComponent(Component* comp);
 		void BindTexture();
 		virtual void OnCollisionEnter(){}
+		static void turnLightOfTypeOff(LightType t);
 		virtual void OnTriggerEnter() {}
 
 	protected:

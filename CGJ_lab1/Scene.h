@@ -18,7 +18,7 @@ namespace GameObjectSpace
 	public:
 		bool useGizmos;
 		vector<GameObject*> gameObjects;
-		vector<GameObject*> transparentGameObjects;
+	
 		GLuint shaderIndex;
 		Camera* currentCam;
 		PhysicsEngine* physicsEngine;

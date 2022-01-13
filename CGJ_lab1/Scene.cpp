@@ -21,12 +21,7 @@ void Scene::init(GLuint _shaderIndex)
 		(*gameObjects[i]).initDraw(shaderIndex);
 		(*gameObjects[i]).start();
 	}
-	count = transparentGameObjects.size();
-	for (int i = 0; i < count; i++)
-	{
-		(*transparentGameObjects[i]).initDraw(shaderIndex);
-		(*transparentGameObjects[i]).start();
-	}
+
 }
 
 
@@ -52,15 +47,10 @@ void Scene::updateAndDraw()
 void Scene::sendLightsToShader()
 {
 	int count = gameObjects.size();
-	for (int i = 0; i < count; i++)
-	{
-		(*gameObjects[i]).SendLightsToShader();
-	}
-	count = transparentGameObjects.size();
-	for (int i = 0; i < count; i++)
-	{
-		(*transparentGameObjects[i]).SendLightsToShader();
-	}
+
+	gameObjects[0]->SendLightsToShader();
+	
+
 }
 
 void Scene::changeMainCamera(unsigned char code) {}

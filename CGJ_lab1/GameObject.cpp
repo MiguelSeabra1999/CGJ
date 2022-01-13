@@ -103,7 +103,7 @@ void GameObject::drawTransparentSons()
 		if (sonObject->diff[3] < 1)
 		{
 			
-			sonObject->SendLightsToShader();
+			//sonObject->SendLightsToShader();
 			//sonObject->update();
 			sonObject->transparentDraw();
 		}
@@ -121,7 +121,7 @@ void GameObject::drawOpaqueSons()
 		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
 		if(sonObject->diff[3] >= 1)
 		{
-			sonObject->SendLightsToShader();
+			//sonObject->SendLightsToShader();
 			//sonObject->update();
 			sonObject->opaqueDraw();
 		}
@@ -284,7 +284,7 @@ void GameObject::draw()
 
 }
 
-
+/**/
 void GameObject::SendLightsToShader()
 {
 	int i = 0;
@@ -296,7 +296,7 @@ void GameObject::SendLightsToShader()
 		}
 	}
 }
-
+/**/
 void GameObject::initMaterial()
 {
 

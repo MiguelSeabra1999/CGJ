@@ -62,7 +62,10 @@ namespace GameObjectSpace {
 			amesh.mat = *material;
 			myMeshes.push_back(amesh);
 		}
-
+		void SendLightsToShader()
+		{
+			cout << "d";
+		}
 	};
 
 }

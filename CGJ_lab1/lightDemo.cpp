@@ -285,7 +285,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 27:
 		glutLeaveMainLoop();
 		break;
-	case 'r':
+	case 'r':case'R':
 		/**/
 		carScene->destroy();
 		carScene->loadTextures();

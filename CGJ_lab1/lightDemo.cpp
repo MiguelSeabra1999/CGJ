@@ -422,7 +422,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 
 		
 	case 'y': case 'Y':
-
+		/**/
 		if (state != keys['y']) {
 			cout << "init = " << carScene->timeUtil->GetInitTime() << endl;
 			cout << "delta = " << carScene->timeUtil->GetTimeSinceLastFrame() << endl;
@@ -430,6 +430,7 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			cout << "current = " << carScene->timeUtil->GetTimeSinceInit() << endl;
 			break;
 		}
+		/**/
 		break;
 	case ' ':
 		if (state != keys[' '])

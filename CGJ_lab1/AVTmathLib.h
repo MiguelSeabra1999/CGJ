@@ -36,6 +36,10 @@
 			VIEW_MODEL,
 			PROJ_VIEW_MODEL
 		};
+		void printVec(float* a, int size, const char* prefix);
+
+		float lerp(float a, float b, float percent);
+		void lerp(float* result, float* a, float* b, float percent, int size);
 
 		int randomRange(int minInclusive, int maxExclusive);
 

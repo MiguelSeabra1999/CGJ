@@ -1,8 +1,8 @@
 #pragma once
+/**/
 #include <chrono>
 #include <ctime>
 #include <time.h>
-
 using std::cout; using std::endl;
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
@@ -47,3 +47,4 @@ public:
     }
 
 };
+/**/

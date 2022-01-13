@@ -72,6 +72,7 @@ namespace GameObjectSpace {
 		virtual void OnCollisionEnter(){}
 		static void turnLightOfTypeOff(LightType t);
 		virtual void OnTriggerEnter() {}
+		void destroy();
 
 	protected:
 		vector<struct MyMesh> myMeshes;

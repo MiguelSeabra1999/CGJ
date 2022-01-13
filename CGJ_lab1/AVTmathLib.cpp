@@ -13,11 +13,11 @@ Author: João Madeiras Pereira
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <iostream>
 #ifdef _WIN32
 #define M_PI       3.14159265358979323846f
 #endif
-
+using namespace std;
 static inline float 
 DegToRad(float degrees) 
 { 
@@ -33,6 +33,33 @@ float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
 
 /// The normal matrix
 float mNormal3x3[9];
+
+void printVec(float* a, int size, const char* prefix)
+{
+	std::cout << prefix << ": ";
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << a[i];
+		if (i != size - 1)
+			std::cout << ", ";
+	}
+	std::cout << std::endl;
+
+}
+float lerp(float a, float b, float percent)
+{
+	float dist = b - a;
+	//cout << a<< ","<< b<<","<< percent << endl;
+	return a + dist * percent;
+}
+void lerp(float* result, float* a, float* b, float percent, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		
+		result[i] = lerp(a[i], b[i], percent);
+	}
+}
 
 float  sign(float n)
 {

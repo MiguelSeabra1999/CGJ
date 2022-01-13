@@ -20,9 +20,11 @@ void CarScene::init(GLuint shaderIndex)
 	//loadTextures();
 	gameObjects.clear();
 
+
 	Collider* col;
 	AABB* aabb;
 	RigidBody* rb;
+
 	//##############################  Car  ###############################################
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
@@ -36,6 +38,12 @@ void CarScene::init(GLuint shaderIndex)
 	gameObjects.push_back((GameObject*)playerCar);
 	gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(0.3, 0.45, 0.3);
+	/**/
+	SmokeParticle* smokeParticle = new SmokeParticle();
+	smokeParticle->transform.setPosition(-1, .5, 0); 
+	
+	gameObjects.push_back((GameObject*)smokeParticle);
+	/**/
 	// ------- body --------
 	//base
 	Cube* cube;
@@ -163,6 +171,8 @@ void CarScene::init(GLuint shaderIndex)
 	gameObjects.push_back((GameObject*)cube);
 	gameObjects.push_back((GameObject*)aabb->cube);
 	cube->textureId = 2;
+
+
 
 	/** /
 	cube = new Cube();

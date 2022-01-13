@@ -125,6 +125,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;assimp.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -184,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="avtFreeType.h" />
     <ClInclude Include="AVTmathLib.h" />
+    <ClInclude Include="BallLight.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CarScene.h" />
     <ClInclude Include="Collider.h" />
@@ -202,6 +204,7 @@
     <ClInclude Include="Orange.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="RoadLimit.h" />
+    <ClInclude Include="SmokeParticle.h" />
     <ClInclude Include="TimeUtil.h" />
     <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />

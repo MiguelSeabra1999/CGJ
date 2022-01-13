@@ -12,3 +12,4 @@
 #include "Headlight.h"
 #include "RoadLimit.h"
 #include "BallLight.h"
+#include "SmokeParticle.h"

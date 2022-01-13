@@ -148,6 +148,12 @@
     <ClInclude Include="RoadLimit.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SmokeParticle.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BallLight.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />

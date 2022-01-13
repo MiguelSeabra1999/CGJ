@@ -76,7 +76,7 @@ void PhysicsEngine::UpdatePositions()
 		RigidBody* rb = RigidBody::allRigidBodies[i];
 
 		//x = x + v;
-        cout << Scene::timeUtil->deltaTime<<endl;
+       // cout << Scene::timeUtil->deltaTime<<endl;
 		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
 		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
 		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;

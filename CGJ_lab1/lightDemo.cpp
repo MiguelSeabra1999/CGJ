@@ -86,12 +86,13 @@ int firstCameraIndex = 0;
 bool mouseLock = false;
 CarScene* carScene;
 
-map<char, char> keys = {
+map<char, bool> keys = {
 	{ 'w', false },
 	{ 'a', false },
 	{ 's', false },
 	{ 'd', false },
 	{ 'q', false },
+	{'r' , false},
 	{ ' ', false}
 
 };
@@ -289,13 +290,33 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 		glutLeaveMainLoop();
 		break;
 	case 'r':case'R':
-		/**/
-		carScene->destroy();
-		carScene->loadTextures();
-		createGameObjects();
-		/**/
-		//carScene->restart();
-		break;
+		if (state != keys['r'])
+		{
+			/**/
+			cout << "restart" << endl;
+			carScene->destroy();
+			carScene->loadTextures();
+			createGameObjects();
+			/**/
+			//calling already pressed key events on new scene
+			map<char, bool>::iterator it;
+			keys['r'] = false;
+			for (it = keys.begin(); it != keys.end(); it++)
+			{
+				if(keys[it->first])
+				{
+					processKeys(it->first, xx, yy, state);
+				}
+			}
+			//setting the keys to zero
+			keys['r'] = true;
+			for (it = keys.begin(); it != keys.end(); it++)
+			{
+				keys[it->first] = false;
+			}
+
+			break;
+		}
 	case 'c':
 		//printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
 		break;

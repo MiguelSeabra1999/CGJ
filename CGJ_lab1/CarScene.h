@@ -21,12 +21,12 @@ namespace GameObjectSpace
 		float followCameraOrthoArguments[8] = {
 			WinX, //window width
 			WinY, // window height
-			-2.0f, // left
-			2.0f, // right
-			-2.0f, // bottom
-			2.0f, // top
-			-10.0f, //near 
-			10.0f, //far
+			-200.0f, // left
+			200.0f, // right
+			-200.0f, // bottom
+			200.0f, // top
+			-200.0f, //near 
+			200.0f, //far
 		};
 
 		float fixedCameraPerspectiveArguments[8] = {

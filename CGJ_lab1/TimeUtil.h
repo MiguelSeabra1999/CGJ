@@ -26,12 +26,7 @@ public:
             ).count();
         time_of_last_frame = time_since_initialization;
         time_since_initialization = millisec_since_epoch - initialization_time;
-        time_since_last_frame = time_since_initialization - time_since_last_frame;
-
-        cout << "init = " << GetInitTime() << endl;
-        cout << "delta = " << GetTimeSinceLastFrame() << endl;
-        cout << "frame = " << GetTimeOfLastFrame() << endl;
-        cout << "current = " << GetTimeSinceInit() << endl;
+        time_since_last_frame = time_since_initialization - time_of_last_frame;
     }
 
     void init() {

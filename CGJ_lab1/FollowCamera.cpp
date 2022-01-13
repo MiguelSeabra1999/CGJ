@@ -62,19 +62,26 @@ void FollowCamera::UpdateCameraPosition()
 	SetCameraRad();
 	UpdateAngles();
 
+	float forward[3] = { GameObject::transform.parent->globalTransform.right[0], 0.0f, GameObject::transform.parent->globalTransform.right[2] };
+	float dot;
+
+
 
 	if (lerp) {
 		PlayerCar * car = (PlayerCar*)GameObject::transform.parent->gameObject;
-		
-		if (car->rigidbody->velocity>0) {
-			if (zeta > threshhold) { alpha -= zeta/angularConstantForLerp; }
-			else if (zeta < -threshhold) { alpha -= zeta/angularConstantForBackWardsLerp; }
+		dot = dotProduct(forward, car->rigidbody->velocity);
+		if (length(car->rigidbody->velocity) > 0) {
+			if (dot<0 ) {
+				if (zeta > threshhold) { alpha -= zeta/angularConstantForLerp; }
+				else if (zeta < -threshhold) { alpha -= zeta/angularConstantForBackWardsLerp; }
 
-		}
-		else if (car->rigidbody->velocity < 0) {
+			}
+			else if (dot>0) {
 			
-			if (zeta < PI- threshhold && zeta>0) { alpha += (PI-zeta) / angularConstantForBackWardsLerp; }
-			else if (zeta > -PI+ threshhold && zeta<0 ) { alpha += -(PI+zeta) / angularConstantForBackWardsLerp; }
+				if (zeta < PI- threshhold && zeta>0) { alpha += (PI-zeta) / angularConstantForBackWardsLerp; }
+				else if (zeta > -PI+ threshhold && zeta<0 ) { alpha += -(PI+zeta) / angularConstantForBackWardsLerp; }
+			}
+
 		}
 	}
 

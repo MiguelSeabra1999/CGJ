@@ -26,7 +26,7 @@ using namespace GameObjectSpace;
 	void PlayerCar::update()
 	{
 
-
+		//velocity = length(rigidbody->velocity);
 			
 		if (velocity > 0)
 		{

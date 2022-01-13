@@ -2,6 +2,7 @@
 /**/
 #include <chrono>
 #include <ctime>
+#include <sys/timeb.h>
 #include <time.h>
 using std::cout; using std::endl;
 using std::chrono::duration_cast;
@@ -19,15 +20,23 @@ private:
 public:
 
     void updateCycle() {
-        cout << "here" << endl;
-        auto millisec_since_epoch = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        //cout << "here" << endl;
+        long long millisec_since_epoch = duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+            ).count();
         time_of_last_frame = time_since_initialization;
         time_since_initialization = millisec_since_epoch - initialization_time;
-        time_since_last_frame = time_since_initialization - time_since_last_frame;
+        time_since_last_frame = time_since_initialization - time_of_last_frame;
     }
 
     void init() {
-        initialization_time = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        cout << duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+            ).count() << endl;
+        initialization_time = duration_cast<milliseconds>(
+            system_clock::now().time_since_epoch()
+            ).count();
+
     }
 
     float GetTimeSinceLastFrame() {

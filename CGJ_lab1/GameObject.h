@@ -39,6 +39,7 @@ namespace GameObjectSpace {
 		static vector<LightSource*> lights;
 		static int n_lights;
 		Material* material = nullptr;
+		float oldColor[4] = { 0.0f };
 		float amb[4] = { 0.2f, 0.15f, 0.1f, 1.0f };
 		float diff[4] = { 0.8f, 0.6f, 0.4f, 1.0f };
 		float spec[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
@@ -60,6 +61,7 @@ namespace GameObjectSpace {
 		void opaqueDraw();
 		void initMaterial();
 		void setColor(float r, float g, float b, float alpha);
+		void setOldColor(float r, float g, float b, float alpha);
 		void sendMaterialToShader(int i);
 		void sendLightToShader(int i, int j);
 		void SendLightsToShader();

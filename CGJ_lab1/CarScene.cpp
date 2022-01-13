@@ -212,12 +212,7 @@ void CarScene::init(GLuint shaderIndex)
 	aabb->setDim(1.1, 5.1, mapSize + 0.1);
 	/**/
 
-	/**/
-	SmokeParticle* smokeParticle = new SmokeParticle();
-	smokeParticle->transform.setPosition(-1, .5, 0);
-
-	gameObjects.push_back((GameObject*)smokeParticle);
-	/**/
+	
 	Orange* orange = new Orange(mapSize);
 	orange->transform.setPosition(1, .5, 0);
 	orange->setColor(1.0f, 0.75f, 0.1f, 0.5f);

@@ -77,12 +77,11 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)Dependencies\devil\include;$(ProjectDir)Dependencies\freeglut\include;$(ProjectDir)Dependencies\glew\include;$(ProjectDir)Dependencies\assimp\include;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Dependencies\lib\$(Platform);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)Dependencies\devil\include;$(ProjectDir)Dependencies\freeglut\include;$(ProjectDir)Dependencies\glew\include;$(ProjectDir)Dependencies\assimp\include;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Dependencies\lib\$(Platform);$(LibraryPath)</LibraryPath>
   </PropertyGroup>

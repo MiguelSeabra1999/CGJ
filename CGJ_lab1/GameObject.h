@@ -75,6 +75,7 @@ namespace GameObjectSpace {
 		static void turnLightOfTypeOff(LightType t);
 		virtual void OnTriggerEnter() {}
 		void destroy();
+		void reallyDestroy();//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
 
 	protected:
 		vector<struct MyMesh> myMeshes;

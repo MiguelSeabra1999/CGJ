@@ -5,7 +5,8 @@ namespace GameObjectSpace
 {
 	class Collision
 	{
-	public:
+	public: 
+		
 		Collider* collider1;
 		Collider* collider2;
 		float penetrationVector[3]; //from collider1 to collider2
@@ -32,6 +33,7 @@ namespace GameObjectSpace
 	class PhysicsEngine
 	{
 	public:
+		const float VELOCITYFACTOR = 1.0f / 0.016f;
 		vector<Collision*> collisions;
 		PhysicsEngine()
 		{

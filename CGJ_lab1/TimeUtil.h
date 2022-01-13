@@ -17,8 +17,10 @@ private:
     long long time_of_last_frame;
     long long time_since_last_frame;
     long long time_since_initialization;
+    
 public:
-
+    float deltaTime = 0;
+    float time = 0;
     void updateCycle() {
         //cout << "here" << endl;
         long long millisec_since_epoch = duration_cast<milliseconds>(
@@ -27,6 +29,8 @@ public:
         time_of_last_frame = time_since_initialization;
         time_since_initialization = millisec_since_epoch - initialization_time;
         time_since_last_frame = time_since_initialization - time_of_last_frame;
+        deltaTime = time_since_last_frame / 1000.0;
+        time = time_since_initialization / 1000.0;
     }
 
     void init() {

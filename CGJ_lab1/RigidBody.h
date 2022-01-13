@@ -56,7 +56,7 @@ namespace GameObjectSpace
 		void setVelocitiesZero();
 		const char* GetType();
 		void setMass(float new_mass);
-		void dampenVelocity();
+		void dampenVelocity(float deltaTime);
 
 		
 	};

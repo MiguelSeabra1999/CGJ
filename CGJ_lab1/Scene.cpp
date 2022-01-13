@@ -43,6 +43,16 @@ void Scene::updateAndDraw()
 		(*gameObjects[i]).transparentDraw();
 	}
 	glDepthMask(GL_TRUE);
+	destroyQueuedGameObjects();
+}
+void Scene::destroyQueuedGameObjects()
+{
+	int n = gameObjectsForDeletion.size();
+	for (int i = 0; i < n; i++)
+	{
+		gameObjectsForDeletion[i]->reallyDestroy();
+	}
+	gameObjectsForDeletion.clear();
 }
 void Scene::sendLightsToShader()
 {

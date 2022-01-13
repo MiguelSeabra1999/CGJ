@@ -190,7 +190,7 @@ void RigidBody::addImpulse(float x, float y, float z)
 	velocity[1] += y;
 	velocity[2] += z;
 }
-void RigidBody::dampenVelocity()
+void RigidBody::dampenVelocity(float deltaTime)
 {
 	/**/
 	float aux[3];
@@ -203,7 +203,7 @@ void RigidBody::dampenVelocity()
 	aux[2] = velocity[2];
 
 	normalize(aux,aux,3);
-	multVectorConstant(aux, aux, -1*damping );
+	multVectorConstant(aux, aux, -1*damping* deltaTime);
 	addVectors(velocity,velocity,aux,3);
 	if (sign(prevVelocity[0]) != sign(velocity[0]))
 		velocity[0] = 0;

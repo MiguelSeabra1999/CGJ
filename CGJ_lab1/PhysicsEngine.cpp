@@ -62,8 +62,8 @@ void PhysicsEngine::UpdateVelocities()
 		rb->velocity[1] += rb->allForces[1] / rb->mass;
 		rb->velocity[2] += rb->allForces[2] / rb->mass;
 		if(rb->damping != 0)
-			rb->dampenVelocity();
-
+			rb->dampenVelocity(VELOCITYFACTOR * Scene::timeUtil->deltaTime);
+	
 		rb->setAllForcesZero();
 	}
 }
@@ -76,10 +76,10 @@ void PhysicsEngine::UpdatePositions()
 		RigidBody* rb = RigidBody::allRigidBodies[i];
 
 		//x = x + v;
-	//	cout << Scene::timeUtil->GetTimeSinceLastFrame()<<endl;
-		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0];// *Scene::timeUtil->GetTimeSinceLastFrame();
-		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1];// *Scene::timeUtil->GetTimeSinceLastFrame();
-		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2];// *Scene::timeUtil->GetTimeSinceLastFrame();
+        cout << Scene::timeUtil->deltaTime<<endl;
+		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
+		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
+		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
 	}
 
 }

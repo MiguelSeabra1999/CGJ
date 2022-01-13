@@ -38,12 +38,7 @@ void CarScene::init(GLuint shaderIndex)
 	gameObjects.push_back((GameObject*)playerCar);
 	gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(0.3, 0.45, 0.3);
-	/**/
-	SmokeParticle* smokeParticle = new SmokeParticle();
-	smokeParticle->transform.setPosition(-1, .5, 0); 
-	
-	gameObjects.push_back((GameObject*)smokeParticle);
-	/**/
+
 	// ------- body --------
 	//base
 	Cube* cube;
@@ -217,10 +212,15 @@ void CarScene::init(GLuint shaderIndex)
 	aabb->setDim(1.1, 5.1, mapSize + 0.1);
 	/**/
 
+	/**/
+	SmokeParticle* smokeParticle = new SmokeParticle();
+	smokeParticle->transform.setPosition(-1, .5, 0);
 
+	gameObjects.push_back((GameObject*)smokeParticle);
+	/**/
 	Orange* orange = new Orange(mapSize);
 	orange->transform.setPosition(1, .5, 0);
-	orange->setColor(1.0f, 0.75f, 0.1f, 1.0f);
+	orange->setColor(1.0f, 0.75f, 0.1f, 0.5f);
 	aabb = new AABB(orange);
 	aabb->isTrigger = true;
 	orange->AddComponent(aabb);

@@ -390,6 +390,36 @@ void GameObject::AddComponent(Component* comp)
 {
 	GameObject::components.push_back(comp);
 }
+void GameObject::destroy()
+{
+	currentScene->gameObjectsForDeletion.push_back(this);
+}
+void GameObject::reallyDestroy()//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
+{
+	if (transform.parent != nullptr)
+	{
+		int n2 = transform.parent->sons.size();
+		for (int j = 0; j < n2; j++)
+		{
+			if (transform.parent->sons[j] == &transform)
+			{
+				transform.parent->sons.erase(transform.parent->sons.begin() + j);
+				break;
+			}
+		}
+		return;
+	}
+	int n = currentScene->gameObjects.size();
+	for(int i = 0; i < n;i++)
+	{
+		if(currentScene->gameObjects[i] == this)
+		{
+			currentScene->gameObjects.erase(currentScene->gameObjects.begin() + i);
+
+			break;
+		}
+	}
+}
 
 
 

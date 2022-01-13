@@ -44,6 +44,7 @@ void Scene::updateAndDraw()
 	}
 	glDepthMask(GL_TRUE);
 	destroyQueuedGameObjects();
+	createQueuedGameObjects();
 }
 void Scene::destroyQueuedGameObjects()
 {
@@ -53,6 +54,17 @@ void Scene::destroyQueuedGameObjects()
 		gameObjectsForDeletion[i]->reallyDestroy();
 	}
 	gameObjectsForDeletion.clear();
+}
+void Scene::createQueuedGameObjects()
+{
+	int n = gameObjectsForCreation.size();
+	for (int i = 0; i < n; i++)
+	{
+		gameObjects.push_back(gameObjectsForCreation[i]);
+		gameObjectsForCreation[i]->initDraw(shaderIndex);
+		gameObjectsForCreation[i]->start();
+	}
+	gameObjectsForCreation.clear();
 }
 void Scene::sendLightsToShader()
 {
@@ -77,4 +89,11 @@ void Scene::restart()
 	destroy();
 	init(shaderIndex);
 }
-
+void Scene::instatiate(GameObject* obj, float* pos)
+{
+	obj->currentScene = this;
+	obj->transform.globalTransform.pos[0] = pos[0];
+	obj->transform.globalTransform.pos[1] = pos[1];
+	obj->transform.globalTransform.pos[2] = pos[2];
+	gameObjectsForCreation.push_back((GameObject*)obj);
+}

@@ -19,7 +19,7 @@ namespace GameObjectSpace
 		bool useGizmos;
 		vector<GameObject*> gameObjects;
 		vector<GameObject*> gameObjectsForDeletion;//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
-
+		vector<GameObject*> gameObjectsForCreation;
 	
 		GLuint shaderIndex;
 		Camera* currentCam;
@@ -33,6 +33,8 @@ namespace GameObjectSpace
 		void destroy();
 		virtual void restart();
 		void destroyQueuedGameObjects();
+		void createQueuedGameObjects();
+		void instatiate(GameObject* obj, float* pos);
 		
 	};
 }

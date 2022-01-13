@@ -76,7 +76,7 @@ namespace GameObjectSpace {
 		virtual void OnTriggerEnter() {}
 		void destroy();
 		void reallyDestroy();//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
-
+		//void Instantiate(GameObject* obj, float* pos);
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;

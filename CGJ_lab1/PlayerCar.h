@@ -15,6 +15,7 @@ namespace GameObjectSpace{
 		float maxSpeed = 0.2;
 		float turnSpeed = 0.8f;
 		float handbrakeTurnPercent = 2.0f;
+		bool handbreaking = false;
 		
 		PlayerCar();
 		void start();
@@ -29,7 +30,6 @@ namespace GameObjectSpace{
 		void handbreak(bool state);
 	private:
 		float inputDir[2];
-		bool handbreaking = false;
 		
 
 	};

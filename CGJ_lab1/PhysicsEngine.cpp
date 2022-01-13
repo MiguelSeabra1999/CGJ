@@ -19,7 +19,7 @@ void PhysicsEngine::update()
 }
 void PhysicsEngine::CheckCollisions(vector<Collision*>* collisions)
 {
-	//vector<Collision*> collisions;
+
 	bool hitSomething = false;
 	int n = Collider::allColliders.size();
 	//cout << n << endl;

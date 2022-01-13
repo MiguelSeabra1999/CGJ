@@ -137,9 +137,16 @@ void GameObject::turnLightOfTypeOff(LightType t) {
 		LightSource* l2 = GameObject::lights[j];
 		if (l2->light->type == (int)t) {
 			l2->on = !l2->on;
-			if (l2->on) GameObject::n_lights++;
-			else GameObject::n_lights--;
-
+			if (l2->on) {
+				GameObject::n_lights++;
+				l2->setColor(l2->oldColor[0], l2->oldColor[1], l2->oldColor[2], l2->oldColor[3]);
+				//l2->setOldColor(l2->diff[0], l2->diff[1], l2->diff[2], l2->diff[3]);
+			}
+			else {
+				GameObject::n_lights--;
+				l2->setOldColor(l2->diff[0], l2->diff[1], l2->diff[2], l2->diff[3]);
+				l2->setColor(0.2f, 0.2f, 0.2f, 1.0f);
+			}
 		}
 	}
 
@@ -320,6 +327,14 @@ void GameObject::setColor(float r, float g, float b, float alpha)
 	diff[1] = amb[1] = g;
 	diff[2] = amb[2] = b;
 	diff[3] = amb[3] = alpha;
+}
+
+void GameObject::setOldColor(float r, float g, float b, float alpha)
+{
+	oldColor[0] = r;
+	oldColor[1] = g;
+	oldColor[2] = b;
+	oldColor[3] = alpha;
 }
 
 void GameObject::sendMaterialToShader(int i)

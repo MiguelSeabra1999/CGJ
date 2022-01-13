@@ -33,14 +33,16 @@ void SmokeParticle::update()
 	/**/
 
 	float percent = (float)(Scene::timeUtil->time - startTime) / (float)effectTime;
+	float percent2 = (float)(Scene::timeUtil->time - startTime) / ((float)effectTime*1.3f) ;
 	percent = min(percent, 1.0f);
-	float alpha = lerp(1.0f, 0.0f, percent);
+	float alpha = lerp(1.0f, 0.0f, percent2);
+
 	lerp(transform.globalTransform.scale, startScale, finalScale, percent, 3);
 	//cout << alpha << endl;
-	alpha = max(alpha, 0.5f);
+	//alpha = max(alpha, 0.1f);
 	myMeshes[0].mat.diffuse[3] = alpha;
 	curr++;
-	if (percent >= 1)
+	if (percent2 >= 1)
 	{
 		destroy();
 	}

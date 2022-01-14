@@ -82,7 +82,7 @@ void Scene::changeMainCamera(unsigned char code) {}
 void Scene::destroy()
 {
 	Collider::allColliders.clear();
-	RigidBody::allRigidBodies.clear();
+	//RigidBody::allRigidBodies.clear();
 	GameObject::lights.clear();
 	GameObject::n_lights = 0;
 	gameObjects.clear();

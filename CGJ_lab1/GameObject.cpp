@@ -315,6 +315,8 @@ void GameObject::SendLightsToShader()
 			i++;
 		}
 	}
+	GLint loc = glGetUniformLocation(shaderProgramIndex, "n_lights");
+	glUniform1i(loc, i);
 }
 /**/
 void GameObject::initMaterial()
@@ -394,8 +396,7 @@ void GameObject::sendLightToShader(int i, int j)
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].quadratic").c_str());
 	glUniform1f(loc, lights[j]->light->quadratic);
 
-	loc = glGetUniformLocation(shaderProgramIndex, "n_lights");
-	glUniform1i(loc, i);
+
 	
 }
 

@@ -113,6 +113,7 @@ void CarScene::init(GLuint shaderIndex)
 
 	/**/
 	// ------- Headlights ------
+	/**/
 	Headlight* headlight = new Headlight(playerCar);
 	headlight->light->color[0] = 1;
 	headlight->light->color[1] = 0.9f;
@@ -238,28 +239,22 @@ void CarScene::init(GLuint shaderIndex)
 
 	//################## Lights ###############################
 	LightSource* lightSource;
+	/**/
 	lightSource = new LightSource(LightType::global);
-	lightSource->light->color[0] = 0.1f;
-	lightSource->light->color[1] = 0.1f;
-	lightSource->light->color[2] = 0.1f;
+	lightSource->light->color[0] = 0.2f;
+	lightSource->light->color[1] = 0.2f;
+	lightSource->light->color[2] = 0.2f;
 	gameObjects.push_back((GameObject*)lightSource);
 
 	/**/
 	lightSource = new LightSource(LightType::directional);
-	lightSource->light->color[0] = 0.4f;
-	lightSource->light->color[1] = 0.4f;
-	lightSource->light->color[2] = 0.4f;
-	lightSource->transform.setRotation(0, -90, 0);
-	gameObjects.push_back((GameObject*)lightSource);
-	/** /
-	lightSource = new LightSource(LightType::point);
 	lightSource->light->color[0] = 0.5f;
-	lightSource->light->color[1] = 0.09f;
-	lightSource->light->color[2] = 0.9f;
-
-	lightSource->transform.globalTransform.setPosition(0, 2, 0);
-	lightSource->light->quadratic = .2;
+	lightSource->light->color[1] = 0.5f;
+	lightSource->light->color[2] = 0.5f;
+	lightSource->transform.setRotation(45, -90, 0);
 	gameObjects.push_back((GameObject*)lightSource);
+	/**/
+
 	/**/
 	BallLight* ballLight = new BallLight();
 	ballLight->transform.globalTransform.setPosition(-1, 3, -1);
@@ -267,7 +262,7 @@ void CarScene::init(GLuint shaderIndex)
 	ballLight->light->linear = .2;
 	ballLight->setColor(1,1,0,1);
 	gameObjects.push_back((GameObject*)ballLight);
-
+	/**/
 	ballLight = new BallLight();
 	ballLight->transform.globalTransform.setPosition(mapSize/3 ,1, 0);
 	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
@@ -302,7 +297,7 @@ void CarScene::init(GLuint shaderIndex)
 	ballLight->light->linear = .2;
 	ballLight->setColor(0, 0, 1, 1);
 	gameObjects.push_back((GameObject*)ballLight);
-
+	/**/
 	Scene::init(shaderIndex);
 
 	for (GameObject* obj : gameObjects) {

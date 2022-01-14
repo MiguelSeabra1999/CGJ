@@ -18,6 +18,7 @@ namespace GameObjectSpace {
 			LightSource::light->direction[0] = target->transform.globalTransform.right[0];
 			LightSource::light->direction[1] = target->transform.globalTransform.right[1];
 			LightSource::light->direction[2] = target->transform.globalTransform.right[2];
+			LightSource::light->direction[3] = 0;
 		}
 		void update()
 		{
@@ -25,6 +26,7 @@ namespace GameObjectSpace {
 			LightSource::light->direction[0] = target->transform.globalTransform.right[0];
 			LightSource::light->direction[1] = target->transform.globalTransform.right[1];
 			LightSource::light->direction[2] = target->transform.globalTransform.right[2];
+			LightSource::light->direction[3] = 0;
 		}
 		void initDraw(GLuint myShaderProgramIndex)
 		{

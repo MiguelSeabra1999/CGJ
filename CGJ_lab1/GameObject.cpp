@@ -144,7 +144,6 @@ void GameObject::turnLightOfTypeOff(LightType t) {
 					l2->emissive[1] = l2->oldColor[1];
 					l2->emissive[2] = l2->oldColor[2];
 					l2->GameObject::initMaterial();
-					l2->GameObject::sendMaterialToShader(l2->shaderProgramIndex);
 				}
 			}
 			else {
@@ -155,7 +154,6 @@ void GameObject::turnLightOfTypeOff(LightType t) {
 					l2->emissive[1] = 0.0f;
 					l2->emissive[2] = 0.0f;
 					l2->initMaterial();
-					l2->sendMaterialToShader(l2->shaderProgramIndex);
 				}
 			}
 		}

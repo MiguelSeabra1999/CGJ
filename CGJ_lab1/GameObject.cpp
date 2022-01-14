@@ -135,17 +135,28 @@ void GameObject::drawOpaqueSons()
 void GameObject::turnLightOfTypeOff(LightType t) {
 	for (int j = 0; j < GameObject::lights.size(); j++) {
 		LightSource* l2 = GameObject::lights[j];
-		if (l2->light->type == (int)t) {
+		if (l2->lightType == t) {
 			l2->on = !l2->on;
 			if (l2->on) {
 				GameObject::n_lights++;
-				l2->setColor(l2->oldColor[0], l2->oldColor[1], l2->oldColor[2], l2->oldColor[3]);
-				//l2->setOldColor(l2->diff[0], l2->diff[1], l2->diff[2], l2->diff[3]);
+				if (l2->lightType == LightType::point || l2->lightType == LightType::spot) {
+					l2->emissive[0] = l2->oldColor[0];
+					l2->emissive[1] = l2->oldColor[1];
+					l2->emissive[2] = l2->oldColor[2];
+					l2->GameObject::initMaterial();
+					l2->GameObject::sendMaterialToShader(l2->shaderProgramIndex);
+				}
 			}
 			else {
 				GameObject::n_lights--;
-				l2->setOldColor(l2->diff[0], l2->diff[1], l2->diff[2], l2->diff[3]);
-				l2->setColor(0.2f, 0.2f, 0.2f, 1.0f);
+				if (l2->lightType == LightType::point || l2->lightType == LightType::spot) {
+					l2->setOldColor(l2->material->emissive[0], l2->material->emissive[1], l2->material->emissive[2], l2->material->emissive[3]);
+					l2->emissive[0] = 0.0f;
+					l2->emissive[1] = 0.0f;
+					l2->emissive[2] = 0.0f;
+					l2->initMaterial();
+					l2->sendMaterialToShader(l2->shaderProgramIndex);
+				}
 			}
 		}
 	}
@@ -291,13 +302,17 @@ void GameObject::draw()
 
 }
 
+bool GameObject::GetLight() {
+	return false;
+}
+
 /**/
 void GameObject::SendLightsToShader()
 {
 	int i = 0;
 	for (int j = 0; j < lights.size(); j++)
 	{
-		if (lights[j]->on) {
+		if (lights[j]->on == true) {
 			sendLightToShader(i, j);
 			i++;
 		}
@@ -370,7 +385,7 @@ void GameObject::sendLightToShader(int i, int j)
 	glUniform1f(loc, lights[j]->light->cos_angle);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].type").c_str());
-	glUniform1i(loc, lights[j]->light->type);
+	glUniform1i(loc, (int)lights[j]->lightType);
 
 	loc = glGetUniformLocation(shaderProgramIndex, (const GLchar*)("lights[" + to_string(i) + "].constant").c_str());
 	glUniform1f(loc, lights[j]->light->constant);
@@ -382,7 +397,7 @@ void GameObject::sendLightToShader(int i, int j)
 	glUniform1f(loc, lights[j]->light->quadratic);
 
 	loc = glGetUniformLocation(shaderProgramIndex, "n_lights");
-	glUniform1i(loc, n_lights);
+	glUniform1i(loc, i);
 	
 }
 

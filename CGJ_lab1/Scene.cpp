@@ -16,10 +16,13 @@ void Scene::init(GLuint _shaderIndex)
 	useGizmos = false;
 	physicsEngine = new PhysicsEngine();
 	int count = gameObjects.size();
+	GameObject::n_lights = 0;
 	for (int i = 0; i < count; i++)
 	{
 		(*gameObjects[i]).initDraw(shaderIndex);
 		(*gameObjects[i]).start();
+		if ((*gameObjects[i]).GetLight())
+			GameObject::n_lights++;
 	}
 
 }

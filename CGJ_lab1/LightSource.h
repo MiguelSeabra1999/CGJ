@@ -92,5 +92,9 @@ namespace GameObjectSpace {
 			light->color[2] = b;
 		}
 
+		bool GetLight() override {
+			return true;
+		}
+
 	};
 }

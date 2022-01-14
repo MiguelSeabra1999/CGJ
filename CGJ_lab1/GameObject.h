@@ -73,6 +73,7 @@ namespace GameObjectSpace {
 		void BindTexture();
 		virtual void OnCollisionEnter(){}
 		static void turnLightOfTypeOff(LightType t);
+		virtual bool GetLight();
 		virtual void OnTriggerEnter() {}
 		void destroy();
 		void reallyDestroy();//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it

@@ -180,8 +180,10 @@ void changeSize(int w, int h) {
 //
 // Render stufff
 //
-
+void restartScene();
 void renderScene(void) {
+	if (carScene->restartScene)
+		restartScene();
 	carScene->timeUtil->updateCycle();
 	GLint loc;
 
@@ -277,11 +279,37 @@ void toggleFogginess()
 	useFog = !useFog;
 }
 void createGameObjects();
+void processKeys(unsigned char key, bool state);
+void restartScene()
+{
+	/**/
+	cout << "restart" << endl;
+	carScene->destroy();
+	carScene->loadTextures();
+	createGameObjects();
+	/**/
+	//calling already pressed key events on new scene
+	map<char, bool>::iterator it;
+	keys['r'] = false;
+	for (it = keys.begin(); it != keys.end(); it++)
+	{
+		if (keys[it->first])
+		{
+			processKeys(it->first, true);
+		}
+	}
+	//setting the keys to zero
+	keys['r'] = true;
+	for (it = keys.begin(); it != keys.end(); it++)
+	{
+		keys[it->first] = false;
+	}
+}
 // ------------------------------------------------------------
 //
 // Events from the Keyboard
 //
-void processKeys(unsigned char key, int xx, int yy, bool state)
+void processKeys(unsigned char key, bool state)
 {
 
 	switch (key) {
@@ -292,29 +320,8 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 	case 'r':case'R':
 		if (state != keys['r'])
 		{
-			/**/
-			cout << "restart" << endl;
-			carScene->destroy();
-			carScene->loadTextures();
-			createGameObjects();
-			/**/
-			//calling already pressed key events on new scene
-			map<char, bool>::iterator it;
-			keys['r'] = false;
-			for (it = keys.begin(); it != keys.end(); it++)
-			{
-				if(keys[it->first])
-				{
-					processKeys(it->first, xx, yy, state);
-				}
-			}
-			//setting the keys to zero
-			keys['r'] = true;
-			for (it = keys.begin(); it != keys.end(); it++)
-			{
-				keys[it->first] = false;
-			}
-
+		
+			restartScene();
 			break;
 		}
 	case 'c':
@@ -462,20 +469,16 @@ void processKeys(unsigned char key, int xx, int yy, bool state)
 			player->handbreak(state);
 			keys[' '] = state;
 		}
-	}
-
-
-
-	
+	}	
 }
 
 void processKeysDown(unsigned char key, int xx, int yy)
 {
-	processKeys(key, xx, yy, true);
+	processKeys(key,  true);
 }
 void processKeysUp(unsigned char key, int xx, int yy)
 {
-	processKeys(key, xx, yy, false);
+	processKeys(key,  false);
 }
 
 

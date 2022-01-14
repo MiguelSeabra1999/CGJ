@@ -89,8 +89,9 @@ void Scene::destroy()
 }
 void Scene::restart()
 {
-	destroy();
-	init(shaderIndex);
+	//destroy();
+	//init(shaderIndex);
+	restartScene = true;
 }
 void Scene::instatiate(GameObject* obj, float* pos)
 {

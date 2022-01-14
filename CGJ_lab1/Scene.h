@@ -16,7 +16,9 @@ namespace GameObjectSpace
 	class Scene
 	{
 	public:
+
 		bool useGizmos;
+		bool restartScene = false;
 		vector<GameObject*> gameObjects;
 		vector<GameObject*> gameObjectsForDeletion;//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
 		vector<GameObject*> gameObjectsForCreation;
@@ -35,6 +37,6 @@ namespace GameObjectSpace
 		void destroyQueuedGameObjects();
 		void createQueuedGameObjects();
 		void instatiate(GameObject* obj, float* pos);
-		
+	
 	};
 }

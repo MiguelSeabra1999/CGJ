@@ -33,6 +33,7 @@ namespace GameObjectSpace
 	class PhysicsEngine
 	{
 	public:
+		float deltaTime;
 		const float VELOCITYFACTOR = 1.0f / 0.016f;
 		vector<Collision*> collisions;
 		PhysicsEngine()

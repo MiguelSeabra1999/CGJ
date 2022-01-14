@@ -5,7 +5,8 @@ using namespace GameObjectSpace;
 
 void PhysicsEngine::update()
 {
-
+	cout << Scene::timeUtil->deltaTime <<endl;
+	deltaTime = VELOCITYFACTOR * Scene::timeUtil->deltaTime;
 	
 	CheckCollisions(&collisions);
 	UpdateVelocities();
@@ -58,11 +59,11 @@ void PhysicsEngine::UpdateVelocities()
 	{
 		RigidBody* rb = RigidBody::allRigidBodies[i];
 		//v = Fext/mass;
-		rb->velocity[0] += rb->allForces[0] / rb->mass;
-		rb->velocity[1] += rb->allForces[1] / rb->mass;
-		rb->velocity[2] += rb->allForces[2] / rb->mass;
+		rb->velocity[0] += rb->allForces[0] * deltaTime / rb->mass;
+		rb->velocity[1] += rb->allForces[1] * deltaTime / rb->mass;
+		rb->velocity[2] += rb->allForces[2] * deltaTime / rb->mass;
 		if(rb->damping != 0)
-			rb->dampenVelocity(VELOCITYFACTOR * Scene::timeUtil->deltaTime);
+			rb->dampenVelocity(deltaTime);
 	
 		rb->setAllForcesZero();
 	}
@@ -77,9 +78,9 @@ void PhysicsEngine::UpdatePositions()
 
 		//x = x + v;
        // cout << Scene::timeUtil->deltaTime<<endl;
-		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
-		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
-		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2] * VELOCITYFACTOR * Scene::timeUtil->deltaTime;
+		rb->transform->globalTransform.pos[0] = rb->transform->globalTransform.pos[0] + rb->velocity[0] * deltaTime;
+		rb->transform->globalTransform.pos[1] = rb->transform->globalTransform.pos[1] + rb->velocity[1] * deltaTime;
+		rb->transform->globalTransform.pos[2] = rb->transform->globalTransform.pos[2] + rb->velocity[2] * deltaTime;
 	}
 
 }

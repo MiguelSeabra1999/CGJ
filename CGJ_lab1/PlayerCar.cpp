@@ -32,19 +32,19 @@ using namespace GameObjectSpace;
 		if (velocity > 0)
 		{
 			if(handbreaking)
-				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * ((1 + handbrakeTurnPercent) * turnSpeed), 0);
+				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * ((1 + handbrakeTurnPercent) * turnSpeed * currentScene->physicsEngine->deltaTime), 0);
 			else
-				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed , 0);
+				GameObject::transform.globalTransform.rotate(0, -inputDir[1] * turnSpeed * currentScene->physicsEngine->deltaTime, 0);
 		}
 		else
 		{
 			if(handbreaking)
-				GameObject::transform.globalTransform.rotate(0, inputDir[1] * ((1+handbrakeTurnPercent)*turnSpeed), 0);
+				GameObject::transform.globalTransform.rotate(0, inputDir[1] * ((1+handbrakeTurnPercent)*turnSpeed * currentScene->physicsEngine->deltaTime), 0);
 			else
-				GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed , 0);
+				GameObject::transform.globalTransform.rotate(0, inputDir[1] * turnSpeed * currentScene->physicsEngine->deltaTime, 0);
 		}
 		float rot[16];
-		genRotationMatrix_Y(rot,0.5f* inputDir[1]);	
+		genRotationMatrix_Y(rot,0.5f* inputDir[1] * currentScene->physicsEngine->deltaTime);
 		multMatixByVector(rigidbody->velocity,rot, rigidbody->velocity);
 	
 		//rigidbody->addForce(-1 * transform.globalTransform.right[0] * velocity, 0, -1 * transform.globalTransform.right[2] * velocity);

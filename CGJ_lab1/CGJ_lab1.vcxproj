@@ -180,6 +180,8 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene.h" />
     <ClCompile Include="SmokeParticle.cpp" />
+    <ClCompile Include="TextElement.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="Wheel.cpp" />
     <ClCompile Include="Texture_Loader.cpp" />
     <ClCompile Include="vsShaderLib.cpp" />
@@ -207,7 +209,9 @@
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="RoadLimit.h" />
     <ClInclude Include="SmokeParticle.h" />
+    <ClInclude Include="TextElement.h" />
     <ClInclude Include="TimeUtil.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />
     <ClInclude Include="RigidBody.h" />

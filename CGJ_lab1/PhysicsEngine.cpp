@@ -5,7 +5,7 @@ using namespace GameObjectSpace;
 
 void PhysicsEngine::update()
 {
-	cout << Scene::timeUtil->deltaTime <<endl;
+	//cout << "ole =" << Scene::timeUtil->deltaTime << endl;
 	deltaTime = VELOCITYFACTOR * Scene::timeUtil->deltaTime;
 	
 	CheckCollisions(&collisions);

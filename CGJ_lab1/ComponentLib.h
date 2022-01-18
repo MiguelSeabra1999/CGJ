@@ -3,3 +3,4 @@
 #include "Component.h"
 #include "RigidBody.h"
 #include "Collider.h"
+#include "TextElement.h"

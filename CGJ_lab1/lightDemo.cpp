@@ -79,10 +79,6 @@ float r = 10.0f;
 // Frame counting and FPS computation
 long myTime,timebase = 0,frame = 0;
 char s[32];
-float lightPos[4] = {4.0f, 6.0f, 2.0f, 1.0f};
-float* cameraLookAt = new float(9);
-int firstCameraIndex = 0;
-//Camera* currentCam;
 bool mouseLock = false;
 CarScene* carScene;
 
@@ -247,7 +243,9 @@ void renderScene(void) {
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
 	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
-	
+
+	//carScene->updateAndDrawUI();
+
 	RenderText(shaderText, "Controls:",10.0f, 700.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	RenderText(shaderText, "Car: WASD, Space", 10.0f, 680.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	RenderText(shaderText, "Fog: Q", 10.0f, 660.0f, 0.5f, 1.0, 1.0f, 1.0f);
@@ -605,6 +603,7 @@ void createGameObjects()
 {
 	carScene = new CarScene();
 	carScene->init(shader.getProgramIndex());
+	//carScene->SetUIShader(shaderText);
 	player = carScene->player;
 
 }

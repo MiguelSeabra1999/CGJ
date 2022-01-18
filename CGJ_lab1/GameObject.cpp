@@ -300,6 +300,10 @@ void GameObject::draw()
 
 }
 
+void GameObject::DrawUI(){
+	// check if normal draw can be used, otherwise create your own
+}
+
 bool GameObject::GetLight() {
 	return false;
 }

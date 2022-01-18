@@ -20,6 +20,7 @@ namespace GameObjectSpace
 		bool useGizmos;
 		bool restartScene = false;
 		vector<GameObject*> gameObjects;
+		vector<GameObject*> uiElements;
 		vector<GameObject*> gameObjectsForDeletion;//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
 		vector<GameObject*> gameObjectsForCreation;
 	
@@ -30,6 +31,8 @@ namespace GameObjectSpace
 
 		virtual void init(GLuint _shaderIndex);
 		void updateAndDraw();
+		void updateAndDrawUI();
+
 		void sendLightsToShader();
 		virtual void changeMainCamera(unsigned char code);
 		void destroy();
@@ -37,6 +40,11 @@ namespace GameObjectSpace
 		void destroyQueuedGameObjects();
 		void createQueuedGameObjects();
 		void instatiate(GameObject* obj, float* pos);
+		void SetUIShader(VSShaderLib s) { UIShader = s; }
+		VSShaderLib GetUIShader() { return UIShader; }
+	private:
+		VSShaderLib UIShader;
+
 	
 	};
 }

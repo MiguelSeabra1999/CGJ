@@ -297,6 +297,17 @@ void CarScene::init(GLuint shaderIndex)
 	ballLight->light->linear = .2;
 	ballLight->setColor(0, 0, 1, 1);
 	gameObjects.push_back((GameObject*)ballLight);
+
+
+	/////////////////////////////////////UI/////////////////////////////////////////
+	/**/UserInterface* UI = new UserInterface(GetUIShader());
+	UI->SetUIGlobalPosition(0.0f, 0.0f);
+	UI->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	TextElement * textMesh = new TextElement(UI, "SAMPLE TEXT", 10,10,10, 0.7,0.7,0.7);
+	UI->AddComponent(textMesh);
+	uiElements.push_back(UI);
+	/**/
+
 	/**/
 	Scene::init(shaderIndex);
 

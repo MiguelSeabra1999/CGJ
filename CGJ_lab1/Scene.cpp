@@ -49,6 +49,22 @@ void Scene::updateAndDraw()
 	destroyQueuedGameObjects();
 	createQueuedGameObjects();
 }
+
+
+void Scene::updateAndDrawUI()
+{
+	int count = uiElements.size();
+	for (int i = 0; i < count; i++)
+	{
+		(*uiElements[i]).update();
+		//(*gameObjects[i]).opaqueDraw();
+		(*uiElements[i]).DrawUI();
+	}
+	destroyQueuedGameObjects();
+	createQueuedGameObjects();
+}
+
+
 void Scene::destroyQueuedGameObjects()
 {
 	int n = gameObjectsForDeletion.size();

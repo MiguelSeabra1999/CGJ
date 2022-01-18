@@ -65,6 +65,12 @@
     <ClCompile Include="SmokeParticle.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="TextElement.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="UserInterface.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collider.h">
@@ -156,6 +162,12 @@
     </ClInclude>
     <ClInclude Include="BallLight.h">
       <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextElement.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

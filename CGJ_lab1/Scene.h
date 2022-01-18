@@ -16,7 +16,7 @@ namespace GameObjectSpace
 	class Scene
 	{
 	public:
-
+		bool paused = false;
 		bool useGizmos;
 		bool restartScene = false;
 		vector<GameObject*> gameObjects;

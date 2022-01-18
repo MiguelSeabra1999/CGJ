@@ -30,12 +30,13 @@ void Scene::init(GLuint _shaderIndex)
 
 void Scene::updateAndDraw()
 {
-
-	physicsEngine->update();
+	if(!paused)
+		physicsEngine->update();
 	int count = gameObjects.size();
 	for (int i = 0; i < count; i++)
 	{
-		(*gameObjects[i]).update();
+		if(!paused)
+			(*gameObjects[i]).update();
 		(*gameObjects[i]).opaqueDraw();
 	}
 	glDepthMask(GL_FALSE);
@@ -46,8 +47,11 @@ void Scene::updateAndDraw()
 		(*gameObjects[i]).transparentDraw();
 	}
 	glDepthMask(GL_TRUE);
-	destroyQueuedGameObjects();
-	createQueuedGameObjects();
+	if (!paused)
+	{
+		destroyQueuedGameObjects();
+		createQueuedGameObjects();
+	}
 }
 
 

@@ -31,9 +31,6 @@ namespace GameObjectSpace {
 	class GameObject {
 	public:
 		Scene* currentScene = nullptr;
-		long int currentTime;
-		long int prevTime = 0;
-		long int deltaTime = 0;
 		Transform transform;
 		vector<Component*> components;
 		static vector<LightSource*> lights;

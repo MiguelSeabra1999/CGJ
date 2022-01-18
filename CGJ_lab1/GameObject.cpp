@@ -61,13 +61,6 @@ void GameObject::BindTexture()
 
 void GameObject::update()
 {
-	prevTime = currentTime;
-	//time_t now = time(nullptr);
-
-	currentTime = static_cast<long int> (time(NULL));
-	deltaTime = currentTime - prevTime;
-	//cout << currentTime << endl;
-
 
 	int n = components.size();
 	for(int i = 0; i < n; i++)
@@ -191,6 +184,7 @@ void GameObject::initDraw(GLuint myShaderProgramIndex)
 
 void GameObject:: opaqueDraw()
 {
+	
 	if (diff[3] >= 1)
 		draw();
 	drawOpaqueSons();

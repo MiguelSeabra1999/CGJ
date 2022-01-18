@@ -89,7 +89,8 @@ map<char, bool> keys = {
 	{ 'd', false },
 	{ 'q', false },
 	{'r' , false},
-	{ ' ', false}
+	{ ' ', false},
+	{ 'z', false},
 
 };
 
@@ -253,6 +254,7 @@ void renderScene(void) {
 	RenderText(shaderText, "Camera: 1,2,3,4", 10.0f, 620.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	RenderText(shaderText, "Lerp: L", 10.0f, 600.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	RenderText(shaderText, "Follow: F", 10.0f, 580.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	RenderText(shaderText, "Pause: Z", 10.0f, 560.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	popMatrix(PROJECTION);
 	popMatrix(VIEW);
 	popMatrix(MODEL);
@@ -320,8 +322,8 @@ void processKeys(unsigned char key, bool state)
 		{
 		
 			restartScene();
-			break;
 		}
+		break;
 	case 'c':
 		//printf("Camera Spherical Coordinates (%f, %f, %f)\n", alpha, beta, r);
 		break;
@@ -416,15 +418,15 @@ void processKeys(unsigned char key, bool state)
 		if(state != keys['q'])
 		{
 			toggleFogginess();
-			break;
 		}
+		break;
 	case 'u':case'U':
 		if (state != keys['u'])
 		{
 			carScene->useGizmos = !carScene->useGizmos;
 			//cout << carScene->useGizmos << endl;
-			break;
 		}
+		break;
 	case 'i':case'I':
 		if (state != keys['i'])
 		{
@@ -467,6 +469,16 @@ void processKeys(unsigned char key, bool state)
 			player->handbreak(state);
 			keys[' '] = state;
 		}
+		break;
+	case 'z':case'Z':
+		if(state != keys['z'])
+		{
+			if(state)
+				carScene->paused = !carScene->paused;
+			keys['z'] = state;
+			
+		}
+		break;	
 	}	
 }
 

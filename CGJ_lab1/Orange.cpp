@@ -1,5 +1,5 @@
 #include "Orange.h"
-
+#include "Scene.h"
 using namespace GameObjectSpace;
 
 
@@ -37,7 +37,7 @@ void Orange::update()
 			//respawn();
 		}
 	}
-	else if (currentTime > respawnTime)
+	else if (Scene::timeUtil->time > respawnTime)
 	{
 		respawn();
 	}
@@ -48,7 +48,7 @@ void Orange::update()
 void Orange::queueRespawn()
 {
 
-	respawnTime = currentTime + 2;
+	respawnTime = Scene::timeUtil->time + 2;
 	myMeshes.clear();
 	respawning = true;
 }

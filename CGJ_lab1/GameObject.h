@@ -13,7 +13,10 @@
 //#include "ComponentLib.h"
 #include "ComponentLib.h"
 #include <ctime>
-
+//.obj importer stuff
+#include "assimp/Importer.hpp"	//OO version Header!
+#include "assimp/scene.h"
+#include "meshFromAssimp.h"
 using namespace std;
 
 
@@ -22,6 +25,8 @@ extern float mCompMatrix[COUNT_COMPUTED_MATRICES][16];
 
 /// The normal matrix
 extern float mNormal3x3[9];
+
+
 
 namespace GameObjectSpace {
 	class Component;

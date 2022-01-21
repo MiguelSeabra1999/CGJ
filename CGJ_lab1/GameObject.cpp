@@ -109,7 +109,6 @@ void GameObject::drawOpaqueSons()
 	
 	for (int i = 0; i < n_sons; i++)
 	{
-		//cout << "im in sons" << endl;
 		Transform* sonTransform = transform.sons.at(i);
 		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
 		if(sonObject->diff[3] >= 1)
@@ -124,6 +123,23 @@ void GameObject::drawOpaqueSons()
 	//glDepthMask(GL_TRUE);
 
 }
+void GameObjectSpace::GameObject::drawUISons()
+{
+	int n_sons = transform.sons.size();
+
+	for (int i = 0; i < n_sons; i++)
+	{
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->DrawUI();
+
+	}
+	//glDepthMask(GL_FALSE);
+
+	//glDepthMask(GL_TRUE);
+}
+
+
 
 void GameObject::turnLightOfTypeOff(LightType t) {
 	for (int j = 0; j < GameObject::lights.size(); j++) {
@@ -195,6 +211,16 @@ void GameObject::transparentDraw()
 	draw();
 	drawTransparentSons();
 }
+
+
+void GameObject::DrawUI() {
+	//updateTransforms();
+	drawUISons();
+}
+
+
+
+
 void GameObject::draw()
 {
 	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
@@ -204,6 +230,7 @@ void GameObject::draw()
 	useTexture_two_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture2");
 	tex_loc = glGetUniformLocation(shaderProgramIndex, "texmap");
 	tex_loc1 = glGetUniformLocation(shaderProgramIndex, "texmap1");
+	
 
 	GLint loc;
 	int myMeshesLen = myMeshes.size();
@@ -236,37 +263,7 @@ void GameObject::draw()
 
 	pushMatrix(MODEL);
 
-	/**/
-	if (transform.parent != nullptr)
-	{
-		memcpy(mMatrix[MODEL], transform.parent->mModel, 16 * sizeof(float));
-		float t[3];
-		multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
-		translate(MODEL, t );
-	}
-	else
-	{
-		translate(MODEL, transform.globalTransform.pos);
-	}
-
-	rotate(MODEL, transform.globalTransform.rot[0], 1, 0, 0);
-	rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
-	rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
-	memcpy(transform.mModel, mMatrix[MODEL], 16*sizeof(float));
-
-
-	
-	scale(MODEL, transform.globalTransform.scale);
-		
-	
-	
-	if(transform.parent!= nullptr)
-	{
-		float t2[4] = {0,0,0,1};
-		float result[4];
-		multMatixTransposeByVector(result, mMatrix[MODEL], t2);
-		transform.globalTransform.setPosition(result[0], result[1], result[2]);
-	}
+	updateTransforms();
 
 	for (int i = 0; i < myMeshesLen; i++)
 	{
@@ -289,14 +286,45 @@ void GameObject::draw()
 		glBindVertexArray(0);
 	}
 	popMatrix(MODEL);
-	
 	//drawSons();
 
 }
 
-void GameObject::DrawUI(){
-	// check if normal draw can be used, otherwise create your own
+void GameObject::updateTransforms() {
+
+	/**/
+	if (transform.parent != nullptr)
+	{
+		memcpy(mMatrix[MODEL], transform.parent->mModel, 16 * sizeof(float));
+		float t[3];
+		multVectors(t, transform.localTransform.pos, transform.parent->globalTransform.scale, 3);
+		translate(MODEL, t);
+	}
+	else
+	{
+		translate(MODEL, transform.globalTransform.pos);
+	}
+
+	rotate(MODEL, transform.globalTransform.rot[0], 1, 0, 0);
+	rotate(MODEL, transform.globalTransform.rot[1], 0, 1, 0);
+	rotate(MODEL, transform.globalTransform.rot[2], 0, 0, 1);
+	memcpy(transform.mModel, mMatrix[MODEL], 16 * sizeof(float));
+
+
+
+	scale(MODEL, transform.globalTransform.scale);
+
+
+
+	if (transform.parent != nullptr)
+	{
+		float t2[4] = { 0,0,0,1 };
+		float result[4];
+		multMatixTransposeByVector(result, mMatrix[MODEL], t2);
+		transform.globalTransform.setPosition(result[0], result[1], result[2]);
+	}
 }
+
 
 bool GameObject::GetLight() {
 	return false;

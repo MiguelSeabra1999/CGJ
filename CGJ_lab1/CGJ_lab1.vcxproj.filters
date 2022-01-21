@@ -68,6 +68,12 @@
     <ClCompile Include="TextElement.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="UserInterface.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
@@ -163,11 +169,17 @@
     <ClInclude Include="BallLight.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="UserInterface.h">
+    <ClInclude Include="Canvas.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="TextElement.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="UserInterface.h">
+      <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

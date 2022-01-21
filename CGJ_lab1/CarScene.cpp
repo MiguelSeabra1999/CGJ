@@ -300,16 +300,48 @@ void CarScene::init(GLuint shaderIndex)
 
 
 	/////////////////////////////////////UI/////////////////////////////////////////
-	/**/UserInterface* UI = new UserInterface(GetUIShader());
-	UI->SetUIGlobalPosition(0.0f, 0.0f);
-	UI->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
-	TextElement * textMesh = new TextElement(UI, "SAMPLE TEXT", 10,10,10, 0.7,0.7,0.7);
-	UI->AddComponent(textMesh);
-	uiElements.push_back(UI);
-	/**/
+	UserInterface* UI = new UserInterface();
+	UI->transform.setPosition(0,0,0);
 
-	/**/
+
+
+	Canvas* canvas = new Canvas(GetUIShader());
+	canvas->SetWidth(windowX);
+	canvas->SetHeight(windowY);
+	//canvas->SetFullScreen(true);
+	canvas->transform.setLocalPosition(30, 30, 0);
+	canvas->setColor(1.0f, 1.0f, 1.0f, 0.5f);
+	canvas->textureId = 0;
+	canvas->transform.setParent(&(UI->transform));
+	Panel* panel = new Panel(canvas, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f);
+	panel->setWidth(100);
+	panel->setHeight(20);
+	//canvas->textureId = 1;
+	TextElement * textMesh = new TextElement(canvas, "Controls:", 0.0f, 0.0f, 0.5f, 1.0, 0.0f, 0.0f, 1.0f);
+	textMesh->setPanel(panel);
+	canvas->AddComponent(textMesh);
+	canvas->AddComponent(panel);
+
+
+
+	Canvas* canvas2 = new Canvas(GetUIShader());
+	canvas2->SetWidth(200);
+	canvas2->SetHeight(200);
+	canvas2->SetFullScreen(false);
+	canvas2->transform.setLocalPosition(0, 0, 0);
+	canvas2->setColor(1.0f, 0.0f, 0.0f, 0.5f);
+	canvas2->textureId = 1;
+	canvas2->transform.setParent(&(UI->transform));
+	textMesh = new TextElement(canvas2, "Henlo seabra:", 0.0f, 0.0f, 0.5f, 0.0, 1.0f, 0.0f, 1.0f);
+	canvas2->AddComponent(textMesh);
+
+
+	uiElements.push_back(UI);
+	
+
+	
 	Scene::init(shaderIndex);
+	Scene::initUI(GetUIShader()->getProgramIndex());
 
 	for (GameObject* obj : gameObjects) {
 		obj->currentScene = this;

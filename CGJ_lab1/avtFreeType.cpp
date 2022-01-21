@@ -112,7 +112,7 @@ void freeType_init(const string font_name)
 
 // render line of text
 // -------------------
-void RenderText(VSShaderLib& shaderText, std::string text, float x, float y, float scale, float cR, float cG, float cB)
+void RenderText(VSShaderLib& shaderText, std::string text, float x, float y, float scale, float cR, float cG, float cB, float alpha)
 {
 	// activate corresponding render state	
 	GLuint programIndex = shaderText.getProgramIndex();
@@ -121,10 +121,12 @@ void RenderText(VSShaderLib& shaderText, std::string text, float x, float y, flo
 	computeDerivedMatrix(PROJ_VIEW_MODEL);
 	glUniformMatrix4fv(glGetUniformLocation(programIndex, "m_pvm"), 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
 
-	glUniform3f(glGetUniformLocation(programIndex, "textColor"), cR, cG, cB);
+	glUniform4f(glGetUniformLocation(programIndex, "textColor"), cR, cG, cB,alpha);
+	glUniform1i(glGetUniformLocation(programIndex, "isText"), 1);
 
 	glActiveTexture(GL_TEXTURE0); //no frag shader o uniform sampler foi carregado com TU0
 	glBindVertexArray(VAO);
+
 
 	// iterate through all characters
 	std::string::const_iterator c;
@@ -134,6 +136,8 @@ void RenderText(VSShaderLib& shaderText, std::string text, float x, float y, flo
 
 		float xpos = x + ch.Bearing[0] * scale;
 		float ypos = y - (ch.Size[1] - ch.Bearing[1]) * scale;
+
+		//cout << "xpos, ypos char = " << xpos << ", " << ypos << endl;
 
 		float w = ch.Size[0] * scale;
 		float h = ch.Size[1] * scale;
@@ -147,6 +151,13 @@ void RenderText(VSShaderLib& shaderText, std::string text, float x, float y, flo
 			{ xpos + w, ypos,       1.0f, 1.0f },
 			{ xpos + w, ypos + h,   1.0f, 0.0f }
 		};
+
+		/** /for (int j = 0; j < 6; j++) {
+			cout << "vertices char = " << vertices[j][0] << ", " << vertices[j][1] << ", " << vertices[j][2] << ", " << vertices[j][3] << ", " << endl;
+
+		}
+		cout << "char over" << endl;
+		/**/
 		// render glyph texture over quad
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 		// update content of VBO memory

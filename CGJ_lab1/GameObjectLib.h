@@ -13,4 +13,5 @@
 #include "RoadLimit.h"
 #include "BallLight.h"
 #include "SmokeParticle.h"
+#include "Canvas.h"
 #include "UserInterface.h"

@@ -10,7 +10,6 @@
 #include "VertexAttrDef.h"
 #include "geometry.h"
 #include "avtFreeType.h"
-//#include "ComponentLib.h"
 #include "ComponentLib.h"
 #include <ctime>
 
@@ -75,8 +74,18 @@ namespace GameObjectSpace {
 		void destroy();
 		void reallyDestroy();//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
 		//void Instantiate(GameObject* obj, float* pos);
+		virtual bool GetFullScreen() { return false; }
 		virtual bool GetUI() { return false; }
-		void DrawUI();
+		virtual void SetUI(bool u) { }
+		virtual void DrawUI();
+		virtual void drawUISons();
+		virtual void SetWidth(float x) {};
+		virtual void SetHeight(float x) {};
+		virtual void SetActive(bool active) { isActive = active; }
+		virtual bool IsActive() { return isActive;  }
+		//virtual void drawUISons();
+		virtual vector<struct MyMesh> * getMyMeshes() { return &myMeshes; }
+		void updateTransforms();
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;
@@ -90,6 +99,7 @@ namespace GameObjectSpace {
 		GLint useTexture_two_uniformId;
 		GLint tex_loc;
 		GLint tex_loc1;
+		bool isActive = true;
 
 	};
 }

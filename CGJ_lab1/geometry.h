@@ -14,6 +14,7 @@ struct Material{
 // A model can be made of many meshes. Each is stored  in the following structure
 struct MyMesh {
 		GLuint vao;
+		GLuint vbo;
 		GLuint texUnits[MAX_TEXTURES];
 		texType texTypes[4];
 		float transform[16];

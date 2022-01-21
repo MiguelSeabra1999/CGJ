@@ -170,6 +170,7 @@ void changeSize(int w, int h) {
 	WinY = h;
 	carScene->currentCam->SetWidthHeightProj(WinX, WinY);
 	carScene->currentCam->UpdateProjection();
+	carScene->SetWindow(WinX, WinY);
 }
 
 
@@ -210,6 +211,9 @@ void renderScene(void) {
 
 	//############ UPDATE SCENE ####################;
 	carScene->updateAndDraw();
+	
+	
+
 	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {
@@ -231,12 +235,13 @@ void renderScene(void) {
 		if (GameObject::lights[i]->on) {
 			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
 			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
-
+	
 		}
 	}
 
 	carScene->sendLightsToShader();
-	//viewer at origin looking down at  negative z direction
+	//loadIdentity(MODEL);
+	
 	pushMatrix(MODEL);
 	loadIdentity(MODEL);
 	pushMatrix(PROJECTION);
@@ -245,16 +250,18 @@ void renderScene(void) {
 	loadIdentity(VIEW);
 	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
 
-	//carScene->updateAndDrawUI();
-
-	RenderText(shaderText, "Controls:",10.0f, 700.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Car: WASD, Space", 10.0f, 680.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Fog: Q", 10.0f, 660.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Lights: I,O,P", 10.0f, 640.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Camera: 1,2,3,4", 10.0f, 620.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Lerp: L", 10.0f, 600.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Follow: F", 10.0f, 580.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	RenderText(shaderText, "Pause: Z", 10.0f, 560.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	carScene->updateAndDrawUI();
+	//RenderText(shaderText, "Controls:",10.0f, 700.0f, 0.5f, 1.0, 0.0f, 0.0f,1.0f);
+	//RenderText(shaderText, "Car: WASD, Space", 10.0f, 680.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	//RenderText(shaderText, "Fog: Q", 10.0f, 660.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	//RenderText(shaderText, "Lights: I,O,P", 10.0f, 640.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	//RenderText(shaderText, "Camera: 1,2,3,4", 10.0f, 620.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	//RenderText(shaderText, "Lerp: L", 10.0f, 600.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	//RenderText(shaderText, "Follow: F", 10.0f, 580.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	//RenderText(shaderText, "Pause: Z", 10.0f, 560.0f, 0.5f, 1.0, 1.0f, 1.0f);
+	// Render mesh
+	// activate corresponding render state	
+	
 	popMatrix(PROJECTION);
 	popMatrix(VIEW);
 	popMatrix(MODEL);
@@ -455,11 +462,12 @@ void processKeys(unsigned char key, bool state)
 	case 'y': case 'Y':
 		/**/
 		if (state != keys['y']) {
-			//cout << "init = " << carScene->timeUtil->GetInitTime() << endl;
-			//cout << "delta = " << carScene->timeUtil->GetTimeSinceLastFrame() << endl;
-			//cout << "frame = " << carScene->timeUtil->GetTimeOfLastFrame() << endl;
-			//cout << "current = " << carScene->timeUtil->GetTimeSinceInit() << endl;
-			break;
+			/** /for (GameObject* u : carScene->uiElements) {
+				if (u->GetUI()) {
+					u->SetActive(!u->IsActive());
+				}
+			}
+			break;*/
 		}
 		/**/
 		break;
@@ -614,8 +622,9 @@ GLuint setupShaders() {
 void createGameObjects()
 {
 	carScene = new CarScene();
+	carScene->SetUIShader(&shaderText);
+	carScene->SetWindow(WinX, WinY);
 	carScene->init(shader.getProgramIndex());
-	//carScene->SetUIShader(shaderText);
 	player = carScene->player;
 
 }
@@ -623,7 +632,7 @@ void createGameObjects()
 void init()
 {
 	MyMesh amesh;
-
+	
 	/* Initialization of DevIL */
 	if (ilGetInteger(IL_VERSION_NUM) < IL_VERSION)
 	{
@@ -702,6 +711,8 @@ int main(int argc, char **argv) {
 		return(1);
 
 	init();
+
+	
 
 	//  GLUT main loop
 	glutMainLoop();

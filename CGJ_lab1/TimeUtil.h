@@ -34,9 +34,9 @@ public:
     }
 
     void init() {
-        cout << duration_cast<milliseconds>(
+        /** /cout << duration_cast<milliseconds>(
             system_clock::now().time_since_epoch()
-            ).count() << endl;
+            ).count() << endl;/**/
         initialization_time = duration_cast<milliseconds>(
             system_clock::now().time_since_epoch()
             ).count();

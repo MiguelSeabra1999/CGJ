@@ -28,6 +28,20 @@ void Scene::init(GLuint _shaderIndex)
 }
 
 
+void Scene::initUI(GLint shaderID)
+{
+	
+	
+	int count = uiElements.size();
+	for (int i = 0; i < count; i++)
+	{
+		//cout << "initialized ui draw" << endl;
+		(*uiElements[i]).initDraw(shaderID);
+		(*uiElements[i]).start();
+	}
+
+}
+
 void Scene::updateAndDraw()
 {
 	if(!paused)
@@ -60,9 +74,17 @@ void Scene::updateAndDrawUI()
 	int count = uiElements.size();
 	for (int i = 0; i < count; i++)
 	{
-		(*uiElements[i]).update();
-		//(*gameObjects[i]).opaqueDraw();
-		(*uiElements[i]).DrawUI();
+		//cout << "updating ui elements" << endl;
+		if ((*uiElements[i]).IsActive()) {
+			//(*gameObjects[i]).opaqueDraw();
+			//do something similar to text rendering 
+			if ((*uiElements[i]).GetFullScreen()) {
+				(*uiElements[i]).SetWidth(windowX);
+				(*uiElements[i]).SetHeight(windowY);
+			}
+			(*uiElements[i]).DrawUI();
+			(*uiElements[i]).update();
+		}
 	}
 	destroyQueuedGameObjects();
 	createQueuedGameObjects();

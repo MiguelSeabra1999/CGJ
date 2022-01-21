@@ -15,3 +15,4 @@
 #include "SmokeParticle.h"
 #include "Canvas.h"
 #include "UserInterface.h"
+#include "Head.h"

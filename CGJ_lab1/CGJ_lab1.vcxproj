@@ -169,7 +169,9 @@
     <ClCompile Include="FixedTopDownCamera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Head.cpp" />
     <ClCompile Include="lightDemo.cpp" />
+    <ClCompile Include="meshFromAssimp.cpp" />
     <ClCompile Include="Orange.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="PlayerCar.cpp" />
@@ -206,8 +208,10 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="CubeObj.h" />
     <ClInclude Include="FixedTopDownCamera.h" />
+    <ClInclude Include="Head.h" />
     <ClInclude Include="Headlight.h" />
     <ClInclude Include="LightSource.h" />
+    <ClInclude Include="meshFromAssimp.h" />
     <ClInclude Include="Orange.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="RoadLimit.h" />

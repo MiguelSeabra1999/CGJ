@@ -224,6 +224,11 @@ void CarScene::init(GLuint shaderIndex)
 	gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(1, 1, 1);
 
+	Head* head = new Head();
+	head->transform.setPosition(mapSize + mapSize/10, 4, 0);
+	gameObjects.push_back((GameObject*)head);
+
+
 	//#################### Cameras ##############################
 	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
 	//followCamera->transform.setParent(&(playerCar->transform));

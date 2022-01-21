@@ -68,13 +68,13 @@
     <ClCompile Include="TextElement.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Canvas.cpp">
+    <ClCompile Include="UserInterface.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Panel.cpp">
+    <ClCompile Include="meshFromAssimp.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="UserInterface.cpp">
+    <ClCompile Include="Head.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -169,16 +169,16 @@
     <ClInclude Include="BallLight.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Canvas.h">
+    <ClInclude Include="UserInterface.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="TextElement.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Panel.h">
+    <ClInclude Include="meshFromAssimp.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="UserInterface.h">
+    <ClInclude Include="Head.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>

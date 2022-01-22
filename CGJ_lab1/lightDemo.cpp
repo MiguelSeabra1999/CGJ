@@ -246,7 +246,7 @@ void renderScene(void) {
 	loadIdentity(VIEW);
 	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
 
-	carScene->updateAndDrawUI();
+	scene->updateAndDrawUI();
 	//RenderText(shaderText, "Controls:",10.0f, 700.0f, 0.5f, 1.0, 0.0f, 0.0f,1.0f);
 	//RenderText(shaderText, "Car: WASD, Space", 10.0f, 680.0f, 0.5f, 1.0, 1.0f, 1.0f);
 	//RenderText(shaderText, "Fog: Q", 10.0f, 660.0f, 0.5f, 1.0, 1.0f, 1.0f);

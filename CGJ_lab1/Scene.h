@@ -16,6 +16,7 @@ namespace GameObjectSpace
 	class Scene
 	{
 	public:
+		PlayerCar* player;
 		bool paused = false;
 		bool useGizmos;
 		bool restartScene = false;
@@ -41,6 +42,7 @@ namespace GameObjectSpace
 		void createQueuedGameObjects();
 		void instatiate(GameObject* obj, float* pos);
 		void SetUIShader(VSShaderLib s) { UIShader = s; }
+		virtual void loadTextures(){}
 		VSShaderLib GetUIShader() { return UIShader; }
 	private:
 		VSShaderLib UIShader;

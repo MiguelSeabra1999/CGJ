@@ -20,6 +20,7 @@ void Orange::start()
 {
 	GameObject::start();
 	respawn();
+	//queueRespawn();
 }
 void Orange::update()
 {
@@ -34,7 +35,6 @@ void Orange::update()
 		if (abs(transform.globalTransform.pos[0]) > bounds || abs(transform.globalTransform.pos[1]) > bounds || abs(transform.globalTransform.pos[2]) > bounds)
 		{
 			queueRespawn();
-			//respawn();
 		}
 	}
 	else if (Scene::timeUtil->time > respawnTime)
@@ -47,14 +47,14 @@ void Orange::update()
 
 void Orange::queueRespawn()
 {
-
+	cout << "start";
 	respawnTime = Scene::timeUtil->time + 2;
 	myMeshes.clear();
 	respawning = true;
 }
 void Orange::respawn()
 {
-
+	cout << "baCK";
 	respawning = false;
 	respawnTime = 0;
 	initDraw(shaderProgramIndex);

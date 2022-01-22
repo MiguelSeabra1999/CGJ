@@ -22,6 +22,8 @@ using namespace GameObjectSpace;
 	{
 		GameObject::start();
 		rigidbody = (RigidBody*)GetComponent("RigidBody");
+		memcpy(startingPos, transform.globalTransform.pos, 3 * sizeof(float));
+		memcpy(startingRot, transform.globalTransform.rot, 3 * sizeof(float));
 	}
 	void PlayerCar::update()
 	{
@@ -108,10 +110,24 @@ using namespace GameObjectSpace;
 
 	void PlayerCar::OnTriggerEnter()
 	{
+		//respawn();
 		currentScene->restart();
 	}
 	void PlayerCar::handbreak(bool state)
 	{
 		handbreaking = state;
 		
+	}
+
+	void PlayerCar::respawn()
+	{
+		hp -= 1;
+		memcpy(transform.globalTransform.pos, startingPos, 3 * sizeof(float));
+		memcpy(transform.globalTransform.rot, startingRot, 3 * sizeof(float));
+		rigidbody->setVelocitiesZero();
+		if(hp <= 0)
+		{
+			cout << "restart";
+			currentScene->restart();
+		}
 	}

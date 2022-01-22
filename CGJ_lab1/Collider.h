@@ -24,6 +24,7 @@ namespace GameObjectSpace
 		RigidBody* rigidbody;
 		float restitution = 1;
 		bool isTrigger = false;
+		bool isActive = true;
 		static vector<Collider*> allColliders;
 		Collider(GameObject * owner);
 

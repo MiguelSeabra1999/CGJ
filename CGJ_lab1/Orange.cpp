@@ -12,14 +12,16 @@ Orange::Orange(float mapSize)
 	rigidbody->damping = 0;
 	AddComponent(rigidbody);
 	moveInRandomDirection();
-
+	
 	bounds = mapSize / 2;
 
 }
 void Orange::start()
 {
 	GameObject::start();
+	collider = (Collider*)GetComponent("Collider");
 	respawn();
+	//queueRespawn();
 }
 void Orange::update()
 {
@@ -34,7 +36,6 @@ void Orange::update()
 		if (abs(transform.globalTransform.pos[0]) > bounds || abs(transform.globalTransform.pos[1]) > bounds || abs(transform.globalTransform.pos[2]) > bounds)
 		{
 			queueRespawn();
-			//respawn();
 		}
 	}
 	else if (Scene::timeUtil->time > respawnTime)
@@ -47,14 +48,14 @@ void Orange::update()
 
 void Orange::queueRespawn()
 {
-
+	collider->isActive = false;
 	respawnTime = Scene::timeUtil->time + 2;
 	myMeshes.clear();
 	respawning = true;
 }
 void Orange::respawn()
 {
-
+	collider->isActive = true;
 	respawning = false;
 	respawnTime = 0;
 	initDraw(shaderProgramIndex);
@@ -93,6 +94,10 @@ void Orange::moveInRandomDirection()
 	rigidbody->setAcceleration(transform.globalTransform.forward);
 	multVectorConstant(rigidbody->acceleration, rigidbody->acceleration, acceleration);
 	/**/
+}
+void Orange::OnTriggerEnter()
+{
+	queueRespawn();
 }
 
 

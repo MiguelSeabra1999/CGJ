@@ -80,7 +80,7 @@ float r = 10.0f;
 long myTime,timebase = 0,frame = 0;
 char s[32];
 bool mouseLock = false;
-CarScene* carScene;
+Scene* scene;
 
 map<char, bool> keys = {
 	{ 'w', false },
@@ -168,9 +168,9 @@ void changeSize(int w, int h) {
 	
 	WinX = w;
 	WinY = h;
-	carScene->currentCam->SetWidthHeightProj(WinX, WinY);
-	carScene->currentCam->UpdateProjection();
-	carScene->SetWindow(WinX, WinY);
+	scene->currentCam->SetWidthHeightProj(WinX, WinY);
+	scene->currentCam->UpdateProjection();
+	scene->SetWindow(WinX, WinY);
 }
 
 
@@ -180,20 +180,20 @@ void changeSize(int w, int h) {
 //
 void restartScene();
 void renderScene(void) {
-	if (carScene->restartScene)
+	if (scene->restartScene)
 		restartScene();
-	carScene->timeUtil->updateCycle();
+	scene->timeUtil->updateCycle();
 	GLint loc;
 
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-	carScene->currentCam->UpdateProjection();
+	scene->currentCam->UpdateProjection();
 	
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	lookAt(carScene->currentCam->lookAt[0], carScene->currentCam->lookAt[1], carScene->currentCam->lookAt[2], carScene->currentCam->lookAt[3], carScene->currentCam->lookAt[4], carScene->currentCam->lookAt[5], carScene->currentCam->lookAt[6], carScene->currentCam->lookAt[7], carScene->currentCam->lookAt[8]);
+	lookAt(scene->currentCam->lookAt[0], scene->currentCam->lookAt[1], scene->currentCam->lookAt[2], scene->currentCam->lookAt[3], scene->currentCam->lookAt[4], scene->currentCam->lookAt[5], scene->currentCam->lookAt[6], scene->currentCam->lookAt[7], scene->currentCam->lookAt[8]);
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
@@ -210,10 +210,7 @@ void renderScene(void) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//############ UPDATE SCENE ####################;
-	carScene->updateAndDraw();
-	
-	
-
+	scene->updateAndDraw();
 	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {
@@ -239,9 +236,8 @@ void renderScene(void) {
 		}
 	}
 
-	carScene->sendLightsToShader();
-	//loadIdentity(MODEL);
-	
+	scene->sendLightsToShader();
+	//viewer at origin looking down at  negative z direction
 	pushMatrix(MODEL);
 	loadIdentity(MODEL);
 	pushMatrix(PROJECTION);
@@ -291,8 +287,8 @@ void restartScene()
 {
 	/**/
 	cout << "restart" << endl;
-	carScene->destroy();
-	carScene->loadTextures();
+	scene->destroy();
+	scene->loadTextures();
 	createGameObjects();
 	/**/
 	//calling already pressed key events on new scene
@@ -339,25 +335,25 @@ void processKeys(unsigned char key, bool state)
 	case 'w':case 'W':
 		if(state != keys['w'])
 		{
-			if(carScene->currentCam->GetLerp())
+			if(scene->currentCam->GetLerp())
 				mouseLock = state;
 			player->forward(state);
 			keys['w'] = state;
-			if (carScene->currentCam->GetMovingAttr()) {
-				carScene->currentCam->SetPlayerMoving(state);
+			if (scene->currentCam->GetMovingAttr()) {
+				scene->currentCam->SetPlayerMoving(state);
 			}
 		}
 		break;
 	case 's':case 'S':
 		if (state != keys['s'])
 		{
-			if (carScene->currentCam->GetLerp())
+			if (scene->currentCam->GetLerp())
 				mouseLock = state;
 
 			player->backward(state);
 			keys['s'] = state;
-			if (carScene->currentCam->GetMovingAttr()) {
-				carScene->currentCam->SetPlayerMoving(state);
+			if (scene->currentCam->GetMovingAttr()) {
+				scene->currentCam->SetPlayerMoving(state);
 			}
 		}
 		break;
@@ -381,56 +377,57 @@ void processKeys(unsigned char key, bool state)
 	case 'l':case 'L':
 		if (state != keys['f'])
 		{
-			if (carScene->currentCam->GetMovingAttr()) {
-				carScene->currentCam->SetLerp(!carScene->currentCam->lerp);
+			if (scene->currentCam->GetMovingAttr()) {
+				scene->currentCam->SetLerp(!scene->currentCam->lerp);
 			}
 		}
 		break;
 	case 'f':case 'F':
 		if (state != keys['f'])
 		{
-			carScene->currentCam->SetFollow(!carScene->currentCam->follow);
+			scene->currentCam->SetFollow(!scene->currentCam->follow);
 		}
 		break;
 	case '1':
 		if (state != keys['1'])
 		{
-			carScene->changeMainCamera('1');
-			carScene->currentCam->SetCameraCharacteristics(CamType_t::perspective_t, followCameraPerspectiveArguments, WinX, WinY);
+			scene->changeMainCamera('1');
+			scene->currentCam->SetCameraCharacteristics(CamType_t::perspective_t, followCameraPerspectiveArguments, WinX, WinY);
 		}
 		break;
 	case '2':
 		if (state != keys['2'])
 		{
-			carScene->changeMainCamera('2');
-			carScene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, followCameraOrthoArguments, WinX, WinY);
+			scene->changeMainCamera('2');
+			scene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, followCameraOrthoArguments, WinX, WinY);
 		}
 		break;
 	case '3':
 		if (state != keys['3'])
 		{
-			carScene->changeMainCamera('3');
-			carScene->currentCam->SetCameraCharacteristics(CamType_t::perspective_t, fixedCameraPerspectiveArguments, WinX, WinY);
+			scene->changeMainCamera('3');
+			scene->currentCam->SetCameraCharacteristics(CamType_t::perspective_t, fixedCameraPerspectiveArguments, WinX, WinY);
 
 		}
 		break;
 	case '4':
 		if (state != keys['4'])
 		{
-			carScene->changeMainCamera('4');
-			carScene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
+			scene->changeMainCamera('4');
+			scene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
 		}
 		break;
 	case 'q':case'Q':
 		if(state != keys['q'])
 		{
+			player->respawn();
 			toggleFogginess();
 		}
 		break;
 	case 'u':case'U':
 		if (state != keys['u'])
 		{
-			carScene->useGizmos = !carScene->useGizmos;
+			scene->useGizmos = !scene->useGizmos;
 			//cout << carScene->useGizmos << endl;
 		}
 		break;
@@ -482,7 +479,7 @@ void processKeys(unsigned char key, bool state)
 		if(state != keys['z'])
 		{
 			if(state)
-				carScene->paused = !carScene->paused;
+				scene->paused = !scene->paused;
 			keys['z'] = state;
 			
 		}
@@ -542,7 +539,7 @@ void processMouseMotion(int xx, int yy)
 
 	float deltaX, deltaY;
 	float rAux = 0.0f;
-	if((!mouseLock) && player->velocity==0 || !carScene->currentCam->lerp) {
+	if((!mouseLock) && player->velocity==0 || !scene->currentCam->lerp) {
 	
 		deltaX = xx - startX;
 		deltaY = yy - startY;
@@ -551,12 +548,12 @@ void processMouseMotion(int xx, int yy)
 		startY = yy;
 	
 		// left mouse button: move camera
-		if (tracking == 1 && carScene->currentCam->GetMovingAttr()) {
+		if (tracking == 1 && scene->currentCam->GetMovingAttr()) {
 			alpha -= (deltaX * 0.003f);
 			beta += (deltaY* 0.003f);
 		}
-		carScene->currentCam->alpha = alpha;
-		carScene->currentCam->beta = beta;
+		scene->currentCam->alpha = alpha;
+		scene->currentCam->beta = beta;
 	
 	}
 
@@ -621,11 +618,11 @@ GLuint setupShaders() {
 //
 void createGameObjects()
 {
-	carScene = new CarScene();
-	carScene->SetUIShader(&shaderText);
-	carScene->SetWindow(WinX, WinY);
-	carScene->init(shader.getProgramIndex());
-	player = carScene->player;
+	scene = new CarScene();
+	scene->SetUIShader(&shaderText);
+	scene->SetWindow(WinX, WinY);
+	scene->init(shader.getProgramIndex());
+	player = scene->player;
 
 }
 
@@ -646,7 +643,7 @@ void init()
 
 
 	createGameObjects();
-	carScene->loadTextures();
+	scene->loadTextures();
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

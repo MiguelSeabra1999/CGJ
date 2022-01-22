@@ -8,6 +8,7 @@ namespace GameObjectSpace{
 	{
 	public:
 		RigidBody* rigidbody = nullptr;
+		int hp = 3;
 		float velocity;
 		float acceleration;
 		float backAcceleration = 0.0054;
@@ -28,8 +29,11 @@ namespace GameObjectSpace{
 		void OnCollisionEnter();
 		void OnTriggerEnter();
 		void handbreak(bool state);
+		void respawn();
 	private:
 		float inputDir[2];
+		float startingPos[3];
+		float startingRot[3];
 		
 
 	};

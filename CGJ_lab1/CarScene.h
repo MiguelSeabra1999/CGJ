@@ -5,7 +5,7 @@ namespace GameObjectSpace
 	class CarScene : public Scene
 	{
 	public:
-		PlayerCar* player;
+		
 		vector<Camera*> cameras;
 		// Camera constants and values for easy definition
 		float WinX = 1024, WinY = 768;

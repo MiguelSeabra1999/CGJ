@@ -110,8 +110,8 @@ using namespace GameObjectSpace;
 
 	void PlayerCar::OnTriggerEnter()
 	{
-		//respawn();
-		currentScene->restart();
+		respawn();
+		//currentScene->restart();
 	}
 	void PlayerCar::handbreak(bool state)
 	{

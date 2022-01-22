@@ -14,6 +14,7 @@ namespace GameObjectSpace {
 		float dir[3];
 
 		RigidBody* rigidbody;
+		Collider* collider;
 		float bounds;
 
 		Orange(float mapSize);
@@ -24,6 +25,7 @@ namespace GameObjectSpace {
 		void queueRespawn();
 		void goToRandomPos();
 		void moveInRandomDirection();
+		void OnTriggerEnter();
 	};
 }
 

@@ -28,8 +28,10 @@ void PhysicsEngine::CheckCollisions(vector<Collision*>* collisions)
 	{
 		for (int j = i + 1; j < n; j++)
 		{
-		/**/	if (Collider::allColliders[i]->rigidbody == nullptr && Collider::allColliders[j]->rigidbody == nullptr)
-				continue;/**/
+			if (Collider::allColliders[i]->rigidbody == nullptr && Collider::allColliders[j]->rigidbody == nullptr)
+				continue;
+			if (!Collider::allColliders[i]->isActive || !Collider::allColliders[j]->isActive)
+				continue;
 			Collision* col = nullptr;
 			if (Collider::allColliders[i]->checkCollision(Collider::allColliders[j], &col))
 			{

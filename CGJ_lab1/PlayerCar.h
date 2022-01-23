@@ -8,7 +8,7 @@ namespace GameObjectSpace{
 	{
 	public:
 		RigidBody* rigidbody = nullptr;
-		int hp = 3;
+		int hp = 5;
 		float velocity;
 		float acceleration;
 		float backAcceleration = 0.0054;

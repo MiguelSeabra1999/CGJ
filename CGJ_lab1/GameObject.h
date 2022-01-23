@@ -50,6 +50,7 @@ namespace GameObjectSpace {
 		static vector<GLuint*> textureIds;
 		int textureId = -1;
 		int secondTextureId = -1;
+		string name = "GameObject";
 
 		GameObject();
 		Component* GetComponent(const char* type);
@@ -72,7 +73,7 @@ namespace GameObjectSpace {
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
 		void BindTexture();
-		virtual void OnCollisionEnter(){}
+		virtual void OnCollisionEnter() {}
 		static void turnLightOfTypeOff(LightType t);
 		virtual bool GetLight();
 		virtual void OnTriggerEnter() {}
@@ -86,11 +87,12 @@ namespace GameObjectSpace {
 		virtual void drawUISons();
 		virtual void SetWidth(float x) {};
 		virtual void SetHeight(float x) {};
-		virtual void SetActive(bool active) { isActive = active; }
-		virtual bool IsActive() { return isActive;  }
+		virtual void SetActive(bool active);
+		virtual bool IsActive() { return isActive; }
 		//virtual void drawUISons();
-		virtual vector<struct MyMesh> * getMyMeshes() { return &myMeshes; }
+		virtual vector<struct MyMesh>* getMyMeshes() { return &myMeshes; }
 		void updateTransforms();
+		void updateCurrentScene(Scene* sc);
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;

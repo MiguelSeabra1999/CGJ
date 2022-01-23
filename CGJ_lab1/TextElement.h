@@ -29,5 +29,6 @@ namespace GameObjectSpace
 		void setText(const char* t) { text = t; }
 		void setSimpleColor(float r, float g, float b, float a) { simpleColor[0] = r, simpleColor[1] = g, simpleColor[2] = b;  simpleColor[3] = a;}
 		void setPosition(float x, float y, float scale) { position[0] = x, position[1] = y, position[2] = scale; }
+		void setActive(bool b);
 	};
 }

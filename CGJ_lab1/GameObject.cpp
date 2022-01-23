@@ -4,9 +4,9 @@
 #include "LightSource.h"
 using namespace GameObjectSpace;
 
-vector<LightSource*> GameObject::lights;
-int GameObject::n_lights;
-vector<GLuint*> GameObject::textureIds;
+vector<LightSource*> GameObject::lights{};
+int GameObject::n_lights = 0;
+vector<GLuint*> GameObject::textureIds{};
 
 GameObject::GameObject()
 {
@@ -170,6 +170,22 @@ void GameObject::turnLightOfTypeOff(LightType t) {
 
 };
 
+void GameObject::SetActive(bool act) {
+	int n_sons = transform.sons.size();
+	isActive = act;
+
+	for (Component* comp : components) {
+		comp->setActive(act);
+	}
+	for (int i = 0; i < n_sons; i++)
+	{
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->SetActive(act);
+
+	}
+}
+
 
 void GameObject::startAndInitDrawSons()
 {
@@ -232,7 +248,7 @@ void GameObject::draw()
 	tex_loc1 = glGetUniformLocation(shaderProgramIndex, "texmap1");
 	
 
-	GLint loc;
+	GLint loc = 0;
 	int myMeshesLen = myMeshes.size();
 
 	if (textureId == -1) {
@@ -322,6 +338,20 @@ void GameObject::updateTransforms() {
 		float result[4];
 		multMatixTransposeByVector(result, mMatrix[MODEL], t2);
 		transform.globalTransform.setPosition(result[0], result[1], result[2]);
+	}
+}
+
+void GameObjectSpace::GameObject::updateCurrentScene(Scene* sc)
+{
+	currentScene = sc;
+	int n_sons = transform.sons.size();
+
+	for (int i = 0; i < n_sons; i++)
+	{
+
+		Transform* sonTransform = transform.sons.at(i);
+		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
+		sonObject->updateCurrentScene(sc);
 	}
 }
 

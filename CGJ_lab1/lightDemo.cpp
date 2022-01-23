@@ -159,7 +159,7 @@ void refresh(int value)
 
 void changeSize(int w, int h) {
 
-	float ratio;
+	float ratio = 1.0f;
 	// Prevent a divide by zero, when window is too short
 	if(h == 0)
 		h = 1;
@@ -183,7 +183,7 @@ void renderScene(void) {
 	if (scene->restartScene)
 		restartScene();
 	scene->timeUtil->updateCycle();
-	GLint loc;
+	GLint loc = 0;
 
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -420,8 +420,16 @@ void processKeys(unsigned char key, bool state)
 	case 'q':case'Q':
 		if(state != keys['q'])
 		{
-			player->respawn();
 			toggleFogginess();
+		}
+		break;
+
+	case 'h':case'H':
+		if (state != keys['h'])
+		{
+			for(GameObject * obj : scene->uiElements){
+				obj->SetActive(!obj->IsActive());
+			}
 		}
 		break;
 	case 'u':case'U':

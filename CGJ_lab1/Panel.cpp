@@ -1,21 +1,37 @@
 #include "Panel.h"
 #include "Canvas.h"
+#include "Scene.h"
 using namespace GameObjectSpace;
 
 void Panel::update()
 {
+    updateHeart();
     updatePositions();
     updateScales();
     updateColors();
     updateWidthHeight();
+    updateRotation();
+}
+
+void Panel::updateHeart() {
+    if (heart == true) {
+        int hp = owner->currentScene->player->hp;
+        if (hp > 0) {
+            if (hp + 1 == mesh_index) {
+                isActive = false;
+            }
+        }
+    }
+
+
 }
 
 void Panel::updatePositions()
 {
     Canvas* ownerAux = (Canvas*)owner;
     float * pos = ownerAux->meshPositions.at(mesh_index);
-    pos[0] = owner->transform.globalTransform.pos[0] + position[0];
-    pos[1] = owner->transform.globalTransform.pos[1] + position[1];
+    pos[0] = ownerAux->transform.globalTransform.pos[0] + position[0];
+    pos[1] = ownerAux->transform.globalTransform.pos[1] + position[1];
 }
 
 void Panel::updateScales()
@@ -32,6 +48,13 @@ void Panel::updateWidthHeight()
     float* w_h = ownerAux->meshWidthHeight.at(mesh_index);
     w_h[0] = width;
     w_h[1] = height;
+}
+
+void Panel::updateRotation()
+{
+    Canvas* ownerAux = (Canvas*)owner;
+    float* rot = ownerAux->meshRotations.at(mesh_index);
+    *rot = rotation + (ownerAux->rotation);
 }
 
 void Panel::updateColors()
@@ -58,11 +81,14 @@ void Panel::init()
     ownerAux->meshScales.push_back(sc);
     float* w_h = new float[2];
     ownerAux->meshWidthHeight.push_back(w_h);
+    float* rot = new float;
+    *rot = rotation;
+    ownerAux->meshRotations.push_back(rot);
     updatePositions();
     updateScales();
     updateWidthHeight();
+    updateRotation();
     ownerAux->meshTextures.push_back(&textureId);
-
     ownerAux->generateMesh(mesh_index);
 }
 

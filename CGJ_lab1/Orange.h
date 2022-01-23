@@ -12,6 +12,7 @@ namespace GameObjectSpace {
 		long int respawnTime = 0;
 		bool respawning = false;
 		float dir[3];
+		string name = "Orange";
 
 		RigidBody* rigidbody;
 		Collider* collider;

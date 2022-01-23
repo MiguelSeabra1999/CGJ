@@ -130,4 +130,7 @@ using namespace GameObjectSpace;
 			cout << "restart";
 			currentScene->restart();
 		}
+		else {
+
+		}
 	}

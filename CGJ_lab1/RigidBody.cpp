@@ -3,7 +3,8 @@
 
 //#include "ComponentLib.h"
 using namespace GameObjectSpace;
-vector<RigidBody*> RigidBody::allRigidBodies;
+vector<RigidBody*> RigidBody::allRigidBodies{};
+
 RigidBody::RigidBody(GameObject* owner) :Component(owner)
 {
 	transform = &(owner->transform);

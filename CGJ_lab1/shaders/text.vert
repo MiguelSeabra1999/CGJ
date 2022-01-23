@@ -5,10 +5,10 @@ out vec2 TexCoords;
 
 
 uniform mat4 m_pvm;
-uniform bool isText;
+uniform int isText;
 void main()
 {
-       if(isText){
+       if(isText==1 || isText == 2){
             gl_Position = m_pvm * vec4(vertex.x , vertex.y, 0.0, 1.0);
         }
         else{

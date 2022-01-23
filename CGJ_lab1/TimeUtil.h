@@ -4,7 +4,8 @@
 #include <ctime>
 #include <sys/timeb.h>
 #include <time.h>
-using std::cout; using std::endl;
+
+//using std::cout; using std::endl;
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
 using std::chrono::seconds;
@@ -13,15 +14,15 @@ using std::chrono::system_clock;
 
 class TimeUtil {
 private:
-    long long initialization_time;
-    long long time_of_last_frame;
-    long long time_since_last_frame;
-    long long time_since_initialization;
+    static long long initialization_time;
+    static long long time_of_last_frame;
+    static long long time_since_last_frame;
+    static long long time_since_initialization;
     
 public:
-    float deltaTime = 0;
-    float time = 0;
-    void updateCycle() {
+    static float deltaTime;
+    static float time;
+    static void updateCycle() {
         //cout << "here" << endl;
         long long millisec_since_epoch = duration_cast<milliseconds>(
             system_clock::now().time_since_epoch()
@@ -33,10 +34,12 @@ public:
         time = time_since_initialization / 1000.0;
     }
 
-    void init() {
+    static void init() {
         /** /cout << duration_cast<milliseconds>(
             system_clock::now().time_since_epoch()
             ).count() << endl;/**/
+        deltaTime = 0;
+        time = 0;
         initialization_time = duration_cast<milliseconds>(
             system_clock::now().time_since_epoch()
             ).count();

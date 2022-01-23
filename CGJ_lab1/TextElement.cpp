@@ -20,11 +20,15 @@ void TextElement::update()
 		x = (*owner).transform.globalTransform.pos[0];
 		y = (*owner).transform.globalTransform.pos[1];
 	}
-
-	RenderText(*((Canvas*)owner)->shader, text, x + position[0], y + position[1], position[2], simpleColor[0], simpleColor[1], simpleColor[2], simpleColor[3]);
+	if(isActive)
+		RenderText(*((Canvas*)owner)->shader, text, x + position[0], y + position[1], position[2], simpleColor[0], simpleColor[1], simpleColor[2], simpleColor[3]);
 
 }
 
 void TextElement::init()
 {
+}
+
+void TextElement::setActive(bool b) {
+	Component::setActive(b);
 }

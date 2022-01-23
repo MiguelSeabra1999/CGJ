@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f42960c1-d224-424b-8bc3-d3b88ca18563}</ProjectGuid>
-    <RootNamespace>CGJ_lab1</RootNamespace>
+    <ProjectGuid>{7dbfe5f0-e750-4974-ae2a-1a758cd6ed7f}</ProjectGuid>
+    <RootNamespace>CGJ_PROJ</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -77,12 +77,12 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)Dependencies\devil\include;$(ProjectDir)Dependencies\freeglut\include;$(ProjectDir)Dependencies\glew\include;$(ProjectDir)Dependencies\assimp\include;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Dependencies\lib\$(Platform);$(LibraryPath)</LibraryPath>
-    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)Dependencies\devil\include;$(ProjectDir)Dependencies\freeglut\include;$(ProjectDir)Dependencies\glew\include;$(ProjectDir)Dependencies\assimp\include;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Dependencies\lib\$(Platform);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -125,7 +125,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;assimp.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -150,7 +149,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>freeglut.lib;glew32.lib;DevIL.lib;assimp.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -161,87 +159,76 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Dependencies.exe" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="avtFreeType.cpp" />
     <ClCompile Include="AVTmathLib.cpp" />
     <ClCompile Include="basic_geometry.cpp" />
-    <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CarScene.cpp" />
-    <ClCompile Include="FixedTopDownCamera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CubeObj.cpp" />
+    <ClCompile Include="FixedTopDownCamera.cpp" />
+    <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Head.cpp" />
     <ClCompile Include="lightDemo.cpp" />
     <ClCompile Include="meshFromAssimp.cpp" />
     <ClCompile Include="Orange.cpp" />
+    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="PlayerCar.cpp" />
-    <ClCompile Include="CubeObj.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="RoadLimit.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Scene.h" />
     <ClCompile Include="SmokeParticle.cpp" />
     <ClCompile Include="TextElement.cpp" />
-    <ClCompile Include="Canvas.cpp" />
-    <ClCompile Include="UserInterface.cpp" />
-    <ClCompile Include="Wheel.cpp" />
     <ClCompile Include="Texture_Loader.cpp" />
+    <ClCompile Include="TimeUtil.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="vsShaderLib.cpp" />
+    <ClCompile Include="Wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="avtFreeType.h" />
     <ClInclude Include="AVTmathLib.h" />
     <ClInclude Include="BallLight.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Panel.h" />
+    <ClInclude Include="Canvas.h" />
     <ClInclude Include="CarScene.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentLib.h" />
     <ClInclude Include="cube.h" />
-    <ClInclude Include="FollowCamera.h" />
-    <ClInclude Include="ft2build.h" />
-    <ClInclude Include="GameObjectLib.h" />
-    <ClInclude Include="geometry.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="CubeObj.h" />
     <ClInclude Include="FixedTopDownCamera.h" />
+    <ClInclude Include="FollowCamera.h" />
+    <ClInclude Include="ft2build.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectLib.h" />
+    <ClInclude Include="geometry.h" />
     <ClInclude Include="Head.h" />
     <ClInclude Include="Headlight.h" />
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="meshFromAssimp.h" />
     <ClInclude Include="Orange.h" />
+    <ClInclude Include="Panel.h" />
     <ClInclude Include="PhysicsEngine.h" />
-    <ClInclude Include="RoadLimit.h" />
-    <ClInclude Include="SmokeParticle.h" />
-    <ClInclude Include="TextElement.h" />
-    <ClInclude Include="TimeUtil.h" />
-    <ClInclude Include="Canvas.h" />
-    <ClInclude Include="UserInterface.h" />
-    <ClInclude Include="Wheel.h" />
     <ClInclude Include="PlayerCar.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="RoadLimit.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SmokeParticle.h" />
+    <ClInclude Include="TextElement.h" />
     <ClInclude Include="Texture_Loader.h" />
+    <ClInclude Include="TimeUtil.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="VertexAttrDef.h" />
     <ClInclude Include="vsShaderLib.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies.exe" />
-    <None Include="shaders\gouraud.frag" />
-    <None Include="shaders\gouraud.vert" />
-    <None Include="shaders\pointlight.frag" />
-    <None Include="shaders\pointlight.vert" />
-    <None Include="shaders\text.frag" />
-    <None Include="shaders\text.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\..\Desktop\New folder\checker.png" />
-    <Image Include="..\..\..\..\Desktop\New folder\lightwood.tga" />
-    <Image Include="..\..\..\..\Desktop\New folder\stone.tga" />
-    <Image Include="map.png" />
+    <ClInclude Include="Wheel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

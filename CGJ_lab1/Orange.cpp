@@ -97,6 +97,7 @@ void Orange::moveInRandomDirection()
 }
 void Orange::OnTriggerEnter()
 {
+
 	queueRespawn();
 }
 

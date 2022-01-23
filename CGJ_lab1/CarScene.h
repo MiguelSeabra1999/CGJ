@@ -1,11 +1,11 @@
 #pragma once
 #include"Scene.h"
+
 namespace GameObjectSpace
 {
 	class CarScene : public Scene
 	{
 	public:
-		
 		vector<Camera*> cameras;
 		// Camera constants and values for easy definition
 		float WinX = 1024, WinY = 768;
@@ -47,12 +47,8 @@ namespace GameObjectSpace
 			-150.0f, //near 
 			150.0f, //far
 		};
-
-		
 		void loadTextures();
-
-		void init(GLuint shaderIndex) override;
-
+		void init(unsigned int _shaderIndex) override;
 		void changeMainCamera(unsigned char code) override;
 		void loadMap();
 	
@@ -60,3 +56,4 @@ namespace GameObjectSpace
 
 	};
 }
+

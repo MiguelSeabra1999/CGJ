@@ -4,19 +4,20 @@ using namespace GameObjectSpace;
 
 void CarScene::loadTextures()
 {
-	GameObject::initTexture("lightwood.tga");
-	GameObject::initTexture("plastic.jpg");
-	GameObject::initTexture("butter.jpg");
-	GameObject::initTexture("Grass2.jpg");
-	GameObject::initTexture("stripes.jpg");
+	GameObject::initTexture("lightwood.tga"); // indexTexture = 0
+	GameObject::initTexture("plastic.jpg");   // indexTexture = 1
+	GameObject::initTexture("butter.jpg");    // indexTexture = 2
+	GameObject::initTexture("Grass2.jpg");    // indexTexture = 3
+	GameObject::initTexture("stripes.jpg");   // indexTexture = 4
+	GameObject::initTexture("heart.png");   // indexTexture = 5
 
 
 
 }
 
-void CarScene::init(GLuint shaderIndex)
+void CarScene::init(unsigned int _shaderIndex)
 {
-
+	Scene::init(_shaderIndex);
 	//loadTextures();
 	gameObjects.clear();
 
@@ -308,49 +309,90 @@ void CarScene::init(GLuint shaderIndex)
 	UserInterface* UI = new UserInterface();
 	UI->transform.setPosition(0,0,0);
 
-
-
 	Canvas* canvas = new Canvas(GetUIShader());
-	canvas->SetWidth(windowX);
-	canvas->SetHeight(windowY);
-	//canvas->SetFullScreen(true);
-	canvas->transform.setLocalPosition(30, 30, 0);
-	canvas->setColor(1.0f, 1.0f, 1.0f, 0.5f);
-	canvas->textureId = 0;
-	canvas->transform.setParent(&(UI->transform));
-	Panel* panel = new Panel(canvas, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f);
-	panel->setWidth(100);
-	panel->setHeight(20);
-	//canvas->textureId = 1;
-	TextElement * textMesh = new TextElement(canvas, "Controls:", 0.0f, 0.0f, 0.5f, 1.0, 0.0f, 0.0f, 1.0f);
-	textMesh->setPanel(panel);
+	canvas->SetWidth(500);
+	canvas->SetHeight(500);
+	canvas->SetFullScreen(false);
+	canvas->transform.setLocalPosition((windowX-500)/2, (windowY - 500) / 2, 0);
+	canvas->setColor(0.0f, 0.0f, 0.0f, 0.6f);
+
+
+	Panel* pan = new Panel(canvas, 100.0f, 110.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.7f, 0);
+	pan->setWidth(300);
+	pan->setHeight(300);
+	pan->setHeart(false);
+	canvas->AddComponent(pan);
+
+
+	TextElement * textMesh = new TextElement(canvas, "Game Paused", 110.0f, 450.0f, 0.9f, 1.0, 0.0f, 0.0f, 1.0f);
 	canvas->AddComponent(textMesh);
-	canvas->AddComponent(panel);
+
+	textMesh = new TextElement(canvas, "Controls:", 200.0f, 380.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvas, "W,A,S,D - Movement", 145.0f, 340.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvas, "1,2,3,4,L,F - Cameras", 140.0f, 300.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvas, "U - Guizmos", 180.0f, 260.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvas, "I,O,P - Lights", 180.0f, 220.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvas, "Q - FOG", 200.0f, 180.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvas, "Space Bar - Handbreak", 135.0f, 140.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvas->AddComponent(textMesh);
+
+
+	canvas->transform.setParent(&(UI->transform));
+	canvas->SetActive(false);
+	pauseMenu = canvas;
+	
+	// owner, x, y, deprecated, deprecated, r, g, b, alpha, rotation 
+	
+	
 
 
 
 	Canvas* canvas2 = new Canvas(GetUIShader());
-	canvas2->SetWidth(200);
-	canvas2->SetHeight(200);
-	canvas2->SetFullScreen(false);
-	canvas2->transform.setLocalPosition(0, 0, 0);
-	canvas2->setColor(1.0f, 0.0f, 0.0f, 0.5f);
-	canvas2->textureId = 1;
+	canvas2->SetWidth(windowX);
+	canvas2->SetHeight(50);
+	canvas2->transform.setLocalPosition(20, windowY-80, 0);
+	canvas2->setColor(1.0f, 1.0f, 1.0f, 0.0f);
 	canvas2->transform.setParent(&(UI->transform));
-	textMesh = new TextElement(canvas2, "Henlo seabra:", 0.0f, 0.0f, 0.5f, 0.0, 1.0f, 0.0f, 1.0f);
-	canvas2->AddComponent(textMesh);
+	for (int j = 0; j < playerCar->hp; j++) {
+		Panel* panel = new Panel(canvas2, j*60.0f , 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 180);
+		panel->setWidth(50);
+		panel->setHeight(50);
+		panel->textureId = 5;
+		panel->setHeart(true);
+		canvas2->AddComponent(panel);
+	}
+
+	
+
+
+
 
 
 	uiElements.push_back(UI);
 	
+	for (GameObject* obj : gameObjects) {
+		obj->updateCurrentScene(this);
+	}
+	for (GameObject* obj : uiElements) {
+		obj->updateCurrentScene(this);
+	}
 
 	
 	Scene::init(shaderIndex);
 	Scene::initUI(GetUIShader()->getProgramIndex());
 
-	for (GameObject* obj : gameObjects) {
-		obj->currentScene = this;
-	}
 }
 
 void CarScene::changeMainCamera(unsigned char code)

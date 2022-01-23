@@ -2,6 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="lightDemo.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="avtFreeType.cpp">
       <Filter>LibsClass\Source</Filter>
     </ClCompile>
@@ -41,8 +44,14 @@
     <ClCompile Include="Wheel.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.h">
+      <Filter>Scenes</Filter>
+    </ClCompile>
     <ClCompile Include="PhysicsEngine.cpp">
       <Filter>PhysicsEngine\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="CarScene.cpp">
       <Filter>Scenes</Filter>
@@ -56,6 +65,9 @@
     <ClCompile Include="SmokeParticle.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="TextElement.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="UserInterface.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
@@ -65,30 +77,30 @@
     <ClCompile Include="Head.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="Canvas.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
     <ClCompile Include="TimeUtil.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Components\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Panel.cpp">
-      <Filter>Components\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="RigidBody.cpp">
-      <Filter>Components\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TextElement.cpp">
-      <Filter>Components\Source</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collider.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="cube.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="geometry.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
@@ -151,6 +163,9 @@
     <ClInclude Include="PhysicsEngine.h">
       <Filter>PhysicsEngine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentLib.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="TimeUtil.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -166,39 +181,42 @@
     <ClInclude Include="UserInterface.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="TextElement.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="meshFromAssimp.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Head.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
     <ClInclude Include="Canvas.h">
       <Filter>GameObjects\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Components\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Components\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentLib.h">
-      <Filter>Components\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Panel.h">
-      <Filter>Components\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>Components\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="TextElement.h">
-      <Filter>Components\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
+    <None Include="shaders\gouraud.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\gouraud.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\pointlight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\pointlight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LibsClass">
@@ -240,14 +258,19 @@
     <Filter Include="Textures">
       <UniqueIdentifier>{1196c5e1-5836-4311-a18a-cbeb42acce1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components">
-      <UniqueIdentifier>{7e6fd61e-b28d-4bb4-ae9c-e626839c631d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Headers">
-      <UniqueIdentifier>{9b987495-985d-42cd-9f2f-f7edaba101c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components\Source">
-      <UniqueIdentifier>{d9b0f323-f144-4da9-a08e-ec85c1133747}</UniqueIdentifier>
-    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\New folder\checker.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\New folder\lightwood.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\New folder\stone.tga">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="map.png">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

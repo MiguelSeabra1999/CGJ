@@ -7,14 +7,20 @@ namespace GameObjectSpace {
 	{
 	public:
 		GameObject* owner;
+		bool isActive = true;
 
-		Component(GameObject* owner) { Component::owner = owner; }
 		Component(){};
+		Component(GameObject* owner) { Component::owner = owner; }
 
 		virtual void update()
 		{
 
 		}
+
+		virtual void setActive(bool act) {
+			isActive = act;
+		}
+
 		virtual void init()
 		{
 		}

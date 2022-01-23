@@ -6,7 +6,8 @@
 using namespace GameObjectSpace;
 using namespace std;
 
-		vector<Collider*> Collider::allColliders;
+vector<Collider*> Collider::allColliders{};
+
 		Collider::Collider(GameObject * owner):Component(owner)
 		{
 

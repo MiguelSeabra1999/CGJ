@@ -9,12 +9,15 @@ namespace GameObjectSpace {
 	public:
 		float width = 0.0f, height = 0.0f;
 		bool fullScreen = false;
+		float rotation = 0.0f;
 		float scale_x=1.0f, scale_y = 1.0f;
 		bool isUI = false;
 		vector<float*> meshScales;
 		vector<float*> meshWidthHeight;
 		vector<float*> meshPositions;
 		vector<GLint*> meshTextures;
+		vector<GLfloat*> meshRotations;
+
 		VSShaderLib * shader;
 		Canvas():GameObject() {
 			;
@@ -36,6 +39,7 @@ namespace GameObjectSpace {
 		void SetFullScreen(bool f) { fullScreen = f; }
 		void SetWidth(float w) override {  width = w;  }
 		void SetHeight(float h) override{ height = h; }
+		void SetRotation(float r) { rotation = r; }
 		//private:
 		//void start() override;
 	};

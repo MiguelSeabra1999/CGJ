@@ -23,8 +23,8 @@ void Canvas::initDraw(GLuint shader)
 	(*amesh).mat = *material;
 	myMeshes.push_back(*amesh);
 	float * pos= new float[2];
-	pos[0] = transform.globalTransform.pos[0];
-	pos[1] = transform.globalTransform.pos[1];
+	pos[0] = GameObject::transform.globalTransform.pos[0];
+	pos[1] = GameObject::transform.globalTransform.pos[1];
 
 	meshPositions.push_back(pos);
 
@@ -37,6 +37,10 @@ void Canvas::initDraw(GLuint shader)
 	w_h[0] = width;
 	w_h[1] = height;
 	meshWidthHeight.push_back(w_h);
+
+	float * rot = new float;
+	*rot = rotation;
+	meshRotations.push_back(rot);
 
 	meshTextures.push_back(&textureId);
 
@@ -65,10 +69,12 @@ void Canvas::generateMesh(int i) {
 void Canvas::update()
 {
 	//cout << "updating ui" << endl;
+	//updateActive();
 	GameObject::update();
 
 
 }
+
 
 void Canvas::SetScale(float x, float y)
 {
@@ -77,72 +83,79 @@ void Canvas::SetScale(float x, float y)
 }
 
 void Canvas::DrawUI() {
+	
 	GameObject::DrawUI();
 	// activate corresponding render state	
 
-	
-	
 	glUseProgram(shaderIndex);
-
-	computeDerivedMatrix(PROJ_VIEW_MODEL);
-	glUniformMatrix4fv(glGetUniformLocation(shaderIndex, "m_pvm"), 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
-
-	
 
 
 	// iterate through all characters
 	//cout << "start" << endl;
+
+
 	
 	for (int i = 0; i<myMeshes.size();i++)
 	{
-		GLint texId = *(meshTextures[i]);
-		if (texId != -1)
-			glActiveTexture(GL_TEXTURE0); //no frag shader o uniform sampler foi carregado com TU0
-		//cout << "ole= " << i << endl;
-		glBindVertexArray(myMeshes[i].vao);
-		glUniform4f(glGetUniformLocation(shaderIndex, "textColor"), myMeshes[i].mat.diffuse[0], myMeshes[i].mat.diffuse[1], myMeshes[i].mat.diffuse[2], myMeshes[i].mat.diffuse[3]);
-		if (texId != -1)
-			glUniform1i(glGetUniformLocation(shaderIndex, "isText"), 1);
-		else
-			glUniform1i(glGetUniformLocation(shaderIndex, "isText"), 0);
-		float xpos = meshPositions[i][0];
-		float ypos = meshPositions[i][1];
-		//cout << "x,y =" << xpos << ", " << ypos << endl;
-		float w = meshWidthHeight[i][0];
-		float h = meshWidthHeight[i][1];
-		//cout << "w,h =" << w << ", " << h << endl;
+		if ((i == 0 && isActive) || (i!=0 && components[i-1]->isActive)) {
 
-		float scale_x_aux = meshScales[i][0];
-		float scale_y_aux = meshScales[i][1];
-		//cout << "scx,scy =" << scale_x_aux << ", " << scale_x_aux << endl;
-		// update VBO for each character
-		float vertices[6][4] = {
-			{ (xpos)*scale_x_aux,     (ypos + h)*scale_y_aux,   0.0f, 0.0f },
-			{ (xpos)*scale_x_aux,     (ypos)*scale_y_aux,       0.0f, 1.0f },
-			{ (xpos + w)*scale_x_aux, (ypos)*scale_y_aux,       1.0f, 1.0f },
+			pushMatrix(MODEL);
+			loadIdentity(MODEL);
+			float * r = meshRotations[i];
+			float xpos = meshPositions[i][0];
+			float ypos = meshPositions[i][1];
 
-			{ (xpos)*scale_x_aux,     (ypos + h)*scale_y_aux,   0.0f, 0.0f },
-			{ (xpos + w)*scale_x_aux, (ypos)*scale_y_aux,       1.0f, 1.0f },
-			{ (xpos + w)*scale_x_aux, (ypos + h)*scale_y_aux,   1.0f, 0.0f }
-		};
+			float w = meshWidthHeight[i][0];
+			float h = meshWidthHeight[i][1];
 
-		/** /for (int j = 0; j < 6; j++) {
-			cout << "vertices text = " << vertices[j][0] << ", " << vertices[j][1] << ", " << vertices[j][2] << ", " << vertices[j][3] << ", " << endl;
+			float scale_x_aux = meshScales[i][0];
+			float scale_y_aux = meshScales[i][1];
+	
+			// update VBO for each character
 		
+			translate(MODEL, xpos+(w/2.0f), ypos+(h/2.0f), 0.0f);
+			rotate(MODEL,*r , 0, 0 , 1);
+			//translate(MODEL, -h/2, )
+
+			scale(MODEL, w, h, 1);
+
+			computeDerivedMatrix(PROJ_VIEW_MODEL);
+			glUniformMatrix4fv(glGetUniformLocation(shaderIndex, "m_pvm"), 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
+
+			GLint texId = *(meshTextures[i]);
+			if (texId != -1)
+				glActiveTexture(GL_TEXTURE0); //no frag shader o uniform sampler foi carregado com TU0
+		
+			glBindVertexArray(myMeshes[i].vao);
+			glUniform4f(glGetUniformLocation(shaderIndex, "textColor"), myMeshes[i].mat.diffuse[0], myMeshes[i].mat.diffuse[1], myMeshes[i].mat.diffuse[2], myMeshes[i].mat.diffuse[3]);
+			if (texId != -1)
+				glUniform1i(glGetUniformLocation(shaderIndex, "isText"), 2);
+			else
+				glUniform1i(glGetUniformLocation(shaderIndex, "isText"), 0);
+
+		
+			float vertices[6][4] = {
+				{-0.5f,  0.5f, 0.0f, 0.0f  },
+				{-0.5f, -0.5f, 0.0f, 1.0f  },
+				{ 0.5f, -0.5f, 1.0f, 1.0f  },
+
+				{-0.5f,  0.5f, 0.0f, 0.0f  },
+				{0.5f, -0.5f, 1.0f, 1.0f  },
+				{ 0.5f, 0.5f, 1.0f, 0.0f  },
+			};
+			if(texId!=-1)
+				glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[texId]));
+			// update content of VBO memory
+			glBindBuffer(GL_ARRAY_BUFFER, myMeshes[i].vbo);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// render quad
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		
+		
+			popMatrix(MODEL);
 		}
-		cout << "over" << endl;/**/
-		// render glyph texture over quad
-		if(texId!=-1)
-			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[texId]));
-		// update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, myMeshes[i].vbo);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		
-		
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);

@@ -5,12 +5,12 @@
 using namespace GameObjectSpace;
 
 
-TimeUtil* Scene::timeUtil;
+TimeUtil* Scene::timeUtil = new TimeUtil();
 
 
-void Scene::init(GLuint _shaderIndex)
+void GameObjectSpace::Scene::init(GLuint _shaderIndex)
 {
-	Scene::timeUtil = new TimeUtil();
+	//Scene::timeUtil = new TimeUtil();
 	Scene::timeUtil->init();
 	shaderIndex = _shaderIndex;
 	useGizmos = false;
@@ -24,22 +24,18 @@ void Scene::init(GLuint _shaderIndex)
 		if ((*gameObjects[i]).GetLight())
 			GameObject::n_lights++;
 	}
-
 }
 
-
-void Scene::initUI(GLint shaderID)
+void Scene::initUI(unsigned int shaderID)
 {
-	
-	
+
+
 	int count = uiElements.size();
 	for (int i = 0; i < count; i++)
 	{
-		//cout << "initialized ui draw" << endl;
 		(*uiElements[i]).initDraw(shaderID);
 		(*uiElements[i]).start();
 	}
-
 }
 
 void Scene::updateAndDraw()
@@ -71,6 +67,7 @@ void Scene::updateAndDraw()
 
 void Scene::updateAndDrawUI()
 {
+	pauseMenu->SetActive(paused);
 	int count = uiElements.size();
 	for (int i = 0; i < count; i++)
 	{

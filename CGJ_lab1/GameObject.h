@@ -93,6 +93,7 @@ namespace GameObjectSpace {
 		virtual vector<struct MyMesh>* getMyMeshes() { return &myMeshes; }
 		void updateTransforms();
 		void updateCurrentScene(Scene* sc);
+		virtual void updateWindow(float x, float y){}
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;

@@ -231,6 +231,7 @@ void GameObject::transparentDraw()
 
 void GameObject::DrawUI() {
 	//updateTransforms();
+	updateWindow(currentScene->windowX, currentScene->windowY);
 	drawUISons();
 }
 

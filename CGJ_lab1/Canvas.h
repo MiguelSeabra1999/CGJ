@@ -17,6 +17,7 @@ namespace GameObjectSpace {
 		vector<float*> meshPositions;
 		vector<GLint*> meshTextures;
 		vector<GLfloat*> meshRotations;
+		float windowX = 0.0f, windowY = 0.0f;
 
 		VSShaderLib * shader;
 		Canvas():GameObject() {
@@ -35,11 +36,13 @@ namespace GameObjectSpace {
 		void SetUI(bool u) override { isUI = u; }
 		bool GetUI() override { return isUI;  }
 		void SetUIShader(VSShaderLib* s) { shader = s; shaderIndex = s->getProgramIndex(); }
-		bool GetFullScreen() override { return true; }
+		bool GetFullScreen() override { return fullScreen; }
 		void SetFullScreen(bool f) { fullScreen = f; }
 		void SetWidth(float w) override {  width = w;  }
 		void SetHeight(float h) override{ height = h; }
 		void SetRotation(float r) { rotation = r; }
+		void SetWindow(float x, float y) { windowX = x, windowY = y; }
+		void updateWindow(float x, float y) override { SetWindow(x, y); }
 		//private:
 		//void start() override;
 	};

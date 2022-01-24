@@ -71,10 +71,7 @@ void Scene::updateAndDrawUI()
 	int count = uiElements.size();
 	for (int i = 0; i < count; i++)
 	{
-		//cout << "updating ui elements" << endl;
 		if ((*uiElements[i]).IsActive()) {
-			//(*gameObjects[i]).opaqueDraw();
-			//do something similar to text rendering 
 			if ((*uiElements[i]).GetFullScreen()) {
 				(*uiElements[i]).SetWidth(windowX);
 				(*uiElements[i]).SetHeight(windowY);
@@ -86,6 +83,8 @@ void Scene::updateAndDrawUI()
 	destroyQueuedGameObjects();
 	createQueuedGameObjects();
 }
+
+
 
 
 void Scene::destroyQueuedGameObjects()

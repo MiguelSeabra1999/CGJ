@@ -310,42 +310,43 @@ void CarScene::init(unsigned int _shaderIndex)
 	UI->transform.setPosition(0,0,0);
 
 	Canvas* canvas = new Canvas(GetUIShader());
-	canvas->SetWidth(500);
-	canvas->SetHeight(500);
-	canvas->SetFullScreen(false);
-	canvas->transform.setLocalPosition((windowX-500)/2, (windowY - 500) / 2, 0);
+	canvas->SetWidth(50);
+	canvas->SetHeight(53);
+	//canvas->SetFullScreen(true);
+	canvas->SetWindow(windowX, windowY);
+	canvas->transform.setLocalPosition(25, 25, 0);
 	canvas->setColor(0.0f, 0.0f, 0.0f, 0.6f);
 
 
-	Panel* pan = new Panel(canvas, 100.0f, 110.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.7f, 0);
-	pan->setWidth(300);
-	pan->setHeight(300);
+	/**/Panel* pan = new Panel(canvas, 5.0f, 5, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.7f, 0);
+	pan->setWidth(40);
+	pan->setHeight(40);
 	pan->setHeart(false);
-	canvas->AddComponent(pan);
+	canvas->AddComponent(pan);/**/
 
 
-	TextElement * textMesh = new TextElement(canvas, "Game Paused", 110.0f, 450.0f, 0.9f, 1.0, 0.0f, 0.0f, 1.0f);
+	TextElement * textMesh = new TextElement(canvas, "Game Paused", 12.5, 47, 80.0f, 1.0, 0.0f, 0.0f, 1.0f);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "Controls:", 200.0f, 380.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "Controls:", 20, 41, 50.0f, 5.0, 5.0f, 5.0f, 1.0f);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "W,A,S,D - Movement", 145.0f, 340.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "W,A,S,D - Movement", 16.0, 36.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "1,2,3,4,L,F - Cameras", 140.0f, 300.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "1,2,3,4,L,F - Cameras", 15.5f, 32.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "U - Guizmos", 180.0f, 260.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "U - Guizmos", 20.0f, 28.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "I,O,P - Lights", 180.0f, 220.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "I,O,P - Lights", 20.0f, 24.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "Q - FOG", 200.0f, 180.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "Q - FOG", 21.0f, 20.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "Space Bar - Handbreak", 135.0f, 140.0f, 0.5f, 5.0, 5.0f, 5.0f, 1.0f);
+	textMesh = new TextElement(canvas, "Space Bar - Handbreak", 15.0f, 16.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
 
@@ -360,15 +361,17 @@ void CarScene::init(unsigned int _shaderIndex)
 
 
 	Canvas* canvas2 = new Canvas(GetUIShader());
-	canvas2->SetWidth(windowX);
-	canvas2->SetHeight(50);
-	canvas2->transform.setLocalPosition(20, windowY-80, 0);
+	canvas2->SetWidth(80);
+	canvas2->SetHeight(7);
+	//canvas2->SetFullScreen(true);
+	canvas->SetWindow(windowX, windowY);
+	canvas2->transform.setLocalPosition(3, 90, 0);
 	canvas2->setColor(1.0f, 1.0f, 1.0f, 0.0f);
 	canvas2->transform.setParent(&(UI->transform));
 	for (int j = 0; j < playerCar->hp; j++) {
-		Panel* panel = new Panel(canvas2, j*60.0f , 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 180);
-		panel->setWidth(50);
-		panel->setHeight(50);
+		Panel* panel = new Panel(canvas2, j*6.2 , 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 180);
+		panel->setWidth(6);
+		panel->setHeight(7);
 		panel->textureId = 5;
 		panel->setHeart(true);
 		canvas2->AddComponent(panel);

@@ -102,11 +102,12 @@ void Canvas::DrawUI() {
 			pushMatrix(MODEL);
 			loadIdentity(MODEL);
 			float * r = meshRotations[i];
-			float xpos = meshPositions[i][0];
-			float ypos = meshPositions[i][1];
+			//percentages of screen width and height
+			float xpos = (meshPositions[i][0])/100 * windowX;
+			float ypos = (meshPositions[i][1])/100 * windowY;
 
-			float w = meshWidthHeight[i][0];
-			float h = meshWidthHeight[i][1];
+			float w = (meshWidthHeight[i][0])/100 * windowX;
+			float h = (meshWidthHeight[i][1])/100 * windowY;
 
 			float scale_x_aux = meshScales[i][0];
 			float scale_y_aux = meshScales[i][1];

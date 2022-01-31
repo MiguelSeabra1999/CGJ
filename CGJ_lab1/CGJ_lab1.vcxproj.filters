@@ -83,6 +83,18 @@
     <ClCompile Include="TextElement.cpp">
       <Filter>Components\Source</Filter>
     </ClCompile>
+    <ClCompile Include="LookAtCamera.cpp">
+      <Filter>Components\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h">
@@ -195,6 +207,18 @@
     </ClInclude>
     <ClInclude Include="TextElement.h">
       <Filter>Components\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LookAtCamera.h">
+      <Filter>Components\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

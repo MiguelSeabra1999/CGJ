@@ -35,9 +35,11 @@ uniform vec4 fogColor;
 uniform Materials mat;
 uniform sampler2D texmap;
 uniform sampler2D texmap1;
+uniform sampler2D normalMap;
 uniform bool useTexture;
 uniform bool useTexture2;
-
+uniform bool useNormalMap;
+uniform bool isBillboard;
 
 in Data {
 	vec3 normal;
@@ -136,13 +138,39 @@ vec4 calcLightContribuition(Light source, vec3 l, vec3 normal, vec3 eye, vec3 di
 	return vec4(0.0);
 }
 
+vec4 BillboarColor()
+{
+	vec4 texel = texture(texmap, DataIn.tex_coord);
+	//vec4 matColor = vec4(mat.diffuse.rgb,texel);
+
+	return texel*mat.diffuse;
+}
 void main()
 {
-	vec3 n = normalize(DataIn.normal);
+
+	vec3 n;
+	if(useNormalMap)
+	{
+		n = texture(normalMap,DataIn.tex_coord).rgb*2.0 - 1.0;
+		n = normalize(n);
+	}
+	else
+		n = normalize(DataIn.normal);
+
 	vec3 e = normalize(DataIn.eye);
 	vec4 position =  real_position;
 	vec4 resultColor = vec4(0.0);
-	
+	float fogAmount = exp( -length(position)*fogginess );
+
+	if(isBillboard)
+	{
+		colorOut = BillboarColor();
+		if(colorOut.a==0)
+			discard;
+		colorOut = mix(vec4(fogColor.rgb,colorOut.a), colorOut, fogAmount );
+		return;
+	}
+
 	for(int i = 0; i < n_lights; i++)
 	{
 		vec3 l = vec3(lights[i].position) - vec3(position);
@@ -153,7 +181,6 @@ void main()
 
 
 
-	float fogAmount = exp( -length(position)*fogginess );
 	// clamp(fogAmount, 0, 1.0); necessary only if linear
 
 	resultColor = mix(fogColor, resultColor, fogAmount );

@@ -16,3 +16,6 @@
 #include "Canvas.h"
 #include "UserInterface.h"
 #include "Head.h"
+#include "Billboard.h"
+#include "ParticleSystem.h"
+#include "Particle.h"

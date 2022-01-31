@@ -51,10 +51,21 @@ void GameObject::BindTexture()
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[secondTextureId]));
 		}
+		if (normalMapTextureId != -1) {
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[normalMapTextureId]));
+
+		}
 	}
 	else {
 		glBindTexture(GL_TEXTURE_2D, 0);
+		if (normalMapTextureId != -1) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[normalMapTextureId]));
+
+		}
 	}
+
 
 
 }
@@ -223,8 +234,8 @@ void GameObject:: opaqueDraw()
 }
 void GameObject::transparentDraw()
 {
-	
-	draw();
+	if (diff[3] < 1)
+		draw();
 	drawTransparentSons();
 }
 
@@ -240,6 +251,9 @@ void GameObject::DrawUI() {
 
 void GameObject::draw()
 {
+	GLint billboard_uniformId = glGetUniformLocation(shaderProgramIndex, "isBillboard");
+	GLint useNormalMap_uniformId = glGetUniformLocation(shaderProgramIndex, "useNormalMap");
+	
 	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
@@ -247,11 +261,15 @@ void GameObject::draw()
 	useTexture_two_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture2");
 	tex_loc = glGetUniformLocation(shaderProgramIndex, "texmap");
 	tex_loc1 = glGetUniformLocation(shaderProgramIndex, "texmap1");
+	normalMap_loc = glGetUniformLocation(shaderProgramIndex, "normalMap");
+
 	
 
 	GLint loc = 0;
 	int myMeshesLen = myMeshes.size();
-
+	glUniform1i(billboard_uniformId, isBillboard);
+	
+	
 	if (textureId == -1) {
 		glUniform1i(tex_loc, 0);
 		glUniform1i(useTexture_uniformId,  false);
@@ -268,6 +286,19 @@ void GameObject::draw()
 	else {
 		glUniform1i(tex_loc1, 1);
 		glUniform1i(useTexture_two_uniformId, true);
+	}
+	if(normalMapTextureId == -1)
+	{
+		glUniform1i(normalMap_loc, 0);
+		glUniform1i(useNormalMap_uniformId, false);
+	}
+	else
+	{
+		if (textureId == -1)
+			glUniform1i(normalMap_loc, 0);
+		else
+			glUniform1i(normalMap_loc, 1);
+		glUniform1i(useNormalMap_uniformId, true);
 	}
 	
 

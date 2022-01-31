@@ -10,6 +10,11 @@ void CarScene::loadTextures()
 	GameObject::initTexture("Grass2.jpg");    // indexTexture = 3
 	GameObject::initTexture("stripes.jpg");   // indexTexture = 4
 	GameObject::initTexture("heart.png");   // indexTexture = 5
+	GameObject::initTexture("tree.png");   // indexTexture = 6
+	GameObject::initTexture("particle.png");   // indexTexture = 7
+	GameObject::initTexture("legoNormalMap.jpg");   // indexTexture = 8
+	GameObject::initTexture("noiseNormalMap.jpg");   // indexTexture = 9
+	GameObject::initTexture("stripesNormal.png");   // indexTexture = 10
 
 
 
@@ -150,11 +155,15 @@ void CarScene::init(unsigned int _shaderIndex)
 	cube->textureId = 0;
 	cube->secondTextureId = 4;
 	gameObjects.push_back((GameObject*)cube);
+
+
 	/**/
 	//butter
 	cube = new Cube();
 	cube->transform.setScale(1, 1, 3);
 	cube->transform.setPosition(0, 0, 3);
+
+	cube->normalMapTextureId = 9;
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	aabb = new AABB(cube);
 	
@@ -225,9 +234,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)aabb->cube);
 	aabb->setDim(1, 1, 1);
 
-	Head* head = new Head();
-	head->transform.setPosition(mapSize + mapSize/10, 4, 0);
-	gameObjects.push_back((GameObject*)head);
+	spawnTrees(mapSize/2, 2, 100);
 
 
 	//#################### Cameras ##############################
@@ -304,6 +311,48 @@ void CarScene::init(unsigned int _shaderIndex)
 	ballLight->setColor(0, 0, 1, 1);
 	gameObjects.push_back((GameObject*)ballLight);
 
+	////////////////////////////////PARTICLE SYSTEM	/////////////////////////////
+		/**/
+	ParticleSystem* ps = new ParticleSystem();
+	float speed = 7;
+
+	ps->minInitialSpeed[0] = -1.0f * speed;
+	ps->minInitialSpeed[1] = -1.0f * speed;
+	ps->minInitialSpeed[2] = -1.0f * speed;
+	ps->maxInitialSpeed[0] = speed;
+	ps->maxInitialSpeed[1] = speed;
+	ps->maxInitialSpeed[2] = speed;
+	float gravForce = -9;
+	ps->minAcceleration[0] = 0;
+	ps->minAcceleration[1] = gravForce;
+	ps->minAcceleration[2] = 0;
+	ps->maxAcceleration[0] = 0;
+	ps->maxAcceleration[1] = gravForce;
+	ps->maxAcceleration[2] = 0;
+	ps->minInitialSize = 0;
+	ps->maxInitialSize = 0;
+	ps->minFinalSize = 1;
+	ps->maxFinalSize = 2;
+	ps->initialColor[0] = 1;
+	ps->initialColor[1] = 1;
+	ps->initialColor[2] = 1;
+	ps->initialColor[3] = 1;
+	ps->finalColor[0] = 0;
+	ps->finalColor[1] = 0;
+	ps->finalColor[2] = 0;
+	ps->finalColor[3] = 0;
+	ps->minLifetime = 0.5f;
+	ps->maxLifetime = 1.0f;
+	ps->minTextureIndex = 7;
+	ps->maxTextureIndex = 7;
+	ps->minSpawnRate = 0.1f;
+	ps->maxSpawnRate = 1;
+	ps->minSpawnAmmount = 10;
+	ps->maxSpawnAmmount = 100;
+	ps->lifetime = -1;
+	ps->transform.setPosition(0, 4, 0);
+	gameObjects.push_back((GameObject*)ps);
+	/**/
 
 	/////////////////////////////////////UI/////////////////////////////////////////
 	UserInterface* UI = new UserInterface();
@@ -435,7 +484,8 @@ void CarScene::loadMap()
 				RoadLimit* cube = new RoadLimit();
 				cube->transform.setPosition(i-16, 0.2, j-16);
 				cube->setColor(1.0f, 0.5f, 0.5f,1.0f);
-			
+				cube->textureId = 10;
+				cube->normalMapTextureId = 10;
 				AABB* aabb = new AABB(cube);
 				cube->AddComponent(aabb);
 
@@ -443,6 +493,45 @@ void CarScene::loadMap()
 				gameObjects.push_back((GameObject*)aabb->cube);
 			}
 		}
+	}
+}
+
+void CarScene::spawnTrees(float mapBounds, float treeOffset, int n_trees)
+{
+	mapBounds = mapBounds * 100;
+	treeOffset = treeOffset * 100;
+	for(int i = 0; i < n_trees; i++)
+	{
+		float x, y;
+		float rnd = randomRange(0, 100);
+		if(rnd < 25)
+		{
+			x = randomRange(-mapBounds - treeOffset, -mapBounds);
+			y = randomRange(-mapBounds - treeOffset, mapBounds + treeOffset);
+		}
+		else if (rnd < 50)
+		{
+			x = randomRange(mapBounds, mapBounds + treeOffset);
+			y = randomRange(-mapBounds - treeOffset, mapBounds + treeOffset);
+		}
+		else if (rnd < 75)
+		{
+			y = randomRange(-mapBounds - treeOffset, -mapBounds);
+			x = randomRange(-mapBounds - treeOffset, mapBounds + treeOffset);
+		}
+		else
+		{
+			y = randomRange(mapBounds, mapBounds + treeOffset);
+			x = randomRange(-mapBounds - treeOffset, mapBounds + treeOffset);
+		}
+		x = x / 100;
+		y = y / 100;
+		Billboard* tree = new Billboard(true);
+		float scale = randomRange(100, 400) / 50;
+		tree->transform.setPosition(x, scale/2, y);
+		tree->transform.setScale(scale, scale, scale);
+		tree->textureId = 6;
+		gameObjects.push_back((GameObject*)tree);
 	}
 }
 /** /

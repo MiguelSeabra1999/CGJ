@@ -151,6 +151,10 @@ namespace GameObjectSpace
 			multMatixByVector(up, rotationMatrix, up);
 			genRotationMatrix_Z(rotationMatrix, rot[2]);
 			multMatixByVector(up, rotationMatrix, up);
+			//sometimes float erros lead to unormalized vectors
+			normalize(right);
+			normalize(forward);
+			normalize(up);
 		}
 
 
@@ -219,6 +223,64 @@ namespace GameObjectSpace
 		void setLocalScale(float x, float y, float z)
 		{
 			localTransform.setScale(x, y, z);
+		}
+
+		void lookAtCylindrical(Transform* other)
+		{
+			float toOther[3];
+			float myPos[3];
+
+			memcpy(myPos, globalTransform.pos, sizeof(float) * 3);
+			multVectorConstant(myPos, myPos, -1);
+			addVectors(toOther, other->globalTransform.pos, myPos, 3);
+			toOther[1] = 0;
+			normalize(toOther);
+			float forwardAux[3];
+			memcpy(forwardAux, globalTransform.forward, sizeof(float) * 3);
+			forwardAux[1] = 0;
+			normalize(forwardAux);
+			float angleCosine = dotProduct(toOther, forwardAux);
+			float upAux[3];
+			crossProduct(upAux, toOther, forwardAux);
+			float angle = acos(angleCosine) * RADTODEG;
+			globalTransform.rotate(0, angle * -1 * upAux[1], 0);
+		}
+
+		void lookAt(Transform* other)
+		{
+			lookAtCylindrical(other);
+			float toOther[3];
+			float myPos[3];
+
+			memcpy(myPos, globalTransform.pos, sizeof(float) * 3);
+			multVectorConstant(myPos, myPos, -1);
+			addVectors(toOther, other->globalTransform.pos, myPos, 3);
+			toOther[0] = 0;
+			normalize(toOther);
+			float forwardAux[3];
+			memcpy(forwardAux, globalTransform.forward, sizeof(float) * 3);
+			forwardAux[0] = 0;
+			normalize(forwardAux);
+			float angleCosine = dotProduct(toOther, forwardAux);
+			float upAux[3];
+			crossProduct(upAux, toOther, forwardAux);
+			float angle = acos(angleCosine) * RADTODEG;
+			globalTransform.rotate(angle * -1 * upAux[0],0, 0);
+
+			memcpy(myPos, globalTransform.pos, sizeof(float) * 3);
+			multVectorConstant(myPos, myPos, -1);
+			addVectors(toOther, other->globalTransform.pos, myPos, 3);
+			toOther[2] = 0;
+			normalize(toOther);
+			forwardAux[3];
+			memcpy(forwardAux, globalTransform.forward, sizeof(float) * 3);
+			forwardAux[2] = 0;
+			normalize(forwardAux);
+			angleCosine = dotProduct(toOther, forwardAux);
+			upAux[3];
+			crossProduct(upAux, toOther, forwardAux);
+			angle = acos(angleCosine) * RADTODEG;
+			globalTransform.rotate(0, 0, angle * -1 * upAux[2]);
 		}
 	};
 }

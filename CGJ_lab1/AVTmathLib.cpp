@@ -21,7 +21,7 @@ using namespace std;
 static inline float 
 DegToRad(float degrees) 
 { 
-	return (float)(degrees * (M_PI / 180.0f));
+	return (float)(degrees * DEGTORAD);
 };
 
 /// Matrix stacks for all matrix types
@@ -72,8 +72,32 @@ float  sign(float n)
 }
 int randomRange(int minInclusive, int maxExclusive)
 {
+	if (maxExclusive == minInclusive)
+		return minInclusive;
 	int random = minInclusive + rand() % (maxExclusive - minInclusive);
 	return random;
+}
+float randomRangeFloat(float minInclusive, float maxExclusive)
+{
+	if (maxExclusive == minInclusive)
+		return minInclusive;
+	return (float)(randomRange((int)(minInclusive * 1000.0f), (int)(maxExclusive * 1000.0f))) * 0.001f;
+}
+float* randomRange(float* result, float* minInclusive, float* maxExclusive, int size)
+{
+	for(int i = 0; i < size; i++)
+	{
+		result[i] = randomRangeFloat(minInclusive[i],maxExclusive[i]);
+	}
+	return result;
+}
+float* randomRange(float* result, float minInclusive, float maxExclusive, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		result[i] = randomRangeFloat(minInclusive, maxExclusive);
+	}
+	return result;
 }
 void multVectorConstant(float* result, float* a, float b)
 {
@@ -379,10 +403,10 @@ void lookAt(float xPos, float yPos, float zPos,
 	dir[2] =  (zLook - zPos);
 	normalize(dir);
 
-	crossProduct(dir,up,right);
+	crossProduct(right,dir,up);
 	normalize(right);
 
-	crossProduct(right,dir,up);
+	crossProduct(up,right,dir);
 	normalize(up);
 
 	float m1[16],m2[16];
@@ -535,7 +559,7 @@ void multMatrixPoint(ComputedMatrixTypes aType, float* point, float* res) {
 }
 
 // res = a cross b;
-void  crossProduct( float *a, float *b, float *res) {
+void  crossProduct(float* res, float *a, float *b ) {
 
 	res[0] = a[1] * b[2]  -  b[1] * a[2];
 	res[1] = a[2] * b[0]  -  b[2] * a[0];

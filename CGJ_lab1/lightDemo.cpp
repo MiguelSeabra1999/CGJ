@@ -596,6 +596,7 @@ GLuint setupShaders() {
 	
 	glBindAttribLocation(shader.getProgramIndex(), NORMAL_ATTRIB, "normal");
 	glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
+	glBindAttribLocation(shader.getProgramIndex(), TANGENT_ATTRIB, "tangent");
 
 	glLinkProgram(shader.getProgramIndex());
 

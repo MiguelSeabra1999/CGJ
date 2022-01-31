@@ -1,5 +1,5 @@
 #include "Head.h"
-
+#include "ComponentLib.h"
 using namespace GameObjectSpace;
 
 // Created an instance of the Importer class in the meshFromAssimp.cpp file
@@ -9,7 +9,8 @@ extern const aiScene* scene;
 
 Head::Head():GameObject()
 {
-
+	LookAtCamera* lookAtCamera = new LookAtCamera(this);
+	AddComponent(lookAtCamera);
 
 }
 void Head::initDraw(GLuint myShaderProgramIndex)

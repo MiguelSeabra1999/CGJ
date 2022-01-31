@@ -50,6 +50,9 @@ namespace GameObjectSpace {
 		static vector<GLuint*> textureIds;
 		int textureId = -1;
 		int secondTextureId = -1;
+		int normalMapTextureId = -1;
+		bool isBillboard = false;
+
 		string name = "GameObject";
 
 		GameObject();
@@ -107,6 +110,7 @@ namespace GameObjectSpace {
 		GLint useTexture_two_uniformId;
 		GLint tex_loc;
 		GLint tex_loc1;
+		GLint normalMap_loc;
 		bool isActive = true;
 
 	};

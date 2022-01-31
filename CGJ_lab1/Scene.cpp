@@ -43,20 +43,22 @@ void Scene::updateAndDraw()
 	if(!paused)
 		physicsEngine->update();
 	int count = gameObjects.size();
+	glDepthMask(GL_TRUE);
 	for (int i = 0; i < count; i++)
 	{
 		if(!paused)
 			(*gameObjects[i]).update();
 		(*gameObjects[i]).opaqueDraw();
 	}
-	glDepthMask(GL_FALSE);
+	
 
+
+	glDepthMask(GL_FALSE);
 	count = gameObjects.size();
 	for (int i = 0; i < count; i++)
 	{
 		(*gameObjects[i]).transparentDraw();
 	}
-	glDepthMask(GL_TRUE);
 	if (!paused)
 	{
 		destroyQueuedGameObjects();

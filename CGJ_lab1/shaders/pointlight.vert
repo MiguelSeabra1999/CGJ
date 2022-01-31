@@ -7,8 +7,10 @@ uniform mat3 m_normal; // igual a (m_viewModel^-1).Transpose,   uses a clamped 3
 in vec4 position;
 in vec4 texCoord;
 in vec4 normal;    //por causa do gerador de geometria
+in vec4 tangent;
 
 out vec4 real_position;
+out mat3 TBN;
 out Data {
 	vec3 normal;
 	vec3 eye;
@@ -23,5 +25,11 @@ void main ()
 	DataOut.normal = normalize(m_normal * normal.xyz);
 	DataOut.eye = vec3(-pos);
 	DataOut.tex_coord = texCoord.st;
+
+	vec3 T = normalize(m_normal*tangent.xyz);
+	vec3 B = normalize(m_normal*cross(tangent.xyz,normal.xyz).xyz);
+	vec3 N = normalize(m_normal*normal.xyz);
+	TBN = mat3(TBN);
+
 	gl_Position = m_pvm * position;	
 }

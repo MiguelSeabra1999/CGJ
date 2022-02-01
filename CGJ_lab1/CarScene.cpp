@@ -160,8 +160,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	/**/
 	cube = new Cube();
 	cube->setResizable(mapSize, mapSize);
-	//cube->transform.setScale(mapSize, 1, mapSize);
-	cube->transform.setPosition(0, -0.5, 0);
+	cube->transform.setScale(1, 10, 1);
+	cube->transform.setPosition(0, -5, 0);
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
 	cube->textureId = 0;
 	cube->secondTextureId = 4;
@@ -295,6 +295,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	lightSource->light->color[1] = 0.5f;
 	lightSource->light->color[2] = 0.5f;
 	lightSource->transform.setRotation(45, -90, 0);
+	lightSource->transform.setPosition(20, 20, 10);
 	gameObjects.push_back(lightSource);
 	/** /ballLight = new BallLight();
 	ballLight->transform.globalTransform.setPosition(20, 2, 2);

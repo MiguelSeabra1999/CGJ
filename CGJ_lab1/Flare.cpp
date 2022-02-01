@@ -93,7 +93,7 @@ void Flare::render_flare(int lx, int ly, int* m_viewport) {  //lx, ly represent 
 
 					glUniform4f(glGetUniformLocation(shaderIndex, "textColor"), diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
 					glUniform3f(glGetUniformLocation(shaderIndex, "lightPos"), lightSrc->transform.globalTransform.pos[0], lightSrc->transform.globalTransform.pos[1], lightSrc->transform.globalTransform.pos[2]);
-					glUniform4f(glGetUniformLocation(shaderIndex, "lightColor"), lightSrc->diff[0], lightSrc->diff[1], lightSrc->diff[2], lightSrc->diff[3]);
+					glUniform4f(glGetUniformLocation(shaderIndex, "lightColor"), lightSrc->light->color[0], lightSrc->light->color[1], lightSrc->light->color[2], lightSrc->light->color[3]);
 
 
 					if (texId != -1)

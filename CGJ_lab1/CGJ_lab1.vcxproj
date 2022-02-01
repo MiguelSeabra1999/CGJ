@@ -187,6 +187,7 @@
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="RoadLimit.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SmokeParticle.cpp" />
     <ClCompile Include="TextElement.cpp" />
     <ClCompile Include="Texture_Loader.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="RoadLimit.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="SmokeParticle.h" />
     <ClInclude Include="TextElement.h" />
     <ClInclude Include="Texture_Loader.h" />

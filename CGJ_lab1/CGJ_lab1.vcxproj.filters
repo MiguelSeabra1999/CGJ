@@ -95,6 +95,9 @@
     <ClCompile Include="Particle.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h">
@@ -218,6 +221,9 @@
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>

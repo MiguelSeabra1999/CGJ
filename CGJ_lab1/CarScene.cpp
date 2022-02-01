@@ -15,6 +15,7 @@ void CarScene::loadTextures()
 	GameObject::initTexture("legoNormalMap.jpg");   // indexTexture = 8
 	GameObject::initTexture("noiseNormalMap.jpg");   // indexTexture = 9
 	GameObject::initTexture("stripesNormal.png");   // indexTexture = 10
+	GameObject::initCubeMapTexture();   // indexTexture = 11
 
 
 
@@ -178,7 +179,11 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)aabb->cube);
 	cube->textureId = 2;
 
-
+	//Skybox
+	Skybox* skybox = new Skybox();
+	skybox->textureId = 11;
+	skybox->transform.setScale(200, 200, 200);
+	gameObjects.push_back((GameObject*)skybox);
 
 	/** /
 	cube = new Cube();

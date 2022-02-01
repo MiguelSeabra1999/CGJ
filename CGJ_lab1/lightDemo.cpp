@@ -659,6 +659,7 @@ void init()
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(fogColor[0],fogColor[1],fogColor[2], 1.0f);
 	glDepthMask(GL_TRUE);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }
 
 

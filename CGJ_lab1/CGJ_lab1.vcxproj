@@ -160,12 +160,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
-    <None Include="shaders\gouraud.frag" />
-    <None Include="shaders\gouraud.vert" />
-    <None Include="shaders\pointlight.frag" />
-    <None Include="shaders\pointlight.vert" />
-    <None Include="shaders\text.frag" />
-    <None Include="shaders\text.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="avtFreeType.cpp" />
@@ -178,13 +172,13 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CubeObj.cpp" />
     <ClCompile Include="FixedTopDownCamera.cpp" />
-    <ClCompile Include="Flare.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Head.cpp" />
     <ClCompile Include="lightDemo.cpp" />
     <ClCompile Include="LookAtCamera.cpp" />
     <ClCompile Include="meshFromAssimp.cpp" />
+    <ClCompile Include="Model3D.cpp" />
     <ClCompile Include="Orange.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -217,7 +211,6 @@
     <ClInclude Include="cube.h" />
     <ClInclude Include="CubeObj.h" />
     <ClInclude Include="FixedTopDownCamera.h" />
-    <ClInclude Include="Flare.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="GameObject.h" />
@@ -228,6 +221,7 @@
     <ClInclude Include="LightSource.h" />
     <ClInclude Include="LookAtCamera.h" />
     <ClInclude Include="meshFromAssimp.h" />
+    <ClInclude Include="Model3D.h" />
     <ClInclude Include="Orange.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Particle.h" />

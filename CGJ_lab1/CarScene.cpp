@@ -25,7 +25,8 @@ void CarScene::loadTextures()
 	GameObject::initTexture("legoNormalMap.jpg");   // indexTexture =  17
 	GameObject::initTexture("noiseNormalMap.jpg");   // indexTexture =  18
 	GameObject::initTexture("stripesNormal.png");   // indexTexture =  19
-	GameObject::initCubeMapTexture();   // indexTexture = 11 20
+	GameObject::initCubeMapTexture();   // indexTexture = 20
+	GameObject::initTexture("particle.png");   // indexTexture =  21
 
 
 }
@@ -190,7 +191,7 @@ void CarScene::init(unsigned int _shaderIndex)
 
 	//Skybox
 	Skybox* skybox = new Skybox();
-	skybox->textureId = 11;
+	skybox->textureId = 20;
 	skybox->transform.setScale(200, 200, 200);
 	gameObjects.push_back((GameObject*)skybox);
 
@@ -378,8 +379,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	ps->finalColor[3] = 0;
 	ps->minLifetime = 0.5f;
 	ps->maxLifetime = 1.0f;
-	ps->minTextureIndex = 7;
-	ps->maxTextureIndex = 7;
+	ps->minTextureIndex = 21;
+	ps->maxTextureIndex = 21;
 	ps->minSpawnRate = 0.1f;
 	ps->maxSpawnRate = 1;
 	ps->minSpawnAmmount = 10;

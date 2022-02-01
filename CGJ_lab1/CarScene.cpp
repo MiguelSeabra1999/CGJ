@@ -305,7 +305,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	lightSource->light->color[2] = 1.0f;
 	lightSource->light->color[3] = 1.0f;
 
-	lightSource->transform.setRotation(45, -90, 0);
+	lightSource->transform.setRotation(-45, -90, 0);
 	lightSource->transform.setPosition(20, 20, 0);
 	gameObjects.push_back(lightSource);
 	/** /ballLight = new BallLight();
@@ -483,8 +483,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	
 	FlareElement* fe = new FlareElement((Canvas*)flare);
 	fe->setFDistance(0);
-	fe->setFSize(2);
-	fe->setSimpleColor(1.0f,1.0f,1.0f,0.7f);
+	fe->setFSize(3);
+	fe->setSimpleColor(1.0f,1.0f,1.0f,0.3f);
 	fe->setTextureId(6);
 	flare->AddComponent(fe);
 

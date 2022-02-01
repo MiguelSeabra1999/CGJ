@@ -12,7 +12,7 @@ namespace GameObjectSpace {
 		float position[4] = { 0,0,0,1 };
 		float eye_coords_position[4] = { 0,0,0,0 };
 		float color[4] = { 1,1,1,1 };
-		float direction[4] = { 0,1,0,1 };
+		float direction[4] = { 1,0,0,0};
 		float eye_coords_direction[4] = { 0,0,0,0 };
 		float cos_angle = 0.5;//cos(angle) , in rads. Uses cosine to save on shader maths
 		int type = 0; // 0-> point, 1 -> dir , 2 -> spot, 3 -> global
@@ -77,6 +77,9 @@ namespace GameObjectSpace {
 			light->position[0] = transform.globalTransform.pos[0];
 			light->position[1] = transform.globalTransform.pos[1];
 			light->position[2] = transform.globalTransform.pos[2];	
+			light->direction[0] = transform.globalTransform.forward[0];
+			light->direction[1] = transform.globalTransform.forward[1];
+			light->direction[2] = transform.globalTransform.forward[2];
 		}
 		void LightSource::initDraw(GLuint myShaderProgramIndex)
 		{

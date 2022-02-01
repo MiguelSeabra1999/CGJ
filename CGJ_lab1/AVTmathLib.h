@@ -18,6 +18,8 @@
 #include <GL/glew.h>
 
 #define PI 3.14159265358979323846
+#define DEGTORAD 0.01745329252f
+#define RADTODEG 57.295779513f
 
 
 	/// number of settable matrices
@@ -40,7 +42,9 @@
 
 		float lerp(float a, float b, float percent);
 		void lerp(float* result, float* a, float* b, float percent, int size);
-
+		float randomRangeFloat(float minInclusive, float maxExclusive);
+		float* randomRange(float* result, float* minInclusive, float* maxExclusive,int size);
+		float* randomRange(float* result, float minInclusive, float maxExclusive, int size);
 		int randomRange(int minInclusive, int maxExclusive);
 
 		void multMatixByVector(float* result, float* mat, float* vec);
@@ -194,7 +198,7 @@
 		  * \param a,b the two input float[3]
 		  * \param res the ouput result, a float[3]
 		*/
-		void crossProduct( float *a, float *b, float *res);
+		void crossProduct(float* res,float *a, float *b);
 
 		/** vector dot product 
 		  * 

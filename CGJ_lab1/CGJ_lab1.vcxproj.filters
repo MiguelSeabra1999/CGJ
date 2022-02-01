@@ -83,7 +83,19 @@
     <ClCompile Include="TextElement.cpp">
       <Filter>Components\Source</Filter>
     </ClCompile>
-    <ClCompile Include="Flare.cpp">
+    <ClCompile Include="LookAtCamera.cpp">
+      <Filter>Components\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -199,30 +211,24 @@
     <ClInclude Include="TextElement.h">
       <Filter>Components\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Flare.h">
+    <ClInclude Include="LookAtCamera.h">
+      <Filter>Components\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
-    <None Include="shaders\gouraud.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\gouraud.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\pointlight.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\pointlight.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\text.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\text.vert">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LibsClass">

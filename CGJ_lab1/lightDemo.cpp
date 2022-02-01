@@ -592,6 +592,7 @@ GLuint setupShaders() {
 	
 	glBindAttribLocation(shader.getProgramIndex(), NORMAL_ATTRIB, "normal");
 	glBindAttribLocation(shader.getProgramIndex(), TEXTURE_COORD_ATTRIB, "texCoord");
+	glBindAttribLocation(shader.getProgramIndex(), TANGENT_ATTRIB, "tangent");
 
 	glLinkProgram(shader.getProgramIndex());
 
@@ -654,6 +655,7 @@ void init()
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(fogColor[0],fogColor[1],fogColor[2], 1.0f);
 	glDepthMask(GL_TRUE);
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }
 
 

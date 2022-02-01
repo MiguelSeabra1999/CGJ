@@ -597,7 +597,7 @@ void	ComputeTangentArray(int vertexCount, float *vertex, float *normal, float *t
 		normalize(&tangent[i * 4]);
 
 		// Calculate handedness
-		crossProduct(n, t, aux_vec);
+		crossProduct(aux_vec,n, t);
 		tangent[i * 4 + 3] = (dotProduct(aux_vec, &tan2[i * 3]) < 0.0f) ? -1.0f : 1.0f;
 		//printf("tangent vector [%.2f, %.2f, %.2f, %.2f]\n", tangent[i * 4], tangent[i * 4 + 1], tangent[i * 4 + 2], tangent[i * 4 + 3]);
 	}

@@ -50,15 +50,21 @@ namespace GameObjectSpace {
 		static vector<GLuint*> textureIds;
 		int textureId = -1;
 		int secondTextureId = -1;
+		int normalMapTextureId = -1;
+		bool isBillboard = false;
+		bool isSkybox = false;
+
 		string name = "GameObject";
 
 		GameObject();
 		Component* GetComponent(const char* type);
 		static int initTexture(const char* textureName);
+		static int initCubeMapTexture();
 		virtual void update();
 		virtual void start();
 		virtual void initDraw(GLuint myShaderProgramIndex);
-		void draw();
+		virtual void draw();
+		void PrepareShader();
 		void transparentDraw();
 		void opaqueDraw();
 		void initMaterial();
@@ -72,7 +78,7 @@ namespace GameObjectSpace {
 		void drawTransparentSons();
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
-		void BindTexture();
+		virtual void BindTexture();
 		virtual void OnCollisionEnter() {}
 		static void turnLightOfTypeOff(LightType t);
 		virtual bool GetLight();
@@ -108,6 +114,7 @@ namespace GameObjectSpace {
 		GLint useTexture_two_uniformId;
 		GLint tex_loc;
 		GLint tex_loc1;
+		GLint normalMap_loc;
 		bool isActive = true;
 
 	};

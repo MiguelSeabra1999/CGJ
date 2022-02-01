@@ -40,6 +40,15 @@ int GameObject::initTexture(const char* textureName)
 	GameObject::textureIds.push_back(id);
 	return GameObject::textureIds.size()-1;
 }
+int GameObject::initCubeMapTexture()
+{
+	GLuint* id = new GLuint;
+	glGenTextures(1, id);
+	const char* filenames[] = { "posx.jpg", "negx.jpg", "posy.jpg", "negy.jpg", "posz.jpg", "negz.jpg" };
+	TextureCubeMap_Loader(id, filenames, 0);
+	GameObject::textureIds.push_back(id);
+	return GameObject::textureIds.size() - 1;
+}
 
 
 void GameObject::BindTexture()
@@ -51,10 +60,21 @@ void GameObject::BindTexture()
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[secondTextureId]));
 		}
+		if (normalMapTextureId != -1) {
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[normalMapTextureId]));
+
+		}
 	}
 	else {
 		glBindTexture(GL_TEXTURE_2D, 0);
+		if (normalMapTextureId != -1) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, *(GameObject::textureIds[normalMapTextureId]));
+
+		}
 	}
+
 
 
 }
@@ -223,8 +243,8 @@ void GameObject:: opaqueDraw()
 }
 void GameObject::transparentDraw()
 {
-	
-	draw();
+	if (diff[3] < 1)
+		draw();
 	drawTransparentSons();
 }
 
@@ -240,40 +260,8 @@ void GameObject::DrawUI() {
 
 void GameObject::draw()
 {
-	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
-	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
-	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
-	useTexture_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture");
-	useTexture_two_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture2");
-	tex_loc = glGetUniformLocation(shaderProgramIndex, "texmap");
-	tex_loc1 = glGetUniformLocation(shaderProgramIndex, "texmap1");
-	
-
-	GLint loc = 0;
-	int myMeshesLen = myMeshes.size();
-
-	if (textureId == -1) {
-		glUniform1i(tex_loc, 0);
-		glUniform1i(useTexture_uniformId,  false);
-	}
-	else {
-		glUniform1i(tex_loc, 0);
-		glUniform1i(useTexture_uniformId,  true);
-	}
-
-	if (secondTextureId == -1) {
-		glUniform1i(tex_loc1, 0);
-		glUniform1i(useTexture_two_uniformId, false);
-	}
-	else {
-		glUniform1i(tex_loc1, 1);
-		glUniform1i(useTexture_two_uniformId, true);
-	}
-	
-
+	PrepareShader();
 	int n_sons = transform.sons.size();
-	
-
 
 	if (textureId != -1)
 		BindTexture();
@@ -281,13 +269,14 @@ void GameObject::draw()
 	pushMatrix(MODEL);
 
 	updateTransforms();
-
+	int myMeshesLen = myMeshes.size();
 	for (int i = 0; i < myMeshesLen; i++)
 	{
 		sendMaterialToShader(i);
 		// send matrices to OGL
 		computeDerivedMatrix(PROJ_VIEW_MODEL);
 
+		glUniformMatrix4fv(model_uniformId, 1, GL_FALSE, mMatrix[MODEL]);
 		glUniformMatrix4fv(vm_uniformId, 1, GL_FALSE, mCompMatrix[VIEW_MODEL]);
 		glUniformMatrix4fv(pvm_uniformId, 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
 		computeNormalMatrix3x3();
@@ -304,7 +293,60 @@ void GameObject::draw()
 	}
 	popMatrix(MODEL);
 	//drawSons();
+}
 
+void GameObject::PrepareShader()
+{
+	GLint billboard_uniformId = glGetUniformLocation(shaderProgramIndex, "isBillboard");
+	GLint useNormalMap_uniformId = glGetUniformLocation(shaderProgramIndex, "useNormalMap");
+	GLint isSkybox_uniformId = glGetUniformLocation(shaderProgramIndex, "isSkybox");
+
+	pvm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_pvm");
+	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
+	model_uniformId = glGetUniformLocation(shaderProgramIndex, "m_model");
+	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
+	useTexture_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture");
+	useTexture_two_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture2");
+	tex_loc = glGetUniformLocation(shaderProgramIndex, "texmap");
+	tex_loc1 = glGetUniformLocation(shaderProgramIndex, "texmap1");
+	normalMap_loc = glGetUniformLocation(shaderProgramIndex, "normalMap");
+
+	GLint loc = 0;
+	
+	glUniform1i(billboard_uniformId, isBillboard);
+	
+	glUniform1i(isSkybox_uniformId, isSkybox);
+
+	if (textureId == -1) {
+		glUniform1i(tex_loc, 0);
+		glUniform1i(useTexture_uniformId, false);
+	}
+	else {
+		glUniform1i(tex_loc, 0);
+		glUniform1i(useTexture_uniformId, true);
+	}
+
+	if (secondTextureId == -1) {
+		glUniform1i(tex_loc1, 0);
+		glUniform1i(useTexture_two_uniformId, false);
+	}
+	else {
+		glUniform1i(tex_loc1, 1);
+		glUniform1i(useTexture_two_uniformId, true);
+	}
+	if (normalMapTextureId == -1)
+	{
+		glUniform1i(normalMap_loc, 0);
+		glUniform1i(useNormalMap_uniformId, false);
+	}
+	else
+	{
+		if (textureId == -1)
+			glUniform1i(normalMap_loc, 0);
+		else
+			glUniform1i(normalMap_loc, 1);
+		glUniform1i(useNormalMap_uniformId, true);
+	}
 }
 
 void GameObject::updateTransforms() {

@@ -17,3 +17,7 @@
 #include "UserInterface.h"
 #include "Head.h"
 #include "Flare.h"
+#include "Billboard.h"
+#include "ParticleSystem.h"
+#include "Particle.h"
+#include "Skybox.h"

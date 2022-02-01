@@ -51,7 +51,7 @@ namespace GameObjectSpace
 		void init(unsigned int _shaderIndex) override;
 		void changeMainCamera(unsigned char code) override;
 		void loadMap();
-	
+		void spawnTrees(float mapBounds, float treeOffset, int n_trees);
 		//void restart();
 
 	};

@@ -172,6 +172,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CubeObj.cpp" />
     <ClCompile Include="FixedTopDownCamera.cpp" />
+    <ClCompile Include="Flare.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Head.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="cube.h" />
     <ClInclude Include="CubeObj.h" />
     <ClInclude Include="FixedTopDownCamera.h" />
+    <ClInclude Include="Flare.h" />
     <ClInclude Include="FollowCamera.h" />
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="GameObject.h" />

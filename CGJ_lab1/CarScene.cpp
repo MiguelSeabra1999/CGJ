@@ -291,7 +291,12 @@ void CarScene::init(unsigned int _shaderIndex)
 	/**/
 
 	Model3D* moon = new Model3D("MOON.OBJ");
-	moon->transform.setPosition(20, 20, 0);
+	moon->transform.setPosition(20, 20,1.0f);
+	moon->transform.setRotation(0, 110, 0);
+	moon->transform.setScale(.5f, .5f, .5f);
+	moon->material->emissive[0] = 1.0f;
+	moon->material->emissive[1] = 1.0f;
+	moon->material->emissive[2] = 1.0f;
 	gameObjects.push_back(moon);
 
 	lightSource = new LightSource(LightType::directional);

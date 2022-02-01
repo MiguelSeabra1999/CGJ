@@ -90,10 +90,11 @@ void Flare::render_flare(int lx, int ly, int* m_viewport) {  //lx, ly represent 
 					 
 
 					glBindVertexArray(myMeshes[i].vao);
-					glUniform4f(glGetUniformLocation(shaderIndex, "textColor"), myMeshes[i].mat.diffuse[0], myMeshes[i].mat.diffuse[1], myMeshes[i].mat.diffuse[2], myMeshes[i].mat.diffuse[3]);
+
+					glUniform4f(glGetUniformLocation(shaderIndex, "textColor"), diffuse[0], diffuse[1], diffuse[2], diffuse[3]);
 					glUniform3f(glGetUniformLocation(shaderIndex, "lightPos"), lightSrc->transform.globalTransform.pos[0], lightSrc->transform.globalTransform.pos[1], lightSrc->transform.globalTransform.pos[2]);
 					glUniform4f(glGetUniformLocation(shaderIndex, "lightColor"), lightSrc->diff[0], lightSrc->diff[1], lightSrc->diff[2], lightSrc->diff[3]);
-					//glUniform4f(glGetUniformLocation(shaderIndex, "viewport"), m_viewport[0], m_viewport[1], m_viewport[2] , m_viewport[3] );
+
 
 					if (texId != -1)
 						glUniform1i(glGetUniformLocation(shaderIndex, "isText"), 3);

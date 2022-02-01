@@ -62,6 +62,8 @@ void Scene::updateAndDraw()
 		destroyQueuedGameObjects();
 		createQueuedGameObjects();
 	}
+	UpdateFlarePositions();
+
 }
 
 

@@ -211,7 +211,6 @@ void renderScene(void) {
 
 	//############ UPDATE SCENE ####################;
 	scene->updateAndDraw();
-	scene->UpdateFlarePositions();
 	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {

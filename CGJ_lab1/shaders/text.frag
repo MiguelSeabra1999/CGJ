@@ -27,7 +27,7 @@ float brightness = 0.7;
        
 		else
              
-			color.rgb = vec3(sampled.r *textColor.r, sampled.g*textColor.g, sampled.b*textColor.b) ;
-            color.a = sampled.a * textColor.a;
+			color.rgb = vec3(sampled.r *textColor.r*lightColor.r, sampled.g*textColor.g*lightColor.g, sampled.b*textColor.b*lightColor.b) ;
+            color.a = sampled.a * textColor.a * lightColor.a;
 	}
 }

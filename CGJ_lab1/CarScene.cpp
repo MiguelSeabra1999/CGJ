@@ -263,20 +263,28 @@ void CarScene::init(unsigned int _shaderIndex)
 	lightSource->light->color[2] = 0.2f;
 	gameObjects.push_back((GameObject*)lightSource);
 
+	/** /
+	LightSource* directional = new LightSource(LightType::directional);
+	//balllight->lightType = LightType::directional;
+	//balllight->light->type = (int)balllight->lightType;
+	directional->light->color[0] = 1.0f;
+	directional->light->color[1] = 1.0f;
+	directional->light->color[2] = 1.0f;
+	
+	directional->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//balllight->transform.globalTransform.setPosition(20, 10 ,0);
+	//balllight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	directional->transform.setRotation(45, -90, 0);
+	gameObjects.push_back((GameObject*)directional);
+
 	/**/
-	BallLight* balllight = new BallLight();
-	balllight->lightType = LightType::directional;
-	balllight->light->type = (int)balllight->lightType;
-	balllight->light->color[0] = 0.5f;
-	balllight->light->color[1] = 0.5f;
-	balllight->light->color[2] = 0.5f;
-	balllight->speed = 0.0f;
-	balllight->transform.globalTransform.setPosition(20, 10 ,2);
-	balllight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
-	balllight->transform.setRotation(45, -90, 0);
-	gameObjects.push_back((GameObject*)balllight);
 
-
+	lightSource = new LightSource(LightType::directional);
+	lightSource->light->color[0] = 0.5f;
+	lightSource->light->color[1] = 0.5f;
+	lightSource->light->color[2] = 0.5f;
+	lightSource->transform.setRotation(45, -90, 0);
+	gameObjects.push_back(lightSource);
 	/** /ballLight = new BallLight();
 	ballLight->transform.globalTransform.setPosition(20, 2, 2);
 	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
@@ -402,7 +410,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	}
 
 
-	Flare* flare = new Flare(GetUIShader(), balllight);
+	Flare* flare = new Flare(GetUIShader(), lightSource);
 	flare->setFMaxSize(0.5);
 	flare->setFScale(0.2);
 	flare->SetActive(true);
@@ -484,40 +492,6 @@ void CarScene::init(unsigned int _shaderIndex)
 	fe->setSimpleColor(1, 1, 1, 0.3);
 	fe->setTextureId(15);
 	flare->AddComponent(fe);
-	/** /
-
-
-	fe = new FlareElement((Canvas*)flare);
-	fe->setFDistance(0.67);
-	fe->setFSize(0.7);
-	fe->setSimpleColor(1, 1, 1, 1);
-	fe->setTextureId(9);
-	flare->AddComponent(fe);
-
-
-	fe = new FlareElement((Canvas*)flare);
-	fe->setFDistance(0.75);
-	fe->setFSize(0.95);
-	fe->setSimpleColor(1, 1, 1, 1);
-	fe->setTextureId(11);
-	flare->AddComponent(fe);
-
-
-	fe = new FlareElement((Canvas*)flare);
-	fe->setFDistance(0.8);
-	fe->setFSize(0.7);
-	fe->setSimpleColor(1, 1, 1, 1);
-	fe->setTextureId(8);
-	flare->AddComponent(fe);
-
-
-	fe = new FlareElement((Canvas*)flare);
-	fe->setFDistance(0.9);
-	fe->setFSize(1.1);
-	fe->setSimpleColor(1, 1, 1, 1);
-	fe->setTextureId(13);
-	flare->AddComponent(fe);*/
-
 
 	uiElements.push_back(UI);
 	uiElements.push_back(flare);

@@ -290,6 +290,10 @@ void CarScene::init(unsigned int _shaderIndex)
 
 	/**/
 
+	Model3D* moon = new Model3D("MOON.OBJ");
+	moon->transform.setPosition(20, 20, 0);
+	gameObjects.push_back(moon);
+
 	lightSource = new LightSource(LightType::directional);
 	lightSource->light->color[0] = 1.0f;
 	lightSource->light->color[1] = 1.0f;

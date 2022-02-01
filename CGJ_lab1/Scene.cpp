@@ -84,7 +84,37 @@ void Scene::updateAndDrawUI()
 	createQueuedGameObjects();
 }
 
+void Scene::UpdateFlarePositions() {
 
+	int flarePos[2];
+	int m_viewport[4];
+	float lightScreenPos[3];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
+
+
+	computeDerivedMatrix(PROJ_VIEW_MODEL);  //pvm to be applied to lightPost. pvm is used in project function
+
+
+	for (GameObject* el : uiElements) {
+		if (el->IsFlare()) {
+			Flare* flare = (Flare*)el;
+			//memcpy(flare->m_pvm, mCompMatrix[PROJ_VIEW_MODEL], sizeof(float) * 16);
+			if (!flare->lightSrc->on || !project(flare->lightSrc->light->position, lightScreenPos, m_viewport)) {
+				//printf("Error in getting projected light in screen\n");  //Calculate the window Coordinates of the light position: the projected position of light on viewport
+				flare->SetActive(false);
+			}
+			else if (flare->lightSrc->lightType != LightType::global) {
+				//cout << "here" << endl;
+				flare->flarePos[0] = (int)lightScreenPos[0];
+				flare->flarePos[1] = (int)lightScreenPos[1];
+				flare->SetActive(true);
+			}
+		}
+	}
+	// for elevery light except ambient
+
+
+}
 
 
 void Scene::destroyQueuedGameObjects()

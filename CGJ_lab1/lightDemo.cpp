@@ -211,6 +211,7 @@ void renderScene(void) {
 
 	//############ UPDATE SCENE ####################;
 	scene->updateAndDraw();
+	scene->UpdateFlarePositions();
 	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {
@@ -237,35 +238,31 @@ void renderScene(void) {
 	}
 
 	scene->sendLightsToShader();
-	//viewer at origin looking down at  negative z direction
+	// UI STUFF
+
 	pushMatrix(MODEL);
 	loadIdentity(MODEL);
+
+
+
+	// next dar setup das variaveis do flare, fazer os inits e carregar as textures que encontrei 
+
+	// check if light is inside the screen coordinates
+
 	pushMatrix(PROJECTION);
 	loadIdentity(PROJECTION);
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
 	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
-
 	scene->updateAndDrawUI();
-	//RenderText(shaderText, "Controls:",10.0f, 700.0f, 0.5f, 1.0, 0.0f, 0.0f,1.0f);
-	//RenderText(shaderText, "Car: WASD, Space", 10.0f, 680.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	//RenderText(shaderText, "Fog: Q", 10.0f, 660.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	//RenderText(shaderText, "Lights: I,O,P", 10.0f, 640.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	//RenderText(shaderText, "Camera: 1,2,3,4", 10.0f, 620.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	//RenderText(shaderText, "Lerp: L", 10.0f, 600.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	//RenderText(shaderText, "Follow: F", 10.0f, 580.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	//RenderText(shaderText, "Pause: Z", 10.0f, 560.0f, 0.5f, 1.0, 1.0f, 1.0f);
-	// Render mesh
-	// activate corresponding render state	
-	
 	popMatrix(PROJECTION);
 	popMatrix(VIEW);
 	popMatrix(MODEL);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-
 	glBindTexture(GL_TEXTURE_2D,0);
 	glutSwapBuffers();
+
 }
 void toggleFogginess()
 {

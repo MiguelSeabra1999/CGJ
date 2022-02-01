@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObjectLib.h"
+//#include "GameObjectLib.h"
 #include "GameObject.h"
 
 namespace GameObjectSpace {
@@ -29,7 +29,7 @@ namespace GameObjectSpace {
 		void SetUIGlobalPosition(float x, float y);
 		void SetUILocalPosition(float x, float y);
 		void initDraw(GLuint shader) override;
-		void generateMesh(int i);
+		virtual void generateMesh(int i);
 		void update();
 		void SetScale(float x, float y);
 		void DrawUI() override;
@@ -43,6 +43,8 @@ namespace GameObjectSpace {
 		void SetRotation(float r) { rotation = r; }
 		void SetWindow(float x, float y) { windowX = x, windowY = y; }
 		void updateWindow(float x, float y) override { SetWindow(x, y); }
+		
+
 		//private:
 		//void start() override;
 	};

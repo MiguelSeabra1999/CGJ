@@ -16,9 +16,6 @@ void Canvas::initDraw(GLuint shader)
 
 
 	MyMesh * amesh = new MyMesh();
-
-
-
 	GameObject::initMaterial();
 	(*amesh).mat = *material;
 	myMeshes.push_back(*amesh);
@@ -41,13 +38,8 @@ void Canvas::initDraw(GLuint shader)
 	float * rot = new float;
 	*rot = rotation;
 	meshRotations.push_back(rot);
-
 	meshTextures.push_back(&textureId);
-
-
 	GameObject::initDraw(shader);
-
-
 	generateMesh(0);
 	
 
@@ -97,7 +89,11 @@ void Canvas::DrawUI() {
 	
 	for (int i = 0; i<myMeshes.size();i++)
 	{
-		if ((i == 0 && isActive) || (i!=0 && components[i-1]->isActive)) {
+		// the first mesh always belongs to the canvas, 
+		// the other meshes belong to its components, if it has them
+		// the only component that doesn't have them is the text, 
+		// as it is rendered in a slightly different way
+		if ((i == 0 && isActive) || (i!=0 && components[i-1]->isActive())) {
 
 			pushMatrix(MODEL);
 			loadIdentity(MODEL);
@@ -112,17 +108,16 @@ void Canvas::DrawUI() {
 			float scale_x_aux = meshScales[i][0];
 			float scale_y_aux = meshScales[i][1];
 	
-			// update VBO for each character
-		
-			translate(MODEL, xpos+(w/2.0f), ypos+(h/2.0f), 0.0f);
-			rotate(MODEL,*r , 0, 0 , 1);
-			//translate(MODEL, -h/2, )
 
+			//drawing the poligon at position the specified center
+			translate(MODEL, xpos+(w/2.0f), ypos+(h/2.0f), 0.0f);
+			//rotating the model r degrees
+			rotate(MODEL,*r , 0, 0 , 1);
+			//using scale on the ui element
 			scale(MODEL, w, h, 1);
 
 			computeDerivedMatrix(PROJ_VIEW_MODEL);
 			glUniformMatrix4fv(glGetUniformLocation(shaderIndex, "m_pvm"), 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
-
 			GLint texId = *(meshTextures[i]);
 			if (texId != -1)
 				glActiveTexture(GL_TEXTURE0); //no frag shader o uniform sampler foi carregado com TU0
@@ -134,7 +129,7 @@ void Canvas::DrawUI() {
 			else
 				glUniform1i(glGetUniformLocation(shaderIndex, "isText"), 0);
 
-		
+			// these vertexes are created taking into to account the earliear translation
 			float vertices[6][4] = {
 				{-0.5f,  0.5f, 0.0f, 0.0f  },
 				{-0.5f, -0.5f, 0.0f, 1.0f  },

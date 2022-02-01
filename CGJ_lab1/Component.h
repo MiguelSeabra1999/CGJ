@@ -7,7 +7,7 @@ namespace GameObjectSpace {
 	{
 	public:
 		GameObject* owner;
-		bool isActive = true;
+		bool isAct = true;
 
 		Component(){};
 		Component(GameObject* owner) { Component::owner = owner; }
@@ -18,7 +18,7 @@ namespace GameObjectSpace {
 		}
 
 		virtual void setActive(bool act) {
-			isActive = act;
+			isAct = act;
 		}
 
 		virtual void init()
@@ -28,6 +28,8 @@ namespace GameObjectSpace {
 		{
 			return "";
 		}
+		virtual bool isFlareElement() { return false; }
+		virtual bool isActive() { return isAct; }
 	};
 
 }

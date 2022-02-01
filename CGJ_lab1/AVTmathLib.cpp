@@ -617,21 +617,28 @@ bool project(float* objCoord, float* windowCoord, int* m_viewport) {
 
 	//gets point in clipping coordinates
 	multMatrixPoint(PROJ_VIEW_MODEL, objCoord, point_tmp);
+
+
 	//normalize between -1 and 1 
 	if (point_tmp[3] == 0.0f)  //the w value
 		return false;
-	else
-		point_tmp[3] = 1 / point_tmp[3];
+	/**/else
+		point_tmp[3] = 1 / point_tmp[3];/**/
 
 	// Perspective division
 	point_tmp[0] *= point_tmp[3];
 	point_tmp[1] *= point_tmp[3];
 	point_tmp[2] *= point_tmp[3];
 
+	//cout << "point_tmp = " << point_tmp[0] << ", " << point_tmp[1] << ", " << point_tmp[2] << ", " << point_tmp[3] << endl;
+
+	if (point_tmp[3] < 0)
+		return false;
 	// Window coordinates
 	 // Map x, y to range 0-1
 	windowCoord[0] = (point_tmp[0] * 0.5 + 0.5) * m_viewport[2] + m_viewport[0];
 	windowCoord[1] = (point_tmp[1] * 0.5 + 0.5) * m_viewport[3] + m_viewport[1];
+	//cout << "window coords =" << windowCoord[0] << ", "<< windowCoord[1] << endl;
 	// This is only correct when glDepthRange(0.0, 1.0)
 	windowCoord[2] = (1.0 + point_tmp[2]) * 0.5;	// Between 0 and 1
 	return true;

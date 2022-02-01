@@ -10,6 +10,17 @@ void CarScene::loadTextures()
 	GameObject::initTexture("Grass2.jpg");    // indexTexture = 3
 	GameObject::initTexture("stripes.jpg");   // indexTexture = 4
 	GameObject::initTexture("heart.png");   // indexTexture = 5
+	GameObject::initTexture("sun.png"); // indexTexture = 6
+	GameObject::initTexture("tex1.png");   // indexTexture = 7
+	GameObject::initTexture("tex2.png");    // indexTexture = 8
+	GameObject::initTexture("tex3.png");    // indexTexture = 9
+	GameObject::initTexture("tex4.png");   // indexTexture = 10
+	GameObject::initTexture("tex5.png");   // indexTexture = 11
+	GameObject::initTexture("tex6.png");    // indexTexture = 12
+	GameObject::initTexture("tex7.png");    // indexTexture = 13
+	GameObject::initTexture("tex8.png");   // indexTexture = 14
+	GameObject::initTexture("tex9.png");   // indexTexture = 15
+
 
 
 
@@ -253,12 +264,25 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)lightSource);
 
 	/**/
-	lightSource = new LightSource(LightType::directional);
-	lightSource->light->color[0] = 0.5f;
-	lightSource->light->color[1] = 0.5f;
-	lightSource->light->color[2] = 0.5f;
-	lightSource->transform.setRotation(45, -90, 0);
-	gameObjects.push_back((GameObject*)lightSource);
+	BallLight* balllight = new BallLight();
+	balllight->lightType = LightType::directional;
+	balllight->light->type = (int)balllight->lightType;
+	balllight->light->color[0] = 0.5f;
+	balllight->light->color[1] = 0.5f;
+	balllight->light->color[2] = 0.5f;
+	balllight->speed = 0.0f;
+	balllight->transform.globalTransform.setPosition(20, 10 ,2);
+	balllight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	balllight->transform.setRotation(45, -90, 0);
+	gameObjects.push_back((GameObject*)balllight);
+
+
+	/** /ballLight = new BallLight();
+	ballLight->transform.globalTransform.setPosition(20, 2, 2);
+	ballLight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
+	ballLight->speed = 0.0f;
+	ballLight->setColor(1, 1, 1, 1);
+	gameObjects.push_back((GameObject*)ballLight);
 	/**/
 
 	/**/
@@ -377,13 +401,126 @@ void CarScene::init(unsigned int _shaderIndex)
 		canvas2->AddComponent(panel);
 	}
 
+
+	Flare* flare = new Flare(GetUIShader(), balllight);
+	flare->setFMaxSize(0.5);
+	flare->setFScale(0.2);
+	flare->SetActive(true);
+
 	
+	FlareElement* fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0);
+	fe->setFSize(2);
+	fe->setSimpleColor(1.0f,1.0f,1.0f,0.5f);
+	fe->setTextureId(6);
+	flare->AddComponent(fe);
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.1);
+	fe->setFSize(3);
+	fe->setSimpleColor(1, 1, 1, 0.05);
+	fe->setTextureId(7);
+	flare->AddComponent(fe);
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.1);
+	fe->setFSize(2.5);
+	fe->setSimpleColor(1, 1, 1, 0.05);
+	fe->setTextureId(8);
+	flare->AddComponent(fe);
+
+	
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.11);
+	fe->setFSize(2.3);
+	fe->setSimpleColor(1, 1, 1, 0.3);
+	fe->setTextureId(9);
+	flare->AddComponent(fe);
 
 
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.12);
+	fe->setFSize(2.5);
+	fe->setSimpleColor(1, 1, 1, 0.1);
+	fe->setTextureId(10);
+	flare->AddComponent(fe);
 
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.15);
+	fe->setFSize(2.0);
+	fe->setSimpleColor(1, 1, 1, 0.3);
+	fe->setTextureId(11);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.16);
+	fe->setFSize(1.5);
+	fe->setSimpleColor(1, 1, 1, 0.3);
+	fe->setTextureId(12);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.18);
+	fe->setFSize(1);
+	fe->setSimpleColor(1, 1, 1, 0.2);
+	fe->setTextureId(13);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.2);
+	fe->setFSize(2);
+	fe->setSimpleColor(1, 1, 1, 0.3);
+	fe->setTextureId(14);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.3);
+	fe->setFSize(2);
+	fe->setSimpleColor(1, 1, 1, 0.3);
+	fe->setTextureId(15);
+	flare->AddComponent(fe);
+	/** /
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.67);
+	fe->setFSize(0.7);
+	fe->setSimpleColor(1, 1, 1, 1);
+	fe->setTextureId(9);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.75);
+	fe->setFSize(0.95);
+	fe->setSimpleColor(1, 1, 1, 1);
+	fe->setTextureId(11);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.8);
+	fe->setFSize(0.7);
+	fe->setSimpleColor(1, 1, 1, 1);
+	fe->setTextureId(8);
+	flare->AddComponent(fe);
+
+
+	fe = new FlareElement((Canvas*)flare);
+	fe->setFDistance(0.9);
+	fe->setFSize(1.1);
+	fe->setSimpleColor(1, 1, 1, 1);
+	fe->setTextureId(13);
+	flare->AddComponent(fe);*/
 
 
 	uiElements.push_back(UI);
+	uiElements.push_back(flare);
 	
 	for (GameObject* obj : gameObjects) {
 		obj->updateCurrentScene(this);

@@ -148,7 +148,7 @@ void GameObject::turnLightOfTypeOff(LightType t) {
 			l2->on = !l2->on;
 			if (l2->on) {
 				GameObject::n_lights++;
-				if (l2->lightType == LightType::point || l2->lightType == LightType::spot) {
+				if (l2->lightType == LightType::point || l2->lightType == LightType::spot || l2->lightType == LightType::directional) {
 					l2->emissive[0] = l2->oldColor[0];
 					l2->emissive[1] = l2->oldColor[1];
 					l2->emissive[2] = l2->oldColor[2];
@@ -157,7 +157,7 @@ void GameObject::turnLightOfTypeOff(LightType t) {
 			}
 			else {
 				GameObject::n_lights--;
-				if (l2->lightType == LightType::point || l2->lightType == LightType::spot) {
+				if (l2->lightType == LightType::point || l2->lightType == LightType::spot || l2->lightType == LightType::directional) {
 					l2->setOldColor(l2->material->emissive[0], l2->material->emissive[1], l2->material->emissive[2], l2->material->emissive[3]);
 					l2->emissive[0] = 0.0f;
 					l2->emissive[1] = 0.0f;

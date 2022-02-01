@@ -16,3 +16,4 @@
 #include "Canvas.h"
 #include "UserInterface.h"
 #include "Head.h"
+#include "Flare.h"

@@ -94,6 +94,7 @@ namespace GameObjectSpace {
 		void updateTransforms();
 		void updateCurrentScene(Scene* sc);
 		virtual void updateWindow(float x, float y){}
+		virtual bool IsFlare() { return false; }
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;

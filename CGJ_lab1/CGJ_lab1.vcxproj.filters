@@ -83,6 +83,9 @@
     <ClCompile Include="TextElement.cpp">
       <Filter>Components\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Flare.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h">
@@ -196,9 +199,30 @@
     <ClInclude Include="TextElement.h">
       <Filter>Components\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Flare.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
+    <None Include="shaders\gouraud.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\gouraud.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\pointlight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\pointlight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LibsClass">

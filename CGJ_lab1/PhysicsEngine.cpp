@@ -137,7 +137,7 @@ void PhysicsEngine::SolveCollision(Collision* collision)
 		collision->collider2->rigidbody->addImpulse(r2,restituition*2);
 		
 	}
-	cout << endl;
+	//cout << endl;
 	
 }
 

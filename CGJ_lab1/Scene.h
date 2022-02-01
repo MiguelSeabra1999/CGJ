@@ -49,6 +49,7 @@ namespace GameObjectSpace
 		void SetWindow(float x, float y) { windowX = x; windowY = y; }
 		VSShaderLib * GetUIShader() { return UIShader; }
 		virtual void loadTextures(){}
+		void UpdateFlarePositions();
 
 	private:
 		VSShaderLib * UIShader;

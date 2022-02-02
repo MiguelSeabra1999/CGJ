@@ -10,6 +10,8 @@ struct Materials {
 	vec4 emissive;
 	float shininess;
 	int texCount;
+	float roughness;
+	float reflective;
 };
 
 struct Light {    
@@ -32,6 +34,7 @@ uniform Light lights[MAX_LIGHTS];
 uniform float fogginess;
 uniform vec4 fogColor;
 
+uniform mat4 m_view;
 uniform Materials mat;
 uniform sampler2D texmap;
 uniform sampler2D texmap1;
@@ -148,12 +151,22 @@ vec4 BillboarColor()
 
 	return texel*mat.diffuse;
 }
+
+vec4 CalcReflection(vec3 eye, vec3 normal)
+{
+	vec3 reflected = vec3 (transpose(m_view) * vec4 (vec3(reflect(-eye, normal)), 0.0)); 
+	reflected.x= -reflected.x;   
+	if(mat.roughness > 0)
+		reflected = reflected + mat.roughness * noise3(	eye.x );
+	return texture(cubeMap, reflected);
+}
+
 void main()
 {
+
 	if(isSkybox)
 	{
-	//	vec4 texel =  texture(cubeMap, DataIn.skyboxTexCoord);
-		//vec4 texel = vec4(1.0);
+
 		colorOut =  texture(cubeMap, DataIn.skyboxTexCoord);
 		return;
 	}
@@ -196,6 +209,8 @@ void main()
 	resultColor = mix(fogColor, resultColor, fogAmount );
 	resultColor = resultColor + mat.emissive;
 	resultColor = vec4(resultColor.rgb, mat.diffuse.a);
+	if(mat.reflective > 0)
+		resultColor = mix(resultColor, CalcReflection(n,e),mat.reflective);
 
 	colorOut = resultColor;
 }

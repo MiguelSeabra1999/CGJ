@@ -38,22 +38,32 @@ void Scene::initUI(unsigned int shaderID)
 	}
 }
 
-void Scene::updateAndDraw()
+void Scene::update()
 {
-	if(!paused)
-		physicsEngine->update();
+	if (paused)
+		return;
+	physicsEngine->update();
+	int count = gameObjects.size();
+	for (int i = 0; i < count; i++)
+	{
+			(*gameObjects[i]).update();
+
+	}
+
+}
+
+void Scene::draw()
+{
 	int count = gameObjects.size();
 	glDepthMask(GL_TRUE);
 	for (int i = 0; i < count; i++)
 	{
-		if(!paused)
-			(*gameObjects[i]).update();
+
 		(*gameObjects[i]).opaqueDraw();
 	}
-	
-
 
 	glDepthMask(GL_FALSE);
+
 	count = gameObjects.size();
 	for (int i = 0; i < count; i++)
 	{

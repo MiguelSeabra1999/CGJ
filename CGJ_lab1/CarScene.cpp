@@ -80,6 +80,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	cube->transform.setLocalScale(1.4, .5, 1.6);
 	cube->transform.setLocalPosition(.69, .725, 0);
 	cube->transform.setParent(&(playerCar->transform));
+	cube->reflective = 0.2f;
+	
 	cube->setColor(0.5f, 1.0f, 1.0f, 0.6f);
 	//back
 	cube = new Cube();
@@ -163,6 +165,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	cube->transform.setScale(1, 10, 1);
 	cube->transform.setPosition(0, -5, 0);
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	cube->reflective = 0.2f;
+	cube->roughness = 10.0f;
 	cube->textureId = 0;
 	cube->secondTextureId = 4;
 	gameObjects.push_back((GameObject*)cube);
@@ -176,6 +180,7 @@ void CarScene::init(unsigned int _shaderIndex)
 
 	cube->normalMapTextureId = 18;
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+	
 	aabb = new AABB(cube);
 	
 
@@ -298,9 +303,9 @@ void CarScene::init(unsigned int _shaderIndex)
 	moon->transform.setPosition(20, 20,1.0f);
 	moon->transform.setRotation(0, 110, 0);
 	moon->transform.setScale(.5f, .5f, .5f);
-	moon->material->emissive[0] = 1.0f;
-	moon->material->emissive[1] = 1.0f;
-	moon->material->emissive[2] = 1.0f;
+	moon->emissive[0] = 1.0f;
+	moon->emissive[1] = 1.0f;
+	moon->emissive[2] = 1.0f;
 	gameObjects.push_back(moon);
 
 	lightSource = new LightSource(LightType::directional);

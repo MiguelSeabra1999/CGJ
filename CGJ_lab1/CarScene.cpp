@@ -177,7 +177,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	
 
 
-	/**/
+	/** /
 	//butter
 	cube = new Cube();
 	cube->transform.setScale(1, 1, 3);
@@ -198,7 +198,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)cube);
 	gameObjects.push_back((GameObject*)aabb->cube);
 	cube->textureId = 2;
-
+	/**/
 	//Skybox
 	Skybox* skybox = new Skybox();
 	skybox->textureId = 20;
@@ -660,6 +660,10 @@ void CarScene::loadMap()
 				gameObjects.push_back((GameObject*)cube);
 				gameObjects.push_back((GameObject*)aabb->cube);
 			}
+			if (map[index] == 1 && map[index + 1] == 1 && map[index + 2] == 1)
+			{
+				SpawnButter(i - 32, j - 32);
+			}
 		}
 	}
 }
@@ -701,6 +705,28 @@ void CarScene::spawnTrees(float mapBounds, float treeOffset, int n_trees)
 		tree->textureId = 16;
 		gameObjects.push_back((GameObject*)tree);
 	}
+}
+void CarScene::SpawnButter(float x,float z)
+{
+	Cube* cube = new Cube();
+	cube->transform.setScale(0.6, 0.3, 0.6);
+	cube->transform.setPosition(x, 0.15, z);
+
+	cube->normalMapTextureId = 18;
+	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+	AABB* aabb = new AABB(cube);
+
+
+	cube->AddComponent(aabb);
+	RigidBody* rb = new RigidBody(cube);
+	rb->damping = 0.0005f;
+	rb->setMass(0.5f);
+	cube->AddComponent(rb);
+	aabb->setDim(0.7, 0.4, 0.7);
+	gameObjects.push_back((GameObject*)cube);
+	gameObjects.push_back((GameObject*)aabb->cube);
+	cube->textureId = 2;
 }
 /** /
 void CarScene::restart()

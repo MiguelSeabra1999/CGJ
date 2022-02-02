@@ -53,6 +53,7 @@ namespace GameObjectSpace
 		void changeMainCamera(unsigned char code) override;
 		void loadMap();
 		void spawnTrees(float mapBounds, float treeOffset, int n_trees);
+		void SpawnButter(float x, float z);
 		//void restart();
 
 	};

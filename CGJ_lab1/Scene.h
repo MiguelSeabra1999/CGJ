@@ -30,14 +30,16 @@ namespace GameObjectSpace
 		GLuint shaderIndex;
 		Camera* currentCam;
 		Camera* secondCam;
+		Camera* thirdCam;
 		PhysicsEngine* physicsEngine;
 		static TimeUtil* timeUtil;
+		bool rearView = false;
 
 		virtual void init(unsigned int _shaderIndex);
 		void initUI(unsigned int shaderID);
 		void update();
 		void draw();
-		void updateAndDrawUI();
+		void updateAndDrawUI(int st);
 
 		void sendLightsToShader();
 		virtual void changeMainCamera(unsigned char code);

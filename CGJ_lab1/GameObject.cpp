@@ -143,7 +143,7 @@ void GameObject::drawOpaqueSons()
 	//glDepthMask(GL_TRUE);
 
 }
-void GameObjectSpace::GameObject::drawUISons()
+void GameObjectSpace::GameObject::drawUISons(int st)
 {
 	int n_sons = transform.sons.size();
 
@@ -151,7 +151,7 @@ void GameObjectSpace::GameObject::drawUISons()
 	{
 		Transform* sonTransform = transform.sons.at(i);
 		GameObject* sonObject = (GameObject*)(sonTransform->gameObject);
-		sonObject->DrawUI();
+		sonObject->DrawUI(st);
 
 	}
 	//glDepthMask(GL_FALSE);
@@ -249,10 +249,10 @@ void GameObject::transparentDraw()
 }
 
 
-void GameObject::DrawUI() {
+void GameObject::DrawUI(int st) {
 	//updateTransforms();
 	updateWindow(currentScene->windowX, currentScene->windowY);
-	drawUISons();
+	drawUISons(st);
 }
 
 

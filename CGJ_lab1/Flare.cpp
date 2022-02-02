@@ -135,8 +135,8 @@ void Flare::render_flare(int lx, int ly, int* m_viewport) {  //lx, ly represent 
 	glDisable(GL_BLEND);
 }
 
-void Flare::DrawUI() {
-	GameObject::DrawUI();
+void Flare::DrawUI(int st) {
+	GameObject::DrawUI(st);
 
 	int m_viewport[4];
 	glGetIntegerv(GL_VIEWPORT, m_viewport);

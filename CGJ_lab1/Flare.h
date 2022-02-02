@@ -28,7 +28,7 @@ namespace GameObjectSpace {
 		void setFScale(float f) { fScale = f; }
 		void setFMaxSize(float f) { fMaxSize = f; }
 		//void generateMesh(int i) override;
-		void DrawUI() override;
+		void DrawUI(int st) override;
 		void initDraw(GLuint shader) override;
 		void render_flare(int lx, int ly, int* m_viewport);
 		bool IsFlare() override { return true; }

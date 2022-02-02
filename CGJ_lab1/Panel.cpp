@@ -11,6 +11,7 @@ void Panel::update()
     updateColors();
     updateWidthHeight();
     updateRotation();
+    updateStencilTypes();
 }
 
 void Panel::updateHeart() {
@@ -57,6 +58,12 @@ void Panel::updateRotation()
     *rot = rotation + (ownerAux->rotation);
 }
 
+void Panel::updateStencilTypes() {
+    Canvas* ownerAux = (Canvas*)owner;
+    int* st = ownerAux->stencilTypes.at(mesh_index);
+    *st = stencilType;
+}
+
 void Panel::updateColors()
 {
     (*owner->getMyMeshes())[mesh_index].mat.diffuse[0] = simpleColor[0];
@@ -69,25 +76,43 @@ void Panel::init()
 {
     MyMesh * amesh = new MyMesh();
     Material* mat = new Material();
+
 	Canvas* ownerAux = ((Canvas*)owner);
+
     vector<struct MyMesh> * aux = ownerAux->getMyMeshes();
+
     initMaterial(mat, simpleColor[0], simpleColor[1], simpleColor[2], simpleColor[3]);
     (* amesh).mat = *mat;
     (*aux).push_back(*amesh);
+
 	float* pos = new float[2];
 	ownerAux->meshPositions.push_back(pos);
+
     mesh_index = getIndex(ownerAux->meshPositions, pos);
+
     float* sc = new float[2];
     ownerAux->meshScales.push_back(sc);
+
     float* w_h = new float[2];
     ownerAux->meshWidthHeight.push_back(w_h);
+
     float* rot = new float;
     *rot = rotation;
     ownerAux->meshRotations.push_back(rot);
+
+    int* st = new int;
+    *st = stencilType;
+    ownerAux->stencilTypes.push_back(st);
+
+    bool* act = new bool;
+    *act = isAct;
+    ownerAux->meshActives.push_back(act);
+
     updatePositions();
     updateScales();
     updateWidthHeight();
     updateRotation();
+    updateStencilTypes();
     ownerAux->meshTextures.push_back(&textureId);
     ownerAux->generateMesh(mesh_index);
 }

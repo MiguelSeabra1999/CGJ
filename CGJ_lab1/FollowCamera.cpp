@@ -51,9 +51,9 @@ void FollowCamera::update()
 void FollowCamera::SetCameraPosition()
 {
 
-	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + GameObject::transform.parent->globalTransform.right[0] * horizontalDist;
+	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + GameObject::transform.parent->globalTransform.right[0] * (horizontalDist);
 	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + verticalDist;
-	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + GameObject::transform.parent->globalTransform.right[2] * horizontalDist;
+	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + GameObject::transform.parent->globalTransform.right[2] * (horizontalDist);
 }
 
 void FollowCamera::UpdateCameraPosition()
@@ -112,14 +112,25 @@ void FollowCamera::SetPlayerMoving(bool state)
 
 void FollowCamera::SetCameraLookAt()
 {
-	float forward[3] = { GameObject::transform.parent->globalTransform.right[0], 0.0f, GameObject::transform.parent->globalTransform.right[2] };
+	float forward[3] = { GameObject::transform.parent->globalTransform.right[0] , 1.0f, GameObject::transform.parent->globalTransform.right[2] };
+	float horizontalOffset = 0.0f;
 
-	lookAt[0] = GameObject::transform.globalTransform.pos[0] + offset[0];
-	lookAt[1] = GameObject::transform.globalTransform.pos[1] + offset[1];
-	lookAt[2] = GameObject::transform.globalTransform.pos[2] + offset[2];
-	lookAt[3] = GameObject::transform.parent->globalTransform.pos[0] + offset[0];
-	lookAt[4] = GameObject::transform.parent->globalTransform.pos[1] + offset[1];
-	lookAt[5] = GameObject::transform.parent->globalTransform.pos[2] + offset[2];
+	
+	horizontalOffset = sqrt(offset[0] * offset[0] + offset[2] * offset[2]);
+	
+
+	float addon[3] = {
+		forward[0] * (horizontalOffset),
+		(offset[1] * forward[1]),
+		forward[2] * (horizontalOffset)
+	};
+
+	lookAt[0] = GameObject::transform.globalTransform.pos[0]+addon[0];
+	lookAt[1] = GameObject::transform.globalTransform.pos[1]+addon[1];
+	lookAt[2] = GameObject::transform.globalTransform.pos[2]+addon[2];
+	lookAt[3] = GameObject::transform.parent->globalTransform.pos[0]+ addon[0];
+	lookAt[4] = GameObject::transform.parent->globalTransform.pos[1]  + addon[1];
+	lookAt[5] = GameObject::transform.parent->globalTransform.pos[2] + addon[2];
 	//set world up
 	lookAt[6] = 0;
 	lookAt[7] = 1;

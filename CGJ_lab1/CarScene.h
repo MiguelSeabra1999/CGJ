@@ -18,6 +18,7 @@ namespace GameObjectSpace
 			1000.0f, //far
 		};
 
+
 		float followCameraOrthoArguments[8] = {
 			WinX, //window width
 			WinY, // window height

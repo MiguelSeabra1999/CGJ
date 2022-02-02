@@ -277,8 +277,11 @@ void GameObject::draw()
 		computeDerivedMatrix(PROJ_VIEW_MODEL);
 
 		glUniformMatrix4fv(model_uniformId, 1, GL_FALSE, mMatrix[MODEL]);
+		glUniformMatrix4fv(view_uniformId, 1, GL_FALSE, mMatrix[VIEW]);
 		glUniformMatrix4fv(vm_uniformId, 1, GL_FALSE, mCompMatrix[VIEW_MODEL]);
 		glUniformMatrix4fv(pvm_uniformId, 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
+
+
 		computeNormalMatrix3x3();
 		glUniformMatrix3fv(normal_uniformId, 1, GL_FALSE, mNormal3x3);
 
@@ -305,6 +308,7 @@ void GameObject::PrepareShader()
 	vm_uniformId = glGetUniformLocation(shaderProgramIndex, "m_viewModel");
 	model_uniformId = glGetUniformLocation(shaderProgramIndex, "m_model");
 	normal_uniformId = glGetUniformLocation(shaderProgramIndex, "m_normal");
+	view_uniformId = glGetUniformLocation(shaderProgramIndex, "m_view");
 	useTexture_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture");
 	useTexture_two_uniformId = glGetUniformLocation(shaderProgramIndex, "useTexture2");
 	tex_loc = glGetUniformLocation(shaderProgramIndex, "texmap");
@@ -425,7 +429,8 @@ void GameObject::initMaterial()
 	memcpy(material->specular, spec, 4 * sizeof(float));
 	memcpy(material->emissive, emissive, 4 * sizeof(float));
 	material->shininess = shininess;
-
+	material->roughness = roughness;
+	material->reflective = reflective;
 	int sizeMeshes = myMeshes.size();
 	for (int i = 0; i < sizeMeshes; i++) {
 		memcpy(myMeshes[i].mat.diffuse, diff, 4 * sizeof(float));
@@ -464,6 +469,10 @@ void GameObject::sendMaterialToShader(int i)
 	glUniform4fv(loc, 1, myMeshes[i].mat.specular);
 	loc = glGetUniformLocation(shaderProgramIndex, "mat.shininess");
 	glUniform1f(loc, myMeshes[i].mat.shininess);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.roughness");
+	glUniform1f(loc, myMeshes[i].mat.roughness);
+	loc = glGetUniformLocation(shaderProgramIndex, "mat.reflective");
+	glUniform1f(loc, myMeshes[i].mat.reflective);
 
 }
 

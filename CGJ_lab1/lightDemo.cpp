@@ -187,6 +187,9 @@ void renderScene(void) {
 
 	FrameCount++;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//############ UPDATE SCENE ####################;
+	scene->update();
 		
 	scene->currentCam->UpdateProjection();
 	
@@ -209,8 +212,8 @@ void renderScene(void) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//############ UPDATE SCENE ####################;
-	scene->updateAndDraw();
+	//############ DRAW SCENE ####################;
+	scene->draw();
 	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {

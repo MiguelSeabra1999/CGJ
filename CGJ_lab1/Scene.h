@@ -34,7 +34,8 @@ namespace GameObjectSpace
 
 		virtual void init(unsigned int _shaderIndex);
 		void initUI(unsigned int shaderID);
-		void updateAndDraw();
+		void update();
+		void draw();
 		void updateAndDrawUI();
 
 		void sendLightsToShader();

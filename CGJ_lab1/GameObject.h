@@ -46,6 +46,8 @@ namespace GameObjectSpace {
 		float spec[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
 		float emissive[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		float shininess = 100.0f;
+		float reflective = 0;
+		float roughness = 0;
 		int shaderIndex;
 		static vector<GLuint*> textureIds;
 		int textureId = -1;

@@ -269,7 +269,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	follow2->SetLerp(false);
 	follow2->staticAngles = true;
 	follow2->offset[0] = -0.15f;
-	follow2->offset[1] = 0.18f;
+	follow2->offset[1] = 0.185f;
 
 
 	FollowCamera* follow3 = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, -1.0f, 0.3f);
@@ -279,9 +279,9 @@ void CarScene::init(unsigned int _shaderIndex)
 	follow3->offset[1] = 0.13f;
 	//followCamera->SetDistances(0.2f, 0.2f);
 	//followCamera->transform.setParent(&(playerCar->transform));
-	cameras.push_back((Camera*)follow3);
-	cameras.push_back((Camera*)follow2);
 	cameras.push_back((Camera*)followCamera);
+	cameras.push_back((Camera*)follow2);
+	cameras.push_back((Camera*)follow3);
 
 
 	FixedTopDownCamera* fixedCamera = new FixedTopDownCamera(positionTopDownCamera, CamType_t::perspective_t, fixedCameraPerspectiveArguments);
@@ -628,11 +628,11 @@ void CarScene::changeMainCamera(unsigned char code)
 
 		break;
 	case '3':
-		currentCam = cameras[1];
+		currentCam = cameras[3];
 
 		break;
 	case '4':
-		currentCam = cameras[1];
+		currentCam = cameras[3];
 
 	}
 }

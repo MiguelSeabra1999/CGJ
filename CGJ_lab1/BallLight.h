@@ -11,7 +11,7 @@ namespace GameObjectSpace {
 		float startY = 0;
 		BallLight() : LightSource(LightType::point)
 		{
-
+			reflective = 0.6f;
 
 		}
 		void start()
@@ -20,6 +20,7 @@ namespace GameObjectSpace {
 			startY = transform.globalTransform.pos[1];
 			speed += randomRange(-100, 100) * 0.0001;
 			//light->quadratic =0.5f;
+			
 		}
 		void update()
 		{

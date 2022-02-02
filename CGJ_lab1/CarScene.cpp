@@ -165,7 +165,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	cube->transform.setScale(1, 10, 1);
 	cube->transform.setPosition(0, -5, 0);
 	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
-	cube->reflective = 0.2f;
+	cube->reflective = 0.05f;
 	cube->roughness = 10.0f;
 	cube->textureId = 0;
 	cube->secondTextureId = 4;
@@ -627,6 +627,7 @@ void CarScene::loadMap()
 				cube->setColor(1.0f, 0.5f, 0.5f,1.0f);
 				cube->textureId = 19;
 				cube->normalMapTextureId = 19;
+				
 				AABB* aabb = new AABB(cube);
 				cube->AddComponent(aabb);
 

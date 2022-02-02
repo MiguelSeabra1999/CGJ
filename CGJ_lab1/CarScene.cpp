@@ -42,6 +42,19 @@ void CarScene::init(unsigned int _shaderIndex)
 	AABB* aabb;
 	RigidBody* rb;
 
+	float mapSize = 65;
+	Cube* cube = new Cube();
+	cube->setResizable(mapSize, mapSize);
+	cube->transform.setScale(1, 10, 1);
+	cube->transform.setPosition(0, -5, 0);
+	cube->setColor(1.0f, 1.0f, 1.0f, 0.5f);
+	cube->reflective = 0.05f;
+	cube->roughness = 10.0f;
+	cube->textureId = 0;
+	cube->secondTextureId = 4;
+	gameObjects.push_back((GameObject*)cube);
+
+
 	//##############################  Car  ###############################################
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
@@ -59,7 +72,6 @@ void CarScene::init(unsigned int _shaderIndex)
 
 	// ------- body --------
 	//base
-	Cube* cube;
 	cube = new Cube();
 	cube->transform.setLocalScale(3, .6, 1.7);
 	cube->transform.setLocalPosition(.5, .2, 0);
@@ -158,19 +170,11 @@ void CarScene::init(unsigned int _shaderIndex)
 
 	//########################### Map and Obstacles ##################################
 
-	float mapSize = 65;
+
+
 	loadMap();
 	/**/
-	cube = new Cube();
-	cube->setResizable(mapSize, mapSize);
-	cube->transform.setScale(1, 10, 1);
-	cube->transform.setPosition(0, -5, 0);
-	cube->setColor(1.0f, 1.0f, 1.0f, 1.0f);
-	cube->reflective = 0.05f;
-	cube->roughness = 10.0f;
-	cube->textureId = 0;
-	cube->secondTextureId = 4;
-	gameObjects.push_back((GameObject*)cube);
+	
 
 
 	/**/

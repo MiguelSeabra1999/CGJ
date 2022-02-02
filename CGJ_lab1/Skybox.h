@@ -10,7 +10,7 @@ namespace GameObjectSpace {
 		void initDraw(GLuint myShaderProgramIndex);
 		void BindTexture();
 
-		void draw();
+		void draw(bool reversed);
 
 	};
 }

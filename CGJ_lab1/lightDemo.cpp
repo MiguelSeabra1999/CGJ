@@ -190,7 +190,7 @@ void changeSize(int w, int h) {
 // 
 
 
-void renderStep(Camera * currentCam) {
+void renderStep(Camera * currentCam, bool reversed) {
 
 	//############ UPDATE SCENE ####################;
 
@@ -213,12 +213,12 @@ void renderStep(Camera * currentCam) {
 
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
 
 	lightsStep();
 
 	//############ DRAW SCENE ####################;
-	scene->draw();
+	scene->draw(reversed);
 	//glDepthMask(GL_TRUE);
 
 	if (!shader.isProgramValid()) {
@@ -307,7 +307,7 @@ void renderScene(void) {
 		glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 		scene->secondCam->UpdateProjection();
-		renderStep(scene->secondCam);
+		renderStep(scene->secondCam, false);
 
 		glClear(GL_STENCIL_BUFFER_BIT);
 
@@ -318,7 +318,7 @@ void renderScene(void) {
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glStencilFunc(GL_EQUAL, 0x1, 0x1);
 		scene->thirdCam->UpdateProjection();
-		renderStep(scene->thirdCam);
+		renderStep(scene->thirdCam, false);
 		glDisable(GL_STENCIL_TEST);
 
 
@@ -329,7 +329,8 @@ void renderScene(void) {
 		glDisable(GL_STENCIL_TEST);
 
 		scene->currentCam->UpdateProjection();
-		renderStep(scene->currentCam);
+		renderStep(scene->currentCam, true);
+		renderStep(scene->currentCam, false);
 	}
 
 	glDisable(GL_STENCIL_TEST);

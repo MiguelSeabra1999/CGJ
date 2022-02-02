@@ -103,7 +103,7 @@ void GameObject::updateSons()
 
 	}
 }
-void GameObject::drawTransparentSons()
+void GameObject::drawTransparentSons(bool reversed)
 {
 	
 	int n_sons = transform.sons.size();
@@ -118,12 +118,12 @@ void GameObject::drawTransparentSons()
 			
 			//sonObject->SendLightsToShader();
 			//sonObject->update();
-			sonObject->transparentDraw();
+			sonObject->transparentDraw(reversed);
 		}
 		glDepthMask(GL_TRUE);
 	}
 }
-void GameObject::drawOpaqueSons()
+void GameObject::drawOpaqueSons(bool reversed)
 {
 	int n_sons = transform.sons.size();
 	
@@ -135,7 +135,7 @@ void GameObject::drawOpaqueSons()
 		{
 			//sonObject->SendLightsToShader();
 			//sonObject->update();
-			sonObject->opaqueDraw();
+			sonObject->opaqueDraw(reversed);
 		}
 	}
 	//glDepthMask(GL_FALSE);
@@ -234,18 +234,18 @@ void GameObject::initDraw(GLuint myShaderProgramIndex)
 	}
 }
 
-void GameObject:: opaqueDraw()
+void GameObject:: opaqueDraw(bool reversed)
 {
 	
 	if (diff[3] >= 1)
-		draw();
-	drawOpaqueSons();
+		draw(reversed);
+	drawOpaqueSons(reversed);
 }
-void GameObject::transparentDraw()
+void GameObject::transparentDraw(bool reversed)
 {
 	if (diff[3] < 1)
-		draw();
-	drawTransparentSons();
+		draw(reversed);
+	drawTransparentSons(reversed);
 }
 
 
@@ -258,8 +258,10 @@ void GameObject::DrawUI(int st) {
 
 
 
-void GameObject::draw()
+void GameObject::draw(bool reversed)
 {
+	if(reversed)
+		glFrontFace(GL_CW);
 	PrepareShader();
 	int n_sons = transform.sons.size();
 
@@ -267,6 +269,11 @@ void GameObject::draw()
 		BindTexture();
 
 	pushMatrix(MODEL);
+
+	if (reversed) {
+		float aux[3] = { 1, -1, 1 };
+		scale(MODEL, aux);
+	}
 
 	updateTransforms();
 	int myMeshesLen = myMeshes.size();
@@ -295,6 +302,8 @@ void GameObject::draw()
 		glBindVertexArray(0);
 	}
 	popMatrix(MODEL);
+	if (reversed)
+		glFrontFace(GL_CCW);
 	//drawSons();
 }
 

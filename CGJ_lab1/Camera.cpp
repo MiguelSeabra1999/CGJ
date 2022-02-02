@@ -19,10 +19,7 @@ void Camera::update()
 {
 	//not calling GameObject::update since there is no need to perform a render step, however that means we can add compontents
 }
-void Camera::draw()
-{
-	//not calling GameObject::draw since there is no need to perform a render step, however that means we can add compontents
-}
+
 
 void Camera::UpdateCameraPosition(){
 	lookAt[0] = GameObject::transform.globalTransform.pos[0];

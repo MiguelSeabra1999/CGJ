@@ -52,14 +52,14 @@ void Scene::update()
 
 }
 
-void Scene::draw()
+void Scene::draw(bool reversed)
 {
 	int count = gameObjects.size();
 	glDepthMask(GL_TRUE);
 	for (int i = 0; i < count; i++)
 	{
 
-		(*gameObjects[i]).opaqueDraw();
+		(*gameObjects[i]).opaqueDraw(reversed);
 	}
 
 	glDepthMask(GL_FALSE);
@@ -67,7 +67,7 @@ void Scene::draw()
 	count = gameObjects.size();
 	for (int i = 0; i < count; i++)
 	{
-		(*gameObjects[i]).transparentDraw();
+		(*gameObjects[i]).transparentDraw(reversed);
 	}
 	if (!paused)
 	{

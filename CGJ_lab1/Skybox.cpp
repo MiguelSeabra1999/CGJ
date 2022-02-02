@@ -29,7 +29,7 @@ void Skybox::BindTexture()
 
 }
 /**/
-void Skybox::draw()
+void Skybox::draw(bool reversed)
 {
 	//cubeMap_loc = glGetUniformLocation(shaderProgramIndex, "cubeMap");
 //	glUniform1i(cubeMap_loc, 0);
@@ -42,7 +42,7 @@ void Skybox::draw()
 	//it won't write anything to the zbuffer; all subsequently drawn scenery to be in front of the sky box. 
 	glDepthMask(GL_FALSE);
 	glFrontFace(GL_CW); // set clockwise vertex order to mean the front
-	GameObject::draw();
+	GameObject::draw(reversed);
 	/** /pushMatrix(MODEL);
 	pushMatrix(VIEW);  //se quiser anular a translação
 

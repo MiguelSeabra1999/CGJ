@@ -154,10 +154,10 @@ vec4 BillboarColor()
 
 vec4 CalcReflection(vec3 eye, vec3 normal)
 {
-	vec3 reflected = vec3 (transpose(m_view) * vec4 (vec3(reflect(-eye, normal)), 0.0)); 
+	vec3 reflected = vec3 (transpose(m_view) * vec4 (vec3(reflect(eye, normal)), 0.0)); 
 	reflected.x= -reflected.x;   
-	if(mat.roughness > 0)
-		reflected = reflected + mat.roughness * noise3(	eye.x );
+	/*if(mat.roughness > 0)
+		reflected = reflected + mat.roughness * noise3(	eye.x );*/
 	return texture(cubeMap, reflected);
 }
 

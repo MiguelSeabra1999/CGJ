@@ -296,7 +296,7 @@ void renderScene(void) {
 	scene->update();
 
 
-	//if (scene->rearView) {
+	if (scene->rearView) {
 		glEnable(GL_STENCIL_TEST);
 		glEnable(GL_DEPTH_TEST);
 		glClearStencil(0x0);
@@ -325,16 +325,16 @@ void renderScene(void) {
 		glDisable(GL_STENCIL_TEST);
 
 
-	//}
-	//else {
-		//glClear(GL_DEPTH_BUFFER_BIT);
-		//glClear(GL_STENCIL_BUFFER_BIT);
-		//glDisable(GL_STENCIL_TEST);
-		//
-		//scene->currentCam->UpdateProjection();
-		//renderStep(scene->currentCam, true);
-		//renderStep(scene->currentCam, false);
-	//}
+	}
+	else {
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_STENCIL_BUFFER_BIT);
+		glDisable(GL_STENCIL_TEST);
+		
+		scene->currentCam->UpdateProjection();
+		renderStep(scene->currentCam, true);
+		renderStep(scene->currentCam, false);
+	}
 
 	glDisable(GL_STENCIL_TEST);
 	glDisable(GL_DEPTH_TEST);

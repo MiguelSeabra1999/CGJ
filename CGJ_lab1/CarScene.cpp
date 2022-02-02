@@ -289,6 +289,11 @@ void CarScene::init(unsigned int _shaderIndex)
 	cameras.push_back((Camera*)fixedCamera);
 	gameObjects.push_back((GameObject*)fixedCamera);
 
+	FixedTopDownCamera* fixedCamera2 = new FixedTopDownCamera(positionTopDownCamera2, CamType_t::ortho_t, fixedCameraOrthoArguments);
+	//fixedCamera->transform.setParent(&(playerCar->transform));
+	cameras.push_back((Camera*)fixedCamera2);
+	gameObjects.push_back((GameObject*)fixedCamera2);
+
 	currentCam = followCamera;
 	secondCam = follow2;
 	thirdCam = follow3;
@@ -632,7 +637,8 @@ void CarScene::changeMainCamera(unsigned char code)
 
 		break;
 	case '4':
-		currentCam = cameras[3];
+		currentCam = cameras[4];
+		break;
 
 	}
 }

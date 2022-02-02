@@ -21,9 +21,9 @@ FollowCamera::FollowCamera(Transform * parent)
 FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8], float x, float y) {
 	Camera::Camera(t, args);
 	SetDistances(x, y);
-	cout << "h =" << horizontalDist << ", " << "v =" << verticalDist << endl;
+	//cout << "h =" << horizontalDist << ", " << "v =" << verticalDist << endl;
 	radius = sqrt(verticalDist * verticalDist + horizontalDist * horizontalDist);
-	cout << "radius = " << radius << endl;
+	//cout << "radius = " << radius << endl;
 	moving = true;
 	transform.setParent(parent);
 	
@@ -87,11 +87,19 @@ void FollowCamera::UpdateCameraPosition()
 
 		}
 	}
-	cout << radius << endl;
-	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
-	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
-	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2]  + radius * cos(alpha) * cos(beta);
-	//SetCameraPosition();
+	if(!staticAngles){
+	//cout << radius << endl;
+		GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
+		GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
+		GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2]  + radius * cos(alpha) * cos(beta);
+	
+	}
+	else {
+		SetCameraPosition();
+		//SetAngles();
+
+	}
+
 	SetCameraRad();
 	SetZeta();
 
@@ -104,6 +112,8 @@ void FollowCamera::SetPlayerMoving(bool state)
 
 void FollowCamera::SetCameraLookAt()
 {
+	float forward[3] = { GameObject::transform.parent->globalTransform.right[0], 0.0f, GameObject::transform.parent->globalTransform.right[2] };
+
 	lookAt[0] = GameObject::transform.globalTransform.pos[0] + offset[0];
 	lookAt[1] = GameObject::transform.globalTransform.pos[1] + offset[1];
 	lookAt[2] = GameObject::transform.globalTransform.pos[2] + offset[2];
@@ -132,8 +142,15 @@ void FollowCamera::SetAngles() {
 	float xzProj[3] = { 0, 0.0f, horizontalDist };
 	float zz[3] = { 0.0f, 0.0f, 1.0f };
 
-	alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI/2;
-	beta = acos(dotProduct(zz, yzProj)/ (length(zz)*length(yzProj)));
+	if (verticalDist < 0)
+		alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI / 2 + PI;
+	else
+		alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI / 2;
+	if(horizontalDist <0)
+		beta = acos(dotProduct(zz, yzProj)/ (length(zz)*length(yzProj)))+PI;
+	else
+		beta = acos(dotProduct(zz, yzProj) / (length(zz) * length(yzProj)));
+
 }
 
 

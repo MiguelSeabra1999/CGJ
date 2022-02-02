@@ -16,6 +16,7 @@ namespace GameObjectSpace {
 		float angularConstantForBackWardsLerp = 20.0f;
 
 		float offset[3] = { 0.0f };
+		float staticAngles = false;
 
 
 

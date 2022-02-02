@@ -258,12 +258,16 @@ void CarScene::init(unsigned int _shaderIndex)
 
 
 	//#################### Cameras ##############################
-	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, -0.1f, 0.1f);
-	followCamera->SetLerp(false);
-	followCamera->offset[0] = 0.1f;
-	followCamera->offset[1] = 0.125f;
+
+	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, 3.0f, 1.5f);
+	FollowCamera* follow2 = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, -0.1f, 0.01f);
+	follow2->SetLerp(false);
+	follow2->staticAngles = true;
+	follow2->offset[0] = 0.1f;
+	follow2->offset[1] = 0.125f;
 	//followCamera->SetDistances(0.2f, 0.2f);
 	//followCamera->transform.setParent(&(playerCar->transform));
+	cameras.push_back((Camera*)follow2);
 	cameras.push_back((Camera*)followCamera);
 
 
@@ -273,6 +277,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)fixedCamera);
 
 	currentCam = followCamera;
+	secondCam = follow2;
 
 	//################## Lights ###############################
 	LightSource* lightSource;

@@ -177,36 +177,28 @@ void changeSize(int w, int h) {
 // ------------------------------------------------------------
 //
 // Render stufff
-//
-void restartScene();
-void renderScene(void) {
-	if (scene->restartScene)
-		restartScene();
-	scene->timeUtil->updateCycle();
-	GLint loc = 0;
+// 
 
-	FrameCount++;
+
+void renderStep(Camera * currentCam) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//############ UPDATE SCENE ####################;
-	scene->update();
-		
-	scene->currentCam->UpdateProjection();
-	
+
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	lookAt(scene->currentCam->lookAt[0], scene->currentCam->lookAt[1], scene->currentCam->lookAt[2], scene->currentCam->lookAt[3], scene->currentCam->lookAt[4], scene->currentCam->lookAt[5], scene->currentCam->lookAt[6], scene->currentCam->lookAt[7], scene->currentCam->lookAt[8]);
+	lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
-	if(useFog)
+	if (useFog)
 		glUniform1f(fogginess_uniformId, fogginess);
 	else
 		glUniform1f(fogginess_uniformId, 0);
 	glUniform4fv(fogColor_uniformId, 1, fogColor);
-	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
+	int objId = 0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
 
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
@@ -220,14 +212,13 @@ void renderScene(void) {
 		printf("Program Not Valid!\n");
 		exit(1);
 	}
-	
+
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
 	glDisable(GL_DEPTH_TEST);
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	int m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
+	
 
 	//Update light positions
 	for (int i = 0; i < GameObject::lights.size(); i++)
@@ -235,21 +226,35 @@ void renderScene(void) {
 		if (GameObject::lights[i]->on) {
 			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
 			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
-	
+
 		}
 	}
 
 	scene->sendLightsToShader();
 	// UI STUFF
 
+}
+
+void restartScene();
+void renderScene(void) {
+	if (scene->restartScene)
+		restartScene();
+	scene->timeUtil->updateCycle();
+	GLint loc = 0;
+
+	FrameCount++;
+
+	scene->update();
+		
+	scene->currentCam->UpdateProjection();
+
+	//renderStep(scene->currentCam);
+	renderStep(scene->secondCam);
+
 	pushMatrix(MODEL);
 	loadIdentity(MODEL);
-
-
-
-	// next dar setup das variaveis do flare, fazer os inits e carregar as textures que encontrei 
-
-	// check if light is inside the screen coordinates
+	int m_viewport[4];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
 
 	pushMatrix(PROJECTION);
 	loadIdentity(PROJECTION);

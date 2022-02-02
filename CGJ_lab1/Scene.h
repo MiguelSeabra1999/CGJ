@@ -29,6 +29,7 @@ namespace GameObjectSpace
 	
 		GLuint shaderIndex;
 		Camera* currentCam;
+		Camera* secondCam;
 		PhysicsEngine* physicsEngine;
 		static TimeUtil* timeUtil;
 

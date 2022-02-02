@@ -18,9 +18,12 @@ FollowCamera::FollowCamera(Transform * parent)
 
 }
 
-FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8]) {
+FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8], float x, float y) {
 	Camera::Camera(t, args);
+	SetDistances(x, y);
+	cout << "h =" << horizontalDist << ", " << "v =" << verticalDist << endl;
 	radius = sqrt(verticalDist * verticalDist + horizontalDist * horizontalDist);
+	cout << "radius = " << radius << endl;
 	moving = true;
 	transform.setParent(parent);
 	
@@ -84,11 +87,11 @@ void FollowCamera::UpdateCameraPosition()
 
 		}
 	}
-
+	cout << radius << endl;
 	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
 	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
-	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + radius * cos(alpha) * cos(beta);
-
+	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2]  + radius * cos(alpha) * cos(beta);
+	//SetCameraPosition();
 	SetCameraRad();
 	SetZeta();
 
@@ -101,12 +104,12 @@ void FollowCamera::SetPlayerMoving(bool state)
 
 void FollowCamera::SetCameraLookAt()
 {
-	lookAt[0] = GameObject::transform.globalTransform.pos[0];
-	lookAt[1] = GameObject::transform.globalTransform.pos[1];
-	lookAt[2] = GameObject::transform.globalTransform.pos[2];
-	lookAt[3] = GameObject::transform.parent->globalTransform.pos[0];
-	lookAt[4] = GameObject::transform.parent->globalTransform.pos[1];
-	lookAt[5] = GameObject::transform.parent->globalTransform.pos[2];
+	lookAt[0] = GameObject::transform.globalTransform.pos[0] + offset[0];
+	lookAt[1] = GameObject::transform.globalTransform.pos[1] + offset[1];
+	lookAt[2] = GameObject::transform.globalTransform.pos[2] + offset[2];
+	lookAt[3] = GameObject::transform.parent->globalTransform.pos[0] + offset[0];
+	lookAt[4] = GameObject::transform.parent->globalTransform.pos[1] + offset[1];
+	lookAt[5] = GameObject::transform.parent->globalTransform.pos[2] + offset[2];
 	//set world up
 	lookAt[6] = 0;
 	lookAt[7] = 1;

@@ -253,7 +253,11 @@ void CarScene::init(unsigned int _shaderIndex)
 
 
 	//#################### Cameras ##############################
-	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
+	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, -0.1f, 0.1f);
+	followCamera->SetLerp(false);
+	followCamera->offset[0] = 0.1f;
+	followCamera->offset[1] = 0.125f;
+	//followCamera->SetDistances(0.2f, 0.2f);
 	//followCamera->transform.setParent(&(playerCar->transform));
 	cameras.push_back((Camera*)followCamera);
 

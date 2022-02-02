@@ -213,7 +213,7 @@ void renderStep(Camera * currentCam, bool reversed) {
 
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_SRC_COLOR);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
 	//Update light positions

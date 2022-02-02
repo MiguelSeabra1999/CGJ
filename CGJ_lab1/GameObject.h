@@ -91,8 +91,8 @@ namespace GameObjectSpace {
 		virtual bool GetFullScreen() { return false; }
 		virtual bool GetUI() { return false; }
 		virtual void SetUI(bool u) { }
-		virtual void DrawUI();
-		virtual void drawUISons();
+		virtual void DrawUI(int st);
+		virtual void drawUISons(int st);
 		virtual void SetWidth(float x) {};
 		virtual void SetHeight(float x) {};
 		virtual void SetActive(bool active);

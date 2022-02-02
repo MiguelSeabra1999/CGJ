@@ -79,7 +79,7 @@ void Scene::draw()
 }
 
 
-void Scene::updateAndDrawUI()
+void Scene::updateAndDrawUI(int st)
 {
 	pauseMenu->SetActive(paused);
 	int count = uiElements.size();
@@ -90,7 +90,10 @@ void Scene::updateAndDrawUI()
 				(*uiElements[i]).SetWidth(windowX);
 				(*uiElements[i]).SetHeight(windowY);
 			}
-			(*uiElements[i]).DrawUI();
+			//glStencilFunc(GL_NEVER, 0x1, 0x1);
+			//glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
+
+			(*uiElements[i]).DrawUI(st);
 			(*uiElements[i]).update();
 		}
 	}

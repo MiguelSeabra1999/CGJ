@@ -18,9 +18,12 @@ FollowCamera::FollowCamera(Transform * parent)
 
 }
 
-FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8]) {
+FollowCamera::FollowCamera(Transform * parent, CamType_t t, float args[8], float x, float y) {
 	Camera::Camera(t, args);
+	SetDistances(x, y);
+	//cout << "h =" << horizontalDist << ", " << "v =" << verticalDist << endl;
 	radius = sqrt(verticalDist * verticalDist + horizontalDist * horizontalDist);
+	//cout << "radius = " << radius << endl;
 	moving = true;
 	transform.setParent(parent);
 	
@@ -48,9 +51,9 @@ void FollowCamera::update()
 void FollowCamera::SetCameraPosition()
 {
 
-	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + GameObject::transform.parent->globalTransform.right[0] * horizontalDist;
+	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + GameObject::transform.parent->globalTransform.right[0] * (horizontalDist);
 	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + verticalDist;
-	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + GameObject::transform.parent->globalTransform.right[2] * horizontalDist;
+	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + GameObject::transform.parent->globalTransform.right[2] * (horizontalDist);
 }
 
 void FollowCamera::UpdateCameraPosition()
@@ -84,10 +87,18 @@ void FollowCamera::UpdateCameraPosition()
 
 		}
 	}
+	if(!staticAngles){
+	//cout << radius << endl;
+		GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
+		GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
+		GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2]  + radius * cos(alpha) * cos(beta);
+	
+	}
+	else {
+		SetCameraPosition();
+		//SetAngles();
 
-	GameObject::transform.globalTransform.pos[0] = GameObject::transform.parent->globalTransform.pos[0] + radius * sin(alpha) * cos(beta);
-	GameObject::transform.globalTransform.pos[1] = GameObject::transform.parent->globalTransform.pos[1] + radius * sin(beta);
-	GameObject::transform.globalTransform.pos[2] = GameObject::transform.parent->globalTransform.pos[2] + radius * cos(alpha) * cos(beta);
+	}
 
 	SetCameraRad();
 	SetZeta();
@@ -101,12 +112,25 @@ void FollowCamera::SetPlayerMoving(bool state)
 
 void FollowCamera::SetCameraLookAt()
 {
-	lookAt[0] = GameObject::transform.globalTransform.pos[0];
-	lookAt[1] = GameObject::transform.globalTransform.pos[1];
-	lookAt[2] = GameObject::transform.globalTransform.pos[2];
-	lookAt[3] = GameObject::transform.parent->globalTransform.pos[0];
-	lookAt[4] = GameObject::transform.parent->globalTransform.pos[1];
-	lookAt[5] = GameObject::transform.parent->globalTransform.pos[2];
+	float forward[3] = { GameObject::transform.parent->globalTransform.right[0] , 1.0f, GameObject::transform.parent->globalTransform.right[2] };
+	float horizontalOffset = 0.0f;
+
+	
+	horizontalOffset = sqrt(offset[0] * offset[0] + offset[2] * offset[2]);
+	
+
+	float addon[3] = {
+		forward[0] * (horizontalOffset),
+		(offset[1] * forward[1]),
+		forward[2] * (horizontalOffset)
+	};
+
+	lookAt[0] = GameObject::transform.globalTransform.pos[0]+addon[0];
+	lookAt[1] = GameObject::transform.globalTransform.pos[1]+addon[1];
+	lookAt[2] = GameObject::transform.globalTransform.pos[2]+addon[2];
+	lookAt[3] = GameObject::transform.parent->globalTransform.pos[0]+ addon[0];
+	lookAt[4] = GameObject::transform.parent->globalTransform.pos[1]  + addon[1];
+	lookAt[5] = GameObject::transform.parent->globalTransform.pos[2] + addon[2];
 	//set world up
 	lookAt[6] = 0;
 	lookAt[7] = 1;
@@ -129,8 +153,15 @@ void FollowCamera::SetAngles() {
 	float xzProj[3] = { 0, 0.0f, horizontalDist };
 	float zz[3] = { 0.0f, 0.0f, 1.0f };
 
-	alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI/2;
-	beta = acos(dotProduct(zz, yzProj)/ (length(zz)*length(yzProj)));
+	if (verticalDist < 0)
+		alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI / 2 + PI;
+	else
+		alpha = acos(dotProduct(zz, xzProj) / (length(zz) * length(xzProj))) + PI / 2;
+	if(horizontalDist <0)
+		beta = acos(dotProduct(zz, yzProj)/ (length(zz)*length(yzProj)))+PI;
+	else
+		beta = acos(dotProduct(zz, yzProj) / (length(zz) * length(yzProj)));
+
 }
 
 

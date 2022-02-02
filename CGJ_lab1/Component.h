@@ -30,6 +30,7 @@ namespace GameObjectSpace {
 		}
 		virtual bool isFlareElement() { return false; }
 		virtual bool isActive() { return isAct; }
+		virtual bool isTextElement() { return false; }
 	};
 
 }

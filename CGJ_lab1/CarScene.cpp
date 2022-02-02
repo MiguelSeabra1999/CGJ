@@ -259,8 +259,24 @@ void CarScene::init(unsigned int _shaderIndex)
 
 
 	//#################### Cameras ##############################
-	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments);
+
+	FollowCamera* followCamera = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, 3.0f, 1.5f);
+	FollowCamera* follow2 = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, 0.1f, 0.01f);
+	follow2->SetLerp(false);
+	follow2->staticAngles = true;
+	follow2->offset[0] = -0.15f;
+	follow2->offset[1] = 0.18f;
+
+
+	FollowCamera* follow3 = new FollowCamera(&(player->transform), CamType_t::perspective_t, followCameraPerspectiveArguments, -1.0f, 0.3f);
+	follow3->SetLerp(false);
+	follow3->staticAngles = true;
+	follow3->offset[0] = 1.f;
+	follow3->offset[1] = 0.13f;
+	//followCamera->SetDistances(0.2f, 0.2f);
 	//followCamera->transform.setParent(&(playerCar->transform));
+	cameras.push_back((Camera*)follow3);
+	cameras.push_back((Camera*)follow2);
 	cameras.push_back((Camera*)followCamera);
 
 
@@ -270,6 +286,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)fixedCamera);
 
 	currentCam = followCamera;
+	secondCam = follow2;
+	thirdCam = follow3;
 
 	//################## Lights ###############################
 	LightSource* lightSource;
@@ -280,21 +298,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	lightSource->light->color[2] = 0.2f;
 	gameObjects.push_back((GameObject*)lightSource);
 
-	/** /
-	LightSource* directional = new LightSource(LightType::directional);
-	//balllight->lightType = LightType::directional;
-	//balllight->light->type = (int)balllight->lightType;
-	directional->light->color[0] = 1.0f;
-	directional->light->color[1] = 1.0f;
-	directional->light->color[2] = 1.0f;
 	
-	directional->setColor(1.0f, 1.0f, 1.0f, 1.0f);
-	//balllight->transform.globalTransform.setPosition(20, 10 ,0);
-	//balllight->transform.globalTransform.setScale(0.5f, 0.5f, 0.5f);
-	directional->transform.setRotation(45, -90, 0);
-	gameObjects.push_back((GameObject*)directional);
-
-	/**/
 
 	Model3D* moon = new Model3D("MOON.OBJ");
 	moon->transform.setPosition(20, 20,1.0f);
@@ -456,6 +460,32 @@ void CarScene::init(unsigned int _shaderIndex)
 	canvas->transform.setParent(&(UI->transform));
 	canvas->SetActive(false);
 	pauseMenu = canvas;
+
+
+	Canvas* canvasStencil = new Canvas(GetUIShader());
+	canvasStencil->SetWidth(70);
+	canvasStencil->SetHeight(30);
+	//canvas->SetFullScreen(true);
+	canvasStencil->SetActive(true);
+	canvasStencil->SetWindow(windowX, windowY);
+	canvasStencil->transform.setLocalPosition(15, 60, 0);
+	canvasStencil->setColor(0.0f, 0.0f, 0.0f, 0.0f);
+	canvasStencil->SetStencilType(1);
+	canvasStencil->transform.setParent(&(UI->transform));
+
+
+	Canvas * canvasStencil2 = new Canvas(GetUIShader());
+	canvasStencil2->SetWidth(65);
+	canvasStencil2->SetHeight(25);
+	//canvas->SetFullScreen(true);
+	canvasStencil2->SetActive(true);
+	canvasStencil2->SetWindow(windowX, windowY);
+	canvasStencil2->transform.setLocalPosition(17.5, 62.5, 0);
+	canvasStencil2->setColor(1.0f, 1.0f, 1.0f, 0.0f);
+	canvasStencil2->SetStencilType(2);
+	canvasStencil2->transform.setParent(&(UI->transform));
+
+	
 	
 	// owner, x, y, deprecated, deprecated, r, g, b, alpha, rotation 
 	

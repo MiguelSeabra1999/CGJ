@@ -15,11 +15,15 @@ namespace GameObjectSpace {
 		float angularConstantForLerp = 30.0f;
 		float angularConstantForBackWardsLerp = 20.0f;
 
+		float offset[3] = { 0.0f };
+		float staticAngles = false;
+
 
 
 		FollowCamera(Transform * parent);
-		FollowCamera(Transform * parent, CamType_t t, float args[8]);
+		FollowCamera(Transform * parent, CamType_t t, float args[8], float x, float y);
 		void update();
+		void SetDistances(float x, float y) { horizontalDist = x; verticalDist = y; }
 		void SetCameraPosition();
 		void SetCameraLookAt();
 		float GetCameraRadius();

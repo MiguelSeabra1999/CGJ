@@ -14,6 +14,7 @@ namespace GameObjectSpace
 		float scale[2] = { 1.0f, 1.0f };
 		float width = 0.0f, height = 0.0f;
 		float rotation = 0.0f;
+		int stencilType = 0;
 		int mesh_index = 0;
 		GLint textureId = -1;
 		bool heart;
@@ -49,6 +50,8 @@ namespace GameObjectSpace
 		void setTextureId(int id) { textureId = id; }
 		bool isHeart() { return heart; }
 		void setHeart(bool h) { heart = h;  }
+		void setStencilType(int t) { stencilType = t; }
+		void updateStencilTypes();
 
 
 	};

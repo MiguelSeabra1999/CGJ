@@ -37,6 +37,8 @@ int WinX = 1024, WinY = 768;
 
 unsigned int FrameCount = 0;
 
+MyMesh cube;
+
 
 //shaders
 VSShaderLib shader;  //geometry
@@ -134,6 +136,9 @@ float fixedCameraOrthoArguments[8] = {
 	150.0f, //far
 };
 
+void UIrenderStep(int f);
+void lightsStep();
+
 
 void timer(int value)
 {
@@ -171,45 +176,40 @@ void changeSize(int w, int h) {
 	scene->currentCam->SetWidthHeightProj(WinX, WinY);
 	scene->currentCam->UpdateProjection();
 	scene->SetWindow(WinX, WinY);
+
+	glEnable(GL_STENCIL_TEST);
+	//glClear(GL_STENCIL_BUFFER_BIT);
+
+	
 }
 
 
 // ------------------------------------------------------------
 //
 // Render stufff
-//
-void restartScene();
+// 
 
 
-
-void renderScene(void) {
-	if (scene->restartScene)
-		restartScene();
-	scene->timeUtil->updateCycle();
-	GLint loc = 0;
-
-	FrameCount++;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void renderStep(Camera * currentCam) {
 
 	//############ UPDATE SCENE ####################;
-	scene->update();
-		
-	scene->currentCam->UpdateProjection();
-	
+
 	loadIdentity(VIEW);
 	loadIdentity(MODEL);
 	// set the camera using a function similar to gluLookAt
-	lookAt(scene->currentCam->lookAt[0], scene->currentCam->lookAt[1], scene->currentCam->lookAt[2], scene->currentCam->lookAt[3], scene->currentCam->lookAt[4], scene->currentCam->lookAt[5], scene->currentCam->lookAt[6], scene->currentCam->lookAt[7], scene->currentCam->lookAt[8]);
+	lookAt(currentCam->lookAt[0], currentCam->lookAt[1], currentCam->lookAt[2], currentCam->lookAt[3], currentCam->lookAt[4], currentCam->lookAt[5], currentCam->lookAt[6], currentCam->lookAt[7], currentCam->lookAt[8]);
+
+
 
 	// use our shader
 	glUseProgram(shader.getProgramIndex());
 
-	if(useFog)
+	if (useFog)
 		glUniform1f(fogginess_uniformId, fogginess);
 	else
 		glUniform1f(fogginess_uniformId, 0);
 	glUniform4fv(fogColor_uniformId, 1, fogColor);
-	int objId=0; //id of the object mesh - to be used as index of mesh: Mymeshes[objID] means the current mesh
+	
 
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
 	glEnable(GL_BLEND);
@@ -227,6 +227,8 @@ void renderScene(void) {
 	}
 
 	scene->sendLightsToShader();
+	lightsStep();
+
 	//############ DRAW SCENE ####################;
 	scene->draw();
 	//glDepthMask(GL_TRUE);
@@ -235,39 +237,112 @@ void renderScene(void) {
 		printf("Program Not Valid!\n");
 		exit(1);
 	}
-	
+
 	//Render text (bitmap fonts) in screen coordinates. So use ortoghonal projection with viewport coordinates.
-	glDisable(GL_DEPTH_TEST);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+void lightsStep() {
+
+
+	//glDisable(GL_DEPTH_TEST);
 	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	int m_viewport[4];
-	glGetIntegerv(GL_VIEWPORT, m_viewport);
+	
+
 
 
 	// UI STUFF
 
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_BLEND);
+}
+
+void UIrenderStep(int st) {
+	//glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	pushMatrix(MODEL);
 	loadIdentity(MODEL);
-
-
-
-	// next dar setup das variaveis do flare, fazer os inits e carregar as textures que encontrei 
-
-	// check if light is inside the screen coordinates
+	int m_viewport[4];
+	glGetIntegerv(GL_VIEWPORT, m_viewport);
 
 	pushMatrix(PROJECTION);
 	loadIdentity(PROJECTION);
 	pushMatrix(VIEW);
 	loadIdentity(VIEW);
 	ortho(m_viewport[0], m_viewport[0] + m_viewport[2] - 1, m_viewport[1], m_viewport[1] + m_viewport[3] - 1, -1, 1);
-	scene->updateAndDrawUI();
+	scene->updateAndDrawUI(st);
 	popMatrix(PROJECTION);
 	popMatrix(VIEW);
 	popMatrix(MODEL);
-	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-	glBindTexture(GL_TEXTURE_2D,0);
+	//glEnable(GL_DEPTH_TEST);
+}
+
+void restartScene();
+void renderScene(void) {
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	
+	if (scene->restartScene)
+		restartScene();
+	scene->timeUtil->updateCycle();
+	GLint loc = 0;
+
+	FrameCount++;
+
+	scene->update();
+
+
+	if (scene->rearView) {
+		glEnable(GL_STENCIL_TEST);
+		glEnable(GL_DEPTH_TEST);
+		glClearStencil(0x0);
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+		glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
+		UIrenderStep(1);
+	
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		scene->secondCam->UpdateProjection();
+		renderStep(scene->secondCam);
+
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+		glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
+		UIrenderStep(2);
+
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glStencilFunc(GL_EQUAL, 0x1, 0x1);
+		scene->thirdCam->UpdateProjection();
+		renderStep(scene->thirdCam);
+		glDisable(GL_STENCIL_TEST);
+
+
+	}
+	else {
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_STENCIL_BUFFER_BIT);
+		glDisable(GL_STENCIL_TEST);
+
+		scene->currentCam->UpdateProjection();
+		renderStep(scene->currentCam);
+	}
+
+	glDisable(GL_STENCIL_TEST);
+	glDisable(GL_DEPTH_TEST);
+	UIrenderStep(0);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+
+	
+	
 	glutSwapBuffers();
 
 }
@@ -419,6 +494,12 @@ void processKeys(unsigned char key, bool state)
 		{
 			scene->changeMainCamera('4');
 			scene->currentCam->SetCameraCharacteristics(CamType_t::ortho_t, fixedCameraOrthoArguments, WinX, WinY);
+		}
+		break;
+	case '5':
+		if (state != keys['5'])
+		{
+			scene->rearView = !scene->rearView;
 		}
 		break;
 	case 'q':case'Q':
@@ -656,6 +737,32 @@ void init()
 
 
 	createGameObjects();
+
+
+	float amb[] = { 0.2f, 0.15f, 0.1f, 1.0f };
+	float diff[] = { 0.8f, 0.6f, 0.4f, 1.0f };
+	float spec[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+
+	float amb1[] = { 0.3f, 0.0f, 0.0f, 1.0f };
+	float diff1[] = { 0.8f, 0.1f, 0.1f, 1.0f };
+	float spec1[] = { 0.3f, 0.3f, 0.3f, 1.0f };
+
+
+	float emissive[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float shininess = 100.0f;
+	int texcount = 0;
+
+	// create geometry and VAO of the cube
+	cube = createCube();
+	memcpy(cube.mat.ambient, amb1, 4 * sizeof(float));
+	memcpy(cube.mat.diffuse, diff1, 4 * sizeof(float));
+	memcpy(cube.mat.specular, spec1, 4 * sizeof(float));
+	memcpy(cube.mat.emissive, emissive, 4 * sizeof(float));
+	cube.mat.shininess = shininess;
+	cube.mat.texCount = texcount;
+	myMeshes.push_back(cube);
+
+
 	scene->loadTextures();
 	// some GL settings
 	glEnable(GL_DEPTH_TEST);

@@ -8,6 +8,7 @@ namespace GameObjectSpace {
 	{
 	public:
 		float width = 0.0f, height = 0.0f;
+		int stencilType = 0;
 		bool fullScreen = false;
 		float rotation = 0.0f;
 		float scale_x=1.0f, scale_y = 1.0f;
@@ -17,6 +18,9 @@ namespace GameObjectSpace {
 		vector<float*> meshPositions;
 		vector<GLint*> meshTextures;
 		vector<GLfloat*> meshRotations;
+		vector<int*> stencilTypes;
+		vector<bool*> meshActives;
+
 		float windowX = 0.0f, windowY = 0.0f;
 
 		VSShaderLib * shader;
@@ -32,7 +36,7 @@ namespace GameObjectSpace {
 		virtual void generateMesh(int i);
 		void update();
 		void SetScale(float x, float y);
-		void DrawUI() override;
+		void DrawUI(int st) override;
 		void SetUI(bool u) override { isUI = u; }
 		bool GetUI() override { return isUI;  }
 		void SetUIShader(VSShaderLib* s) { shader = s; shaderIndex = s->getProgramIndex(); }
@@ -42,6 +46,7 @@ namespace GameObjectSpace {
 		void SetHeight(float h) override{ height = h; }
 		void SetRotation(float r) { rotation = r; }
 		void SetWindow(float x, float y) { windowX = x, windowY = y; }
+		void SetStencilType(int t) { stencilType = t; }
 		void updateWindow(float x, float y) override { SetWindow(x, y); }
 		
 

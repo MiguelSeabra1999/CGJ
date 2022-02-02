@@ -38,6 +38,15 @@ void Canvas::initDraw(GLuint shader)
 	float * rot = new float;
 	*rot = rotation;
 	meshRotations.push_back(rot);
+
+	int* stencilT = new int;
+	*stencilT = stencilType;
+	stencilTypes.push_back(stencilT);
+
+	bool* act = new bool;
+	*act = isActive;
+	meshActives.push_back(act);
+
 	meshTextures.push_back(&textureId);
 	GameObject::initDraw(shader);
 	generateMesh(0);
@@ -74,9 +83,9 @@ void Canvas::SetScale(float x, float y)
 	scale_y = y;
 }
 
-void Canvas::DrawUI() {
+void Canvas::DrawUI(int stencType) {
 	
-	GameObject::DrawUI();
+	GameObject::DrawUI(stencType);
 	// activate corresponding render state	
 
 	glUseProgram(shaderIndex);
@@ -93,7 +102,7 @@ void Canvas::DrawUI() {
 		// the other meshes belong to its components, if it has them
 		// the only component that doesn't have them is the text, 
 		// as it is rendered in a slightly different way
-		if ((i == 0 && isActive) || (i!=0 && components[i-1]->isActive())) {
+		if (((i == 0 && isActive) || (i!=0 && components[i-1]->isActive())) && (*(stencilTypes.at(i))) == stencType) {
 
 			pushMatrix(MODEL);
 			loadIdentity(MODEL);
@@ -151,6 +160,13 @@ void Canvas::DrawUI() {
 		
 		
 			popMatrix(MODEL);
+		}
+	}
+	for (Component* c : components) {
+		if (c->isTextElement() && c->isActive()) {
+			TextElement* t = (TextElement*)c;
+			if(t->stencilType == stencType)
+				RenderText(*shader, t->text, t->x, t->y, t->sc, t->simpleColor[0], t->simpleColor[1], t->simpleColor[2], t->simpleColor[3]);
 		}
 	}
 	glBindVertexArray(0);

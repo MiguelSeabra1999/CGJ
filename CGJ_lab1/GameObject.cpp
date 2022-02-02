@@ -260,6 +260,9 @@ void GameObject::DrawUI() {
 
 void GameObject::draw()
 {
+	if (!IsActive())
+		return;
+//	glFrontFace(GL_CW); // set clockwise vertex order to mean the front
 	PrepareShader();
 	int n_sons = transform.sons.size();
 
@@ -267,7 +270,8 @@ void GameObject::draw()
 		BindTexture();
 
 	pushMatrix(MODEL);
-
+	//float aux[3] = {1,-1,1};
+	//scale(MODEL, aux);
 	updateTransforms();
 	int myMeshesLen = myMeshes.size();
 	for (int i = 0; i < myMeshesLen; i++)
@@ -280,6 +284,7 @@ void GameObject::draw()
 		glUniformMatrix4fv(view_uniformId, 1, GL_FALSE, mMatrix[VIEW]);
 		glUniformMatrix4fv(vm_uniformId, 1, GL_FALSE, mCompMatrix[VIEW_MODEL]);
 		glUniformMatrix4fv(pvm_uniformId, 1, GL_FALSE, mCompMatrix[PROJ_VIEW_MODEL]);
+
 
 
 		computeNormalMatrix3x3();
@@ -296,6 +301,7 @@ void GameObject::draw()
 	}
 	popMatrix(MODEL);
 	//drawSons();
+//	glFrontFace(GL_CCW); // restore counter clockwise vertex order to mean the front
 }
 
 void GameObject::PrepareShader()

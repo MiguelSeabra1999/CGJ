@@ -179,6 +179,9 @@ void changeSize(int w, int h) {
 // Render stufff
 //
 void restartScene();
+
+
+
 void renderScene(void) {
 	if (scene->restartScene)
 		restartScene();
@@ -212,6 +215,18 @@ void renderScene(void) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
+	//Update light positions
+	for (int i = 0; i < GameObject::lights.size(); i++)
+	{
+		if (GameObject::lights[i]->on) {
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
+
+		}
+	}
+
+	scene->sendLightsToShader();
 	//############ DRAW SCENE ####################;
 	scene->draw();
 	//glDepthMask(GL_TRUE);
@@ -229,17 +244,7 @@ void renderScene(void) {
 	int m_viewport[4];
 	glGetIntegerv(GL_VIEWPORT, m_viewport);
 
-	//Update light positions
-	for (int i = 0; i < GameObject::lights.size(); i++)
-	{
-		if (GameObject::lights[i]->on) {
-			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
-			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
-	
-		}
-	}
 
-	scene->sendLightsToShader();
 	// UI STUFF
 
 	pushMatrix(MODEL);

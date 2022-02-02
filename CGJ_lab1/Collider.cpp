@@ -26,11 +26,15 @@ vector<Collider*> Collider::allColliders{};
 			//cout << owner->currentScene->useGizmos << endl;
 			if (owner->currentScene->useGizmos) {
 				cube->setColor(1.0f, 1.0f, 1.0f, 0.2f);
+				if(cube->IsActive() == false)
+					cube->SetActive(true);
 				cube->initMaterial();
 			}
 			else {
-				cube->setColor(1.0f, 1.0f, 1.0f, 0.0f);
+				//cube->setColor(1.0f, 1.0f, 1.0f, 0.0f);
 				cube->initMaterial();
+				if (cube->IsActive() == true)
+					cube->SetActive(false);
 			}
 		}
 		const char* Collider::GetType()

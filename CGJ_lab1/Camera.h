@@ -23,6 +23,8 @@ namespace GameObjectSpace {
 		virtual void SetCameraPosition();
 		virtual void SetCameraLookAt();
 		void SetCameraType(CamType_t t);
+		CamType_t GetCameraType() { return myType; }
+
 		void UpdateProjection();
 		void SetProjArgs(float args[8]);
 		bool GetMovingAttr();

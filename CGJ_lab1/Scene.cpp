@@ -12,7 +12,7 @@ void Scene::initShadowMaterial()
 	shadowMaterial->diffuse[0] = 0;
 	shadowMaterial->diffuse[1] = 0;
 	shadowMaterial->diffuse[2] = 0;
-	shadowMaterial->diffuse[3] = 0.2f;
+	shadowMaterial->diffuse[3] = 1;
 
 	shadowMaterial->ambient[0] = 0;
 	shadowMaterial->ambient[1] = 0;
@@ -83,6 +83,8 @@ void Scene::update()
 
 void Scene::draw(bool reversed)
 {
+
+	lightsStep();
 	int count = gameObjects.size();
 	if (count == 0)
 		return;
@@ -98,11 +100,6 @@ void Scene::draw(bool reversed)
 	
 	}
 
-	for (int i = 1; i < count; i++)
-	{
-
-		(*gameObjects[i]).opaqueDraw(reversed);
-	}
 	glDepthMask(GL_TRUE);
 
 	for (int i = 1; i < count; i++)
@@ -110,7 +107,7 @@ void Scene::draw(bool reversed)
 
 		(*gameObjects[i]).opaqueDraw(reversed);
 	}
-
+	
 	glDepthMask(GL_FALSE);
 
 	count = gameObjects.size();
@@ -125,7 +122,7 @@ void Scene::draw(bool reversed)
 	}
 	UpdateFlarePositions();
 	glDepthMask(GL_TRUE);
-
+	
 }
 
 
@@ -236,4 +233,20 @@ void Scene::instatiate(GameObject* obj, float* pos)
 	obj->transform.globalTransform.pos[1] = pos[1];
 	obj->transform.globalTransform.pos[2] = pos[2];
 	gameObjectsForCreation.push_back((GameObject*)obj);
+}
+
+void Scene::lightsStep() {
+
+
+	//Update light positions
+	for (int i = 0; i < GameObject::lights.size(); i++)
+	{
+		if (GameObject::lights[i]->on) {
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
+
+		}
+	}
+
+	sendLightsToShader();
 }

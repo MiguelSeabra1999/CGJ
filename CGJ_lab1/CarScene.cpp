@@ -500,6 +500,33 @@ void CarScene::init(unsigned int _shaderIndex)
 	pauseMenu = canvas;
 
 
+	Canvas* canvasGameOver = new Canvas(GetUIShader());
+	canvasGameOver->SetWidth(50);
+	canvasGameOver->SetHeight(53);
+	//canvas->SetFullScreen(true);
+	canvasGameOver->SetWindow(windowX, windowY);
+	canvasGameOver->transform.setLocalPosition(25, 25, 0);
+	canvasGameOver->setColor(0.0f, 0.0f, 0.0f, 0.6f);
+	canvasGameOver->SetActive(true);
+	canvasGameOver->transform.setParent(&(UI->transform));
+
+	textMesh = new TextElement(canvasGameOver, "GAME OVER", 12.5, 47, 80.0f, 1.0, 0.0f, 0.0f, 1.0f);
+	canvasGameOver->AddComponent(textMesh);
+
+	textMesh = new TextElement(canvasGameOver, "Press r to restart", 12.5, 25, 70.0f, 5.0, 5.0f, 5.0f, 1.0f);
+	canvasGameOver->AddComponent(textMesh);
+	gameOverMenu = canvasGameOver;
+
+
+
+
+	/**/Panel* panGO = new Panel(canvasGameOver, 5.0f, 5, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.7f, 0);
+	panGO->setWidth(40);
+	panGO->setHeight(40);
+	panGO->setHeart(false);
+	canvasGameOver->AddComponent(panGO);/**/
+
+
 	Canvas* canvasStencil = new Canvas(GetUIShader());
 	canvasStencil->SetWidth(70);
 	canvasStencil->SetHeight(30);

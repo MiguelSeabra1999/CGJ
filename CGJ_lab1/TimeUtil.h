@@ -23,7 +23,6 @@ public:
     static float deltaTime;
     static float time;
     static void updateCycle() {
-        //cout << "here" << endl;
         long long millisec_since_epoch = duration_cast<milliseconds>(
             system_clock::now().time_since_epoch()
             ).count();

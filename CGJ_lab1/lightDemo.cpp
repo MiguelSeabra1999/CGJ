@@ -225,8 +225,18 @@ void renderStep(Camera * currentCam, bool reversed) {
 	
 	if(!reversed)
 	{
-		if (scene->gameObjects.size() > 0)
+		if (scene->gameObjects.size() > 0) {
+			if (!scene->rearView) {
+				glEnable(GL_STENCIL_TEST);
+				glClearStencil(0x0);
+				glClear(GL_STENCIL_BUFFER_BIT);
+				glStencilFunc(GL_ALWAYS, 0x1, ~0);
+				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+			}
 			scene->gameObjects[0]->draw(false);
+			if(!scene->rearView)
+				glDisable(GL_STENCIL_TEST);
+		}
 	}
 	scene->draw(reversed);
 	//glDepthMask(GL_TRUE);
@@ -303,24 +313,24 @@ void renderScene(void) {
 		glClearStencil(0x0);
 		glClear(GL_STENCIL_BUFFER_BIT);
 
-		glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+		glStencilFunc(GL_ALWAYS, 0x5, 0x5);
 		glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 		UIrenderStep(1);
 	
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glStencilFunc(GL_NOTEQUAL, 0x1, 0x1);
+		glStencilFunc(GL_NOTEQUAL, 0x5, 0x5);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 		scene->secondCam->UpdateProjection();
 		renderStep(scene->secondCam, false);
 
 		glClear(GL_STENCIL_BUFFER_BIT);
 
-		glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+		glStencilFunc(GL_ALWAYS, 0x5, 0x5);
 		glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 		UIrenderStep(2);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glStencilFunc(GL_EQUAL, 0x1, 0x1);
+		glStencilFunc(GL_EQUAL, 0x5, 0x5);
 		scene->thirdCam->UpdateProjection();
 		renderStep(scene->thirdCam, false);
 		glDisable(GL_STENCIL_TEST);
@@ -335,6 +345,7 @@ void renderScene(void) {
 		scene->currentCam->UpdateProjection();
 		renderStep(scene->currentCam, true);
 		renderStep(scene->currentCam, false);
+		glEnable(GL_STENCIL_TEST);
 	}
 
 	glDisable(GL_STENCIL_TEST);
@@ -404,7 +415,7 @@ void processKeys(unsigned char key, bool state)
 	case 'r':case'R':
 		if (state != keys['r'])
 		{
-		
+			scene->gameOver = false;
 			restartScene();
 		}
 		break;
@@ -508,15 +519,6 @@ void processKeys(unsigned char key, bool state)
 		if(state != keys['q'])
 		{
 			toggleFogginess();
-		}
-		break;
-
-	case 'h':case'H':
-		if (state != keys['h'])
-		{
-			for(GameObject * obj : scene->uiElements){
-				obj->SetActive(!obj->IsActive());
-			}
 		}
 		break;
 	case 'u':case'U':

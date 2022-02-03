@@ -26,6 +26,7 @@ namespace GameObjectSpace
 		vector<GameObject*> gameObjectsForDeletion;//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
 		vector<GameObject*> gameObjectsForCreation;
 		Canvas* pauseMenu = nullptr;
+		Canvas* gameOverMenu = nullptr;
 	
 		GLuint shaderIndex;
 		Camera* currentCam;
@@ -35,6 +36,7 @@ namespace GameObjectSpace
 		static TimeUtil* timeUtil;
 		bool rearView = false;
 		bool useShadows = false;
+		bool gameOver = false;
 		Material* shadowMaterial = new Material();
 
 		virtual void init(unsigned int _shaderIndex);

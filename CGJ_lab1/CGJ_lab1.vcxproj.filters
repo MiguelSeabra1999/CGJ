@@ -247,6 +247,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies.exe" />
+    <None Include="shaders\gouraud.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\gouraud.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\pointlight.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\pointlight.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LibsClass">

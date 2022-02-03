@@ -9,10 +9,10 @@ TimeUtil* Scene::timeUtil = new TimeUtil();
 
 void Scene::initShadowMaterial()
 {
-	shadowMaterial->diffuse[0] = 0;
-	shadowMaterial->diffuse[1] = 0;
-	shadowMaterial->diffuse[2] = 0;
-	shadowMaterial->diffuse[3] = 1;
+	shadowMaterial->diffuse[0] = 0.0;
+	shadowMaterial->diffuse[1] = 0.0;
+	shadowMaterial->diffuse[2] = 0.0;
+	shadowMaterial->diffuse[3] = 0.2f;
 
 	shadowMaterial->ambient[0] = 0;
 	shadowMaterial->ambient[1] = 0;
@@ -69,7 +69,9 @@ void Scene::initUI(unsigned int shaderID)
 
 void Scene::update()
 {
-	if (paused)
+	if (player->hp == 0)
+		restart();
+	if (paused || gameOver)
 		return;
 	physicsEngine->update();
 	int count = gameObjects.size();
@@ -91,15 +93,17 @@ void Scene::draw(bool reversed)
 
 	if(!reversed && useShadows)
 	{
-		glDepthMask(GL_FALSE);
+		
 		for (int i = 1; i < count; i++)
 		{
 
 			(*gameObjects[i]).DrawShadow();
 		}
+		
 	
 	}
 
+	
 	glDepthMask(GL_TRUE);
 
 	for (int i = 1; i < count; i++)
@@ -115,7 +119,7 @@ void Scene::draw(bool reversed)
 	{
 		(*gameObjects[i]).transparentDraw(reversed);
 	}
-	if (!paused)
+	if (!paused || !gameOver)
 	{
 		destroyQueuedGameObjects();
 		createQueuedGameObjects();
@@ -128,7 +132,9 @@ void Scene::draw(bool reversed)
 
 void Scene::updateAndDrawUI(int st)
 {
-	pauseMenu->SetActive(paused);
+	gameOverMenu->SetActive(gameOver);
+	if(!gameOver)
+		pauseMenu->SetActive(paused);
 	int count = uiElements.size();
 	for (int i = 0; i < count; i++)
 	{
@@ -169,7 +175,6 @@ void Scene::UpdateFlarePositions() {
 				flare->SetActive(false);
 			}
 			else if (flare->lightSrc->lightType != LightType::global) {
-				//cout << "here" << endl;
 				flare->flarePos[0] = (int)lightScreenPos[0];
 				flare->flarePos[1] = (int)lightScreenPos[1];
 				flare->SetActive(true);
@@ -224,7 +229,7 @@ void Scene::restart()
 {
 	//destroy();
 	//init(shaderIndex);
-	restartScene = true;
+	gameOver = true;
 }
 void Scene::instatiate(GameObject* obj, float* pos)
 {

@@ -65,8 +65,8 @@ GLint tex_loc, tex_loc1, tex_loc2;
 GLint fogginess_uniformId;
 GLint fogColor_uniformId;
 //################################ FOG ###########################
-float fogginess = 0.1f;
-float fogColor[4] = { 0.5,0.6,0.7,1 };
+float fogginess = 0.05f;
+float fogColor[4] = { 0,0,0,1 };
 bool useFog = true;
 // Camera Position
 float camX, camY, camZ;

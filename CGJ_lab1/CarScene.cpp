@@ -35,6 +35,7 @@ void CarScene::init(unsigned int _shaderIndex)
 {
 	useShadows = true;
 	Scene::init(_shaderIndex);
+	
 	//loadTextures();
 	gameObjects.clear();
 

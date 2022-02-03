@@ -294,11 +294,34 @@ void GameObject::DrawShadow()
 {
 	if (!IsActive() || !castShadows)
 		return;
+	float r = 0;
+	float g = 0;
+	float b = 0;
+	float a = 0;
+	Material mat =  Material();
+	if(myMeshes.size() > 0)
+	{/** /
+		r = myMeshes[0].mat.diffuse[0];
+		g = myMeshes[0].mat.diffuse[1];
+		b = myMeshes[0].mat.diffuse[2];
+		a = myMeshes[0].mat.diffuse[3];
+
+
+
+		myMeshes[0].mat.diffuse[0] = 0;
+		myMeshes[0].mat.diffuse[1] = 0;
+		myMeshes[0].mat.diffuse[2] = 0;
+		myMeshes[0].mat.diffuse[3] = 0.5f;/**/
+		mat = myMeshes[0].mat;
+		myMeshes[0].mat = *(currentScene->shadowMaterial);
+
+	}
 
 	for (int light = 0; light < lights.size(); light++)
 	{
 		if (!lights[light]->castShadows)
 			continue;
+
 
 		if(lights[light]->lightType == LightType::spot)
 		{
@@ -339,6 +362,16 @@ void GameObject::DrawShadow()
 		RenderObject();
 
 		popMatrix(MODEL);
+
+
+	}
+	if (myMeshes.size() > 0)
+	{
+		/*myMeshes[0].mat.diffuse[0] = r;
+		myMeshes[0].mat.diffuse[1] = g;
+		myMeshes[0].mat.diffuse[2] = b;
+		myMeshes[0].mat.diffuse[3] = a;*/
+		myMeshes[0].mat = mat;
 	}
 	for each (Transform* son in transform.sons)
 	{

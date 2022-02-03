@@ -35,8 +35,10 @@ namespace GameObjectSpace
 		static TimeUtil* timeUtil;
 		bool rearView = false;
 		bool useShadows = false;
+		Material* shadowMaterial = new Material();
 
 		virtual void init(unsigned int _shaderIndex);
+		void initShadowMaterial();
 		void initUI(unsigned int shaderID);
 		void update();
 		void draw(bool reversed);

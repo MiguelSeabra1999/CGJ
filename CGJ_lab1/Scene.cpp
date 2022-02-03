@@ -7,9 +7,38 @@ using namespace GameObjectSpace;
 
 TimeUtil* Scene::timeUtil = new TimeUtil();
 
+void Scene::initShadowMaterial()
+{
+	shadowMaterial->diffuse[0] = 0;
+	shadowMaterial->diffuse[1] = 0;
+	shadowMaterial->diffuse[2] = 0;
+	shadowMaterial->diffuse[3] = 0.2f;
+
+	shadowMaterial->ambient[0] = 0;
+	shadowMaterial->ambient[1] = 0;
+	shadowMaterial->ambient[2] = 0;
+	shadowMaterial->ambient[3] = 0;
+
+	shadowMaterial->specular[0] = 0;
+	shadowMaterial->specular[1] = 0;
+	shadowMaterial->specular[2] = 0;
+	shadowMaterial->specular[3] = 0;
+
+	shadowMaterial->emissive[0] = 0;
+	shadowMaterial->emissive[1] = 0;
+	shadowMaterial->emissive[2] = 0;
+	shadowMaterial->emissive[3] = 0;
+	shadowMaterial->shininess = 0;
+	shadowMaterial->texCount = 0;
+	shadowMaterial->roughness = 0;
+	shadowMaterial->reflective = 0;
+}
 
 void GameObjectSpace::Scene::init(GLuint _shaderIndex)
 {
+
+	
+	initShadowMaterial();
 	//Scene::timeUtil = new TimeUtil();
 	Scene::timeUtil->init();
 	shaderIndex = _shaderIndex;

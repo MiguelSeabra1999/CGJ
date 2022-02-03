@@ -299,6 +299,25 @@ void GameObject::DrawShadow()
 	{
 		if (!lights[light]->castShadows)
 			continue;
+
+		if(lights[light]->lightType == LightType::spot)
+		{
+		
+			float objToLight[3];
+			float minusObject[3];
+			memcpy(minusObject, transform.globalTransform.pos, sizeof(float) * 3);
+			multVectorConstant(minusObject, minusObject, -1);
+			addVectors(objToLight, lights[light]->light->position, minusObject,3);
+			normalize(objToLight, objToLight, 3);
+			float lightDir[3];
+			lightDir[0] = lights[light]->light->direction[0];
+			lightDir[1] = lights[light]->light->direction[1];
+			lightDir[2] = lights[light]->light->direction[2];
+			float angle = dotProduct(objToLight, lightDir);
+			if (angle < lights[light]->light->cos_angle)
+				continue;
+		}
+
 		PrepareShader();
 		int n_sons = transform.sons.size();
 

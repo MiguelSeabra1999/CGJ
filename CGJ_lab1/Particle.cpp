@@ -6,7 +6,7 @@ using namespace GameObjectSpace;
 
 Particle::Particle() :Billboard(true)
 {
-
+	castShadows = false;
 }
 void Particle::initDraw(GLuint myShaderProgramIndex)
 {

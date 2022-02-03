@@ -43,7 +43,7 @@ namespace GameObjectSpace {
 					break;
 				case LightType::spot:
 					light->type = 2;
-					//castShadows = true;
+					castShadows = true;
 					break;
 				case LightType::global:
 					light->type = 3;

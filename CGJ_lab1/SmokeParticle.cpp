@@ -9,7 +9,7 @@ SmokeParticle::SmokeParticle():GameObject()
 	effectTime = effectTime + (float)randomRange((effectTime - effectTime_deviation) * 100.0f, (effectTime + effectTime_deviation) *100.0f) / 100.0f;
 	scaleIncrease = scaleIncrease + (float)randomRange((scaleIncrease - scaleIncrease_deviation) * 100, (scaleIncrease + scaleIncrease_deviation) * 100) / 100.0f;
 	setColor(1.0f, 1.0f, 1.0f, 1.0f);
-
+	castShadows = false;
 
 }
 void SmokeParticle::start()

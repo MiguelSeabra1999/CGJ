@@ -9,9 +9,9 @@ TimeUtil* Scene::timeUtil = new TimeUtil();
 
 void Scene::initShadowMaterial()
 {
-	shadowMaterial->diffuse[0] = 0;
-	shadowMaterial->diffuse[1] = 0;
-	shadowMaterial->diffuse[2] = 0;
+	shadowMaterial->diffuse[0] = 0.0;
+	shadowMaterial->diffuse[1] = 0.0;
+	shadowMaterial->diffuse[2] = 0.0;
 	shadowMaterial->diffuse[3] = 0.2f;
 
 	shadowMaterial->ambient[0] = 0;
@@ -89,20 +89,17 @@ void Scene::draw(bool reversed)
 
 	if(!reversed && useShadows)
 	{
-		glDepthMask(GL_FALSE);
+		
 		for (int i = 1; i < count; i++)
 		{
 
 			(*gameObjects[i]).DrawShadow();
 		}
+		
 	
 	}
 
-	for (int i = 1; i < count; i++)
-	{
-
-		(*gameObjects[i]).opaqueDraw(reversed);
-	}
+	
 	glDepthMask(GL_TRUE);
 
 	for (int i = 1; i < count; i++)

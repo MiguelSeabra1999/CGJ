@@ -357,9 +357,35 @@ void GameObject::DrawShadow()
 		memcpy(mMatrix[MODEL], projection, sizeof(float) * 16);
 
 		updateTransforms();
-		//float t[] = { 0.0f,0.001f,0.0f };
-		//translate(MODEL, t);
-		RenderObject();
+		
+		
+		//glEnable(GL_BLEND); // enable blending to
+		if (!currentScene->rearView) {
+			glDisable(GL_DEPTH_TEST); 
+			// Only update pixels tagged with the uniqueStencilValue and
+			// reset to zero the pixel’s stencil value once updated.
+			glEnable(GL_STENCIL_TEST);
+			glStencilFunc(GL_EQUAL, 0x1, ~0);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
+
+		}
+		else {
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_DST_COLOR, GL_ZERO);
+		}
+		RenderObject(); // draw object as planar projected shadow
+		// restore basic modes
+
+		if (!currentScene->rearView) {
+			glDisable(GL_STENCIL_TEST);
+			glEnable(GL_DEPTH_TEST);
+		}
+		
+			
+		
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
 
 		popMatrix(MODEL);
 
@@ -654,6 +680,3 @@ void GameObject::reallyDestroy()//this is necessary because you cant remove an o
 		}
 	}
 }
-
-
-

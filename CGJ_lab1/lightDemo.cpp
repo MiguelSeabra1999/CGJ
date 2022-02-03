@@ -218,21 +218,11 @@ void renderStep(Camera * currentCam, bool reversed) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-	//Update light positions
-	for (int i = 0; i < GameObject::lights.size(); i++)
-	{
-		if (GameObject::lights[i]->on) {
-			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
-			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
 
-		}
-	}
-
-	scene->sendLightsToShader();
-	lightsStep();
-
+	
 	//############ DRAW SCENE ####################;
 
+	
 	if(!reversed)
 	{
 		if (scene->gameObjects.size() > 0) {
@@ -251,6 +241,8 @@ void renderStep(Camera * currentCam, bool reversed) {
 	scene->draw(reversed);
 	//glDepthMask(GL_TRUE);
 
+
+
 	if (!shader.isProgramValid()) {
 		printf("Program Not Valid!\n");
 		exit(1);
@@ -263,16 +255,17 @@ void renderStep(Camera * currentCam, bool reversed) {
 void lightsStep() {
 
 
-	//glDisable(GL_DEPTH_TEST);
-	//the glyph contains background colors and non-transparent for the actual character pixels. So we use the blending
-	
+	//Update light positions
+	for (int i = 0; i < GameObject::lights.size(); i++)
+	{
+		if (GameObject::lights[i]->on) {
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
 
+		}
+	}
 
-
-	// UI STUFF
-
-	//glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_BLEND);
+	scene->sendLightsToShader();
 }
 
 void UIrenderStep(int st) {

@@ -83,6 +83,8 @@ void Scene::update()
 
 void Scene::draw(bool reversed)
 {
+
+	lightsStep();
 	int count = gameObjects.size();
 	if (count == 0)
 		return;
@@ -107,7 +109,7 @@ void Scene::draw(bool reversed)
 
 		(*gameObjects[i]).opaqueDraw(reversed);
 	}
-
+	
 	glDepthMask(GL_FALSE);
 
 	count = gameObjects.size();
@@ -122,7 +124,7 @@ void Scene::draw(bool reversed)
 	}
 	UpdateFlarePositions();
 	glDepthMask(GL_TRUE);
-
+	
 }
 
 
@@ -233,4 +235,20 @@ void Scene::instatiate(GameObject* obj, float* pos)
 	obj->transform.globalTransform.pos[1] = pos[1];
 	obj->transform.globalTransform.pos[2] = pos[2];
 	gameObjectsForCreation.push_back((GameObject*)obj);
+}
+
+void Scene::lightsStep() {
+
+
+	//Update light positions
+	for (int i = 0; i < GameObject::lights.size(); i++)
+	{
+		if (GameObject::lights[i]->on) {
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_direction, mMatrix[VIEW], GameObject::lights[i]->light->direction);
+			multMatixTransposeByVector(GameObject::lights[i]->light->eye_coords_position, mMatrix[VIEW], GameObject::lights[i]->light->position);
+
+		}
+	}
+
+	sendLightsToShader();
 }

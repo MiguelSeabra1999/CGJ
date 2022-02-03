@@ -57,7 +57,8 @@ namespace GameObjectSpace
 		VSShaderLib * GetUIShader() { return UIShader; }
 		virtual void loadTextures(){}
 		void UpdateFlarePositions();
-		
+
+		void lightsStep();
 		
 	private:
 		VSShaderLib * UIShader;

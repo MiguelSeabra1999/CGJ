@@ -294,10 +294,8 @@ void GameObject::DrawShadow()
 {
 	if (!IsActive() || !castShadows)
 		return;
-	float r = 0;
-	float g = 0;
-	float b = 0;
-	float a = 0;
+
+
 	Material mat =  Material();
 	if(myMeshes.size() > 0)
 	{/** /
@@ -319,13 +317,14 @@ void GameObject::DrawShadow()
 
 	for (int light = 0; light < lights.size(); light++)
 	{
-		if (!lights[light]->castShadows)
+		if (!lights[light]->castShadows || !lights[light]->on)
 			continue;
 
 
 		if(lights[light]->lightType == LightType::spot)
 		{
-		
+
+			
 			float objToLight[3];
 			float minusObject[3];
 			memcpy(minusObject, transform.globalTransform.pos, sizeof(float) * 3);

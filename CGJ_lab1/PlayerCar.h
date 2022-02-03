@@ -30,6 +30,7 @@ namespace GameObjectSpace{
 		void OnTriggerEnter(Component* other);
 		void handbreak(bool state);
 		void respawn();
+		void damage();
 	private:
 		float inputDir[2];
 		float startingPos[3];

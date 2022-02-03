@@ -16,7 +16,7 @@ namespace GameObjectSpace {
 		void update();
 		void OnCollisionEnter();
 
-
+		string GetType() { return "Cube"; };
 	};
 
 }

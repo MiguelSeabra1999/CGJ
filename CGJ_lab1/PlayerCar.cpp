@@ -105,6 +105,10 @@ using namespace GameObjectSpace;
 	void PlayerCar::OnCollisionEnter(Component* other)
 	{
 		velocity = 0;
+		if(other->owner->GetType() == "Cube")
+		{
+			damage();
+		}
 	}
 	
 
@@ -122,16 +126,21 @@ using namespace GameObjectSpace;
 
 	void PlayerCar::respawn()
 	{
-		hp -= 1;
+
 		memcpy(transform.globalTransform.pos, startingPos, 3 * sizeof(float));
 		memcpy(transform.globalTransform.rot, startingRot, 3 * sizeof(float));
 		rigidbody->setVelocitiesZero();
-		if(hp <= 0)
+		damage();
+	
+	}
+	void PlayerCar::damage()
+	{
+		hp -= 1;
+
+		rigidbody->setVelocitiesZero();
+		if (hp <= 0)
 		{
 			cout << "restart";
 			currentScene->restart();
-		}
-		else {
-
 		}
 	}

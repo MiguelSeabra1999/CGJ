@@ -6,6 +6,8 @@ namespace GameObjectSpace {
 	class ParticleSystem : public GameObject
 	{
 	public:
+		bool autoPlay = true;
+		
 		float minInitialSpeed[3];
 		float maxInitialSpeed[3];
 		float minAcceleration[3];
@@ -31,10 +33,13 @@ namespace GameObjectSpace {
 		void start();
 		void update();
 		void spawnParticle();
+		void playOnce();
+
 	private:
 		float lastSpawnTime;
 		float spawnTime;
 		float startTime;
+		bool playing;
 
 	};
 }

@@ -7,7 +7,7 @@
 #include "PhysicsEngine.h"
 #include "ComponentLib.h"
 #include "TimeUtil.h"
-
+#include "AVTmathLib.h"
 
 
 
@@ -34,6 +34,7 @@ namespace GameObjectSpace
 		PhysicsEngine* physicsEngine;
 		static TimeUtil* timeUtil;
 		bool rearView = false;
+		bool useShadows = false;
 
 		virtual void init(unsigned int _shaderIndex);
 		void initUI(unsigned int shaderID);
@@ -54,7 +55,8 @@ namespace GameObjectSpace
 		VSShaderLib * GetUIShader() { return UIShader; }
 		virtual void loadTextures(){}
 		void UpdateFlarePositions();
-
+		
+		
 	private:
 		VSShaderLib * UIShader;
 

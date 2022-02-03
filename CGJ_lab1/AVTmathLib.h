@@ -60,6 +60,7 @@
 		void normalize(float* result,float* v, int size);
 		void multVectorConstant(float* result, float* a, float b);
 		float sign(float n);
+		void CalculateLightPlanarProjection(float* result, float* lightPos);
 		/** Similar to glTranslate*. 
 		  *
 		  * \param aType any value from MatrixTypes

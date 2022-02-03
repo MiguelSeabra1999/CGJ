@@ -37,14 +37,14 @@ void PhysicsEngine::CheckCollisions(vector<Collision*>* collisions)
 			{
 				if(Collider::allColliders[i]->isTrigger || Collider::allColliders[j]->isTrigger)
 				{
-					Collider::allColliders[i]->owner->OnTriggerEnter();
-					Collider::allColliders[j]->owner->OnTriggerEnter();
+					Collider::allColliders[i]->owner->OnTriggerEnter(Collider::allColliders[j]);
+					Collider::allColliders[j]->owner->OnTriggerEnter(Collider::allColliders[i]);
 				}
 				else
 				{
 					collisions->push_back(col);
-					Collider::allColliders[i]->owner->OnCollisionEnter();
-					Collider::allColliders[j]->owner->OnCollisionEnter();
+					Collider::allColliders[i]->owner->OnCollisionEnter(Collider::allColliders[j]);
+					Collider::allColliders[j]->owner->OnCollisionEnter(Collider::allColliders[i]);
 				}
 		
 			}

@@ -104,6 +104,9 @@
     <ClCompile Include="Flare.cpp">
       <Filter>GameObjects\Source</Filter>
     </ClCompile>
+    <ClCompile Include="FinishLine.cpp">
+      <Filter>GameObjects\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h">
@@ -236,6 +239,9 @@
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Flare.h">
+      <Filter>GameObjects\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FinishLine.h">
       <Filter>GameObjects\Headers</Filter>
     </ClInclude>
   </ItemGroup>

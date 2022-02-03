@@ -33,6 +33,7 @@ void CarScene::loadTextures()
 
 void CarScene::init(unsigned int _shaderIndex)
 {
+	useShadows = true;
 	Scene::init(_shaderIndex);
 	//loadTextures();
 	gameObjects.clear();
@@ -46,7 +47,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	Cube* cube = new Cube();
 	cube->setResizable(mapSize, mapSize);
 	cube->transform.setScale(1, 10, 1);
-	cube->transform.setPosition(0, -5, 0);
+	cube->transform.setPosition(0, -5.0001, 0);
 	cube->setColor(1.0f, 1.0f, 1.0f, 0.5f);
 	cube->reflective = 0.05f;
 	cube->roughness = 10.0f;
@@ -55,11 +56,12 @@ void CarScene::init(unsigned int _shaderIndex)
 	gameObjects.push_back((GameObject*)cube);
 
 
+
 	//##############################  Car  ###############################################
 	PlayerCar* playerCar = new PlayerCar();
 	playerCar->transform.setScale(.2, .2, .2);
-	playerCar->transform.setPosition(5, .1, 0);
-	playerCar->transform.setRotation(0, 90, 0);
+	playerCar->transform.setPosition(2, .1, 12);
+	playerCar->transform.setRotation(0, 40, 0);
 	aabb = new AABB(playerCar);
 	playerCar->AddComponent(aabb);
 	rb = new RigidBody(playerCar);
@@ -318,6 +320,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	lightSource->light->color[1] = 1.0f;
 	lightSource->light->color[2] = 1.0f;
 	lightSource->light->color[3] = 1.0f;
+	memcpy(lightSource->light->position, moon->transform.globalTransform.pos, sizeof(float) * 3);
 
 	lightSource->transform.setRotation(-45, -90, 0);
 	lightSource->transform.setPosition(20, 20, 0);
@@ -412,13 +415,38 @@ void CarScene::init(unsigned int _shaderIndex)
 	ps->minSpawnAmmount = 10;
 	ps->maxSpawnAmmount = 100;
 	ps->lifetime = -1;
-	ps->transform.setPosition(0, 4, 0);
+	//ps->transform.setPosition(0, 4, 0);
+	ps->transform.setPosition(3, 2, 15);
+	
 	gameObjects.push_back((GameObject*)ps);
 	/**/
-
+		//############################### FINISH LINE #################################
+	FinishLine* finishLine = new FinishLine(ps);
+	finishLine->transform.setPosition(3, 0, 8);
+	
+	aabb = new AABB(finishLine);
+	aabb->isTrigger = true;
+	aabb->setDim(8,4,4);
+	finishLine->AddComponent(aabb);
+	gameObjects.push_back((GameObject*)aabb->cube);
+	gameObjects.push_back((GameObject*)finishLine);
 	/////////////////////////////////////UI/////////////////////////////////////////
 	UserInterface* UI = new UserInterface();
 	UI->transform.setPosition(0,0,0);
+
+	Canvas* lapCounter = new Canvas(GetUIShader());
+	lapCounter->SetWidth(40);
+	lapCounter->SetHeight(12);
+	lapCounter->SetWindow(windowX, windowY);
+	lapCounter->transform.setLocalPosition(60, 10, 0);
+	lapCounter->setColor(0,0,0, 0.8f);
+	TextElement* current = new TextElement(lapCounter, "Current Lap: ----" , 1,7,80, 1.0, 0.0f, 0.0f, 1.0f);
+	lapCounter->AddComponent(current);
+	TextElement* best = new TextElement(lapCounter, "Best Lap: ----" , 1,1.5, 80.0f, 1.0, 0.0f, 0.0f, 1.0f);
+	lapCounter->AddComponent(best);
+	lapCounter->transform.setParent(&(UI->transform));
+	finishLine->currentLapText = current;
+	finishLine->bestLapText = best;
 
 	Canvas* canvas = new Canvas(GetUIShader());
 	canvas->SetWidth(50);
@@ -435,8 +463,8 @@ void CarScene::init(unsigned int _shaderIndex)
 	pan->setHeart(false);
 	canvas->AddComponent(pan);/**/
 
-
-	TextElement * textMesh = new TextElement(canvas, "Game Paused", 12.5, 47, 80.0f, 1.0, 0.0f, 0.0f, 1.0f);
+	TextElement* textMesh;
+	textMesh = new TextElement(canvas, "Game Paused", 12.5, 47, 80.0f, 1.0, 0.0f, 0.0f, 1.0f);
 	canvas->AddComponent(textMesh);
 
 	textMesh = new TextElement(canvas, "Controls:", 20, 41, 50.0f, 5.0, 5.0f, 5.0f, 1.0f);

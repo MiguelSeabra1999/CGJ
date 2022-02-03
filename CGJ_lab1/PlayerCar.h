@@ -26,8 +26,8 @@ namespace GameObjectSpace{
 		void left(bool state);
 		void right(bool state);
 
-		void OnCollisionEnter();
-		void OnTriggerEnter();
+		void OnCollisionEnter(Component* other);
+		void OnTriggerEnter(Component* other);
 		void handbreak(bool state);
 		void respawn();
 	private:

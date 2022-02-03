@@ -36,7 +36,7 @@ void Wheel::initDraw(GLuint myShaderProgramIndex)
 void Wheel::spawnParticle()
 {
 	SmokeParticle* particle = new SmokeParticle();
-	float spawnPos[3] = { (int)randomRange(-100,100) / 10000.0f,(int)randomRange(-100,100) / 10000.0f,(int)randomRange(-100,100) / 10000.0f };
+	float spawnPos[3] = { (int)randomRange(-100,100) / 10000.0f,((int)randomRange(-100,100) / 10000.0f)*-1,(int)randomRange(-100,100) / 10000.0f };
 	addVectors(spawnPos, spawnPos, transform.globalTransform.pos, 3);
 	car->currentScene->instatiate((GameObject*)particle, spawnPos);
 }

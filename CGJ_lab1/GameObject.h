@@ -55,6 +55,7 @@ namespace GameObjectSpace {
 		int normalMapTextureId = -1;
 		bool isBillboard = false;
 		bool isSkybox = false;
+		bool castShadows = true;
 
 		string name = "GameObject";
 
@@ -66,7 +67,10 @@ namespace GameObjectSpace {
 		virtual void start();
 		virtual void initDraw(GLuint myShaderProgramIndex);
 		virtual void draw(bool reversed);
+		void draw();
 		void PrepareShader();
+		void RenderObject();
+		void DrawShadow();
 		void transparentDraw(bool reversed);
 		void opaqueDraw(bool reversed);
 		void initMaterial();
@@ -81,10 +85,10 @@ namespace GameObjectSpace {
 		void startAndInitDrawSons();
 		void AddComponent(Component* comp);
 		virtual void BindTexture();
-		virtual void OnCollisionEnter() {}
+		virtual void OnCollisionEnter(Component* other) {}
 		static void turnLightOfTypeOff(LightType t);
 		virtual bool GetLight();
-		virtual void OnTriggerEnter() {}
+		virtual void OnTriggerEnter(Component* other) {}
 		void destroy();
 		void reallyDestroy();//this is necessary because you cant remove an object from gameOjects during the update loop cause you would chage the vector while iterating it
 		//void Instantiate(GameObject* obj, float* pos);
@@ -103,6 +107,7 @@ namespace GameObjectSpace {
 		void updateCurrentScene(Scene* sc);
 		virtual void updateWindow(float x, float y){}
 		virtual bool IsFlare() { return false; }
+		virtual string GetType() { return "None"; }
 	protected:
 		vector<struct MyMesh> myMeshes;
 		GLint pvm_uniformId;

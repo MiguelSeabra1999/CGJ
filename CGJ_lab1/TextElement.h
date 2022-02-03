@@ -10,7 +10,7 @@ namespace GameObjectSpace
 
 	public:
 		Panel* pan;
-		const char* text;
+		string text;
 		float simpleColor[4] = { 1.0f };
 		float position[3] = { 0.0f };
 		string font;

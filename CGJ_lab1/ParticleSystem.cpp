@@ -13,24 +13,33 @@ ParticleSystem::ParticleSystem() :GameObject()
 void ParticleSystem::start()
 {
 	GameObject::start();
-	spawnParticle();
+	if(autoPlay)
+		spawnParticle();
 	startTime = Scene::timeUtil->time;
+	playing = autoPlay;
 
 }
 void ParticleSystem::update()
 {
 	GameObject::update();
+	if (!playing)
+		return;
 	if (lifetime > 0 && startTime + lifetime < Scene::timeUtil->time)
 		destroy();
 	if(lastSpawnTime  + spawnTime < Scene::timeUtil->time)
 	{
-		int spawnAmmount = randomRange(minSpawnAmmount, maxSpawnAmmount);
-		for(int i = 0; i < spawnAmmount; i++)
-		{
-			spawnParticle();
-		}
+		playOnce();
 	}
 
+}
+
+void ParticleSystem::playOnce()
+{
+	int spawnAmmount = randomRange(minSpawnAmmount, maxSpawnAmmount);
+	for (int i = 0; i < spawnAmmount; i++)
+	{
+		spawnParticle();
+	}
 }
 
 void ParticleSystem::spawnParticle()

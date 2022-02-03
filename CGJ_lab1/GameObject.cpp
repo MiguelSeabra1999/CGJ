@@ -255,7 +255,10 @@ void GameObject::DrawUI(int st) {
 	drawUISons(st);
 }
 
-
+void GameObject::draw()
+{
+	draw(false);
+}
 
 
 void GameObject::draw(bool reversed)
@@ -263,10 +266,6 @@ void GameObject::draw(bool reversed)
 
 	if (!IsActive())
 		return;
-//	glFrontFace(GL_CW); // set clockwise vertex order to mean the front
-
-	if(reversed)
-		glFrontFace(GL_CW);
 
 	PrepareShader();
 	int n_sons = transform.sons.size();
@@ -277,11 +276,60 @@ void GameObject::draw(bool reversed)
 	pushMatrix(MODEL);
 
 	if (reversed) {
+		glFrontFace(GL_CW);
 		float aux[3] = { 1, -1, 1 };
 		scale(MODEL, aux);
 	}
-
 	updateTransforms();
+	RenderObject();
+
+	popMatrix(MODEL);
+	if (reversed)
+		glFrontFace(GL_CCW);
+	//drawSons();
+//	glFrontFace(GL_CCW); // restore counter clockwise vertex order to mean the front
+}
+
+void GameObject::DrawShadow()
+{
+	if (!IsActive() || !castShadows)
+		return;
+
+	for (int light = 0; light < lights.size(); light++)
+	{
+		if (!lights[light]->castShadows)
+			continue;
+		PrepareShader();
+		int n_sons = transform.sons.size();
+
+		if (textureId != -1)
+			BindTexture();
+
+		pushMatrix(MODEL);
+
+
+		//shadowprojection
+		float projection[16] ;
+		CalculateLightPlanarProjection(projection, GameObject::lights[light]->light->position);
+		//multMatrix(mMatrix[MODEL], projection);
+		memcpy(mMatrix[MODEL], projection, sizeof(float) * 16);
+
+		updateTransforms();
+		//float t[] = { 0.0f,0.001f,0.0f };
+		//translate(MODEL, t);
+		RenderObject();
+
+		popMatrix(MODEL);
+	}
+	for each (Transform* son in transform.sons)
+	{
+		son->gameObject->DrawShadow();
+	}
+}
+
+void GameObject::RenderObject()
+{
+	
 	int myMeshesLen = myMeshes.size();
 	for (int i = 0; i < myMeshesLen; i++)
 	{
@@ -308,11 +356,6 @@ void GameObject::draw(bool reversed)
 		glDrawElements(myMeshes[i].type, myMeshes[i].numIndexes, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
-	popMatrix(MODEL);
-	if (reversed)
-		glFrontFace(GL_CCW);
-	//drawSons();
-//	glFrontFace(GL_CCW); // restore counter clockwise vertex order to mean the front
 }
 
 void GameObject::PrepareShader()

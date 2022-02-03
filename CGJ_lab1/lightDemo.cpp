@@ -230,6 +230,12 @@ void renderStep(Camera * currentCam, bool reversed) {
 	lightsStep();
 
 	//############ DRAW SCENE ####################;
+
+	if(!reversed)
+	{
+		if (scene->gameObjects.size() > 0)
+			scene->gameObjects[0]->draw(false);
+	}
 	scene->draw(reversed);
 	//glDepthMask(GL_TRUE);
 

@@ -55,8 +55,28 @@ void Scene::update()
 void Scene::draw(bool reversed)
 {
 	int count = gameObjects.size();
+	if (count == 0)
+		return;
+
+	if(!reversed && useShadows)
+	{
+		glDepthMask(GL_FALSE);
+		for (int i = 1; i < count; i++)
+		{
+
+			(*gameObjects[i]).DrawShadow();
+		}
+	
+	}
+
+	for (int i = 1; i < count; i++)
+	{
+
+		(*gameObjects[i]).opaqueDraw(reversed);
+	}
 	glDepthMask(GL_TRUE);
-	for (int i = 0; i < count; i++)
+
+	for (int i = 1; i < count; i++)
 	{
 
 		(*gameObjects[i]).opaqueDraw(reversed);
@@ -65,7 +85,7 @@ void Scene::draw(bool reversed)
 	glDepthMask(GL_FALSE);
 
 	count = gameObjects.size();
-	for (int i = 0; i < count; i++)
+	for (int i = 1; i < count; i++)
 	{
 		(*gameObjects[i]).transparentDraw(reversed);
 	}
@@ -75,6 +95,7 @@ void Scene::draw(bool reversed)
 		createQueuedGameObjects();
 	}
 	UpdateFlarePositions();
+	glDepthMask(GL_TRUE);
 
 }
 
@@ -100,6 +121,7 @@ void Scene::updateAndDrawUI(int st)
 	destroyQueuedGameObjects();
 	createQueuedGameObjects();
 }
+
 
 void Scene::UpdateFlarePositions() {
 

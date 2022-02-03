@@ -22,3 +22,4 @@
 #include "Particle.h"
 #include "Skybox.h"
 #include "Model3D.h"
+#include "FinishLine.h"

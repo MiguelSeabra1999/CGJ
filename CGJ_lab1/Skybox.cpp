@@ -8,6 +8,7 @@ Skybox::Skybox() :GameObject()
 {
 	GameObject::isSkybox = true;
 	cubeMap_loc = glGetUniformLocation(shaderProgramIndex, "cubeMap");
+	castShadows = false;
 }
 void Skybox::initDraw(GLuint myShaderProgramIndex)
 {

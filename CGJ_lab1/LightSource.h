@@ -29,7 +29,7 @@ namespace GameObjectSpace {
 		LightType lightType;
 		LightSource(LightType type) :GameObject()
 		{
-			
+			castShadows = false;
 			light = new Light;
 			lightType = type;
 			switch(type)
@@ -39,9 +39,11 @@ namespace GameObjectSpace {
 					break;
 				case LightType::directional:
 					light->type = 1;
+				    castShadows = true;
 					break;
 				case LightType::spot:
 					light->type = 2;
+					//castShadows = true;
 					break;
 				case LightType::global:
 					light->type = 3;

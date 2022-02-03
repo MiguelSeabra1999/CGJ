@@ -43,7 +43,7 @@ void Particle::update()
 
 	transform.globalTransform.translate(velocityScaled);
 
-	if(percent >= 1)
+	if(percent >= 1 || transform.globalTransform.pos[1]<=0)
 		destroy();
 }
 

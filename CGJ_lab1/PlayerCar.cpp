@@ -1,6 +1,6 @@
 #include "PlayerCar.h"
 #include "Scene.h"
-
+#include "ComponentLib.h"
 using namespace GameObjectSpace;
 
 
@@ -102,15 +102,16 @@ using namespace GameObjectSpace;
 			inputDir[1] += 1;
 	}
 
-	void PlayerCar::OnCollisionEnter()
+	void PlayerCar::OnCollisionEnter(Component* other)
 	{
 		velocity = 0;
 	}
 	
 
-	void PlayerCar::OnTriggerEnter()
+	void PlayerCar::OnTriggerEnter(Component* other)
 	{
-		respawn();
+		if(other->owner->GetType() == "Orange")
+			respawn(); 
 		//currentScene->restart();
 	}
 	void PlayerCar::handbreak(bool state)

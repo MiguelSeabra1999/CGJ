@@ -300,6 +300,33 @@ void genIdentityMatrix(float* result)
 
 	result[12] = 0;	result[13] = 0; result[14] = 0;	result[15] = 1;
 }
+
+void CalculateLightPlanarProjection(float* result, float* lightPos)
+{
+	float planeNormal[] = { 0,1,0 };	//considering the plane y = 0
+	float d = 0;					// d from plane equation -> dot(planeNormal,X) + d = 0
+
+	float nDotL = dotProduct(planeNormal, lightPos);
+
+	result[0] = nDotL + d - lightPos[0] * planeNormal[0];
+	result[4] = -lightPos[0] * planeNormal[1];
+	result[8] = -lightPos[0] * planeNormal[2];
+	result[12] = -lightPos[0] * d;
+	result[1] = -lightPos[1] * planeNormal[0];
+	result[5] = nDotL + d - lightPos[1] * planeNormal[1];
+	result[9] = -lightPos[1] * planeNormal[2];
+	result[13] = -lightPos[1] * d;
+	result[2] = -lightPos[2] * planeNormal[0];
+	result[6] = -lightPos[2] * planeNormal[1];
+	result[10] = nDotL + d - lightPos[2] * planeNormal[2];
+	result[14] = -lightPos[2] * d;
+	result[3] = -planeNormal[0];
+	result[7] = -planeNormal[1];
+	result[11] = -planeNormal[2];
+	result[15] = nDotL;
+}
+
+
 // glLoadMatrix implementation
 void loadMatrix(MatrixTypes aType, float *aMatrix)
 {

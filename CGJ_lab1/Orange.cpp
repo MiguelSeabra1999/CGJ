@@ -95,7 +95,7 @@ void Orange::moveInRandomDirection()
 	multVectorConstant(rigidbody->acceleration, rigidbody->acceleration, acceleration);
 	/**/
 }
-void Orange::OnTriggerEnter()
+void Orange::OnTriggerEnter(Component* other)
 {
 
 	queueRespawn();

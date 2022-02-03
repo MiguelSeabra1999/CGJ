@@ -171,6 +171,7 @@
     <ClCompile Include="CarScene.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CubeObj.cpp" />
+    <ClCompile Include="FinishLine.cpp" />
     <ClCompile Include="FixedTopDownCamera.cpp" />
     <ClCompile Include="Flare.cpp" />
     <ClCompile Include="FollowCamera.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="ComponentLib.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="CubeObj.h" />
+    <ClInclude Include="FinishLine.h" />
     <ClInclude Include="FixedTopDownCamera.h" />
     <ClInclude Include="Flare.h" />
     <ClInclude Include="FollowCamera.h" />

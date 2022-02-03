@@ -12,7 +12,7 @@ namespace GameObjectSpace {
 		long int respawnTime = 0;
 		bool respawning = false;
 		float dir[3];
-		string name = "Orange";
+		
 
 		RigidBody* rigidbody;
 		Collider* collider;
@@ -26,7 +26,8 @@ namespace GameObjectSpace {
 		void queueRespawn();
 		void goToRandomPos();
 		void moveInRandomDirection();
-		void OnTriggerEnter();
+		void OnTriggerEnter(Component* other);
+		string GetType() { return "Orange"; }
 	};
 }
 

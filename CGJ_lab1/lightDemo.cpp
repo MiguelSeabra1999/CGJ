@@ -415,7 +415,7 @@ void processKeys(unsigned char key, bool state)
 	case 'r':case'R':
 		if (state != keys['r'])
 		{
-		
+			scene->gameOver = false;
 			restartScene();
 		}
 		break;
@@ -519,15 +519,6 @@ void processKeys(unsigned char key, bool state)
 		if(state != keys['q'])
 		{
 			toggleFogginess();
-		}
-		break;
-
-	case 'h':case'H':
-		if (state != keys['h'])
-		{
-			for(GameObject * obj : scene->uiElements){
-				obj->SetActive(!obj->IsActive());
-			}
 		}
 		break;
 	case 'u':case'U':

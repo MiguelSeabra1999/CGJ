@@ -69,7 +69,9 @@ void Scene::initUI(unsigned int shaderID)
 
 void Scene::update()
 {
-	if (paused)
+	if (player->hp == 0)
+		restart();
+	if (paused || gameOver)
 		return;
 	physicsEngine->update();
 	int count = gameObjects.size();
@@ -117,7 +119,7 @@ void Scene::draw(bool reversed)
 	{
 		(*gameObjects[i]).transparentDraw(reversed);
 	}
-	if (!paused)
+	if (!paused || !gameOver)
 	{
 		destroyQueuedGameObjects();
 		createQueuedGameObjects();
@@ -130,7 +132,9 @@ void Scene::draw(bool reversed)
 
 void Scene::updateAndDrawUI(int st)
 {
-	pauseMenu->SetActive(paused);
+	gameOverMenu->SetActive(gameOver);
+	if(!gameOver)
+		pauseMenu->SetActive(paused);
 	int count = uiElements.size();
 	for (int i = 0; i < count; i++)
 	{
@@ -171,7 +175,6 @@ void Scene::UpdateFlarePositions() {
 				flare->SetActive(false);
 			}
 			else if (flare->lightSrc->lightType != LightType::global) {
-				//cout << "here" << endl;
 				flare->flarePos[0] = (int)lightScreenPos[0];
 				flare->flarePos[1] = (int)lightScreenPos[1];
 				flare->SetActive(true);
@@ -226,7 +229,7 @@ void Scene::restart()
 {
 	//destroy();
 	//init(shaderIndex);
-	restartScene = true;
+	gameOver = true;
 }
 void Scene::instatiate(GameObject* obj, float* pos)
 {

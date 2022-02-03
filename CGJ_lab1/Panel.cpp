@@ -17,7 +17,7 @@ void Panel::update()
 void Panel::updateHeart() {
     if (heart == true) {
         int hp = owner->currentScene->player->hp;
-        if (hp > 0) {
+        if (hp >= 0) {
             if (hp + 1 == mesh_index) {
                 isAct = false;
             }

@@ -48,7 +48,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	Cube* cube = new Cube();
 	cube->setResizable(mapSize, mapSize);
 	cube->transform.setScale(1, 10, 1);
-	cube->transform.setPosition(0, -5.0, 0);
+	cube->transform.setPosition(0, -5.0001, 0);
 	cube->setColor(1.0f, 1.0f, 1.0f, 0.5f);
 	cube->reflective = 0.05f;
 	cube->roughness = 10.0f;

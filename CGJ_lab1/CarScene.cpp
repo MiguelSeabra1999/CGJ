@@ -479,7 +479,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	textMesh = new TextElement(canvas, "W,A,S,D - Movement", 16.0, 36.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
-	textMesh = new TextElement(canvas, "1,2,3,4,L,F - Cameras", 15.5f, 32.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
+	textMesh = new TextElement(canvas, "1,2,3,4,5,L,F - Cameras", 15.0f, 32.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);
 	canvas->AddComponent(textMesh);
 
 	textMesh = new TextElement(canvas, "U - Guizmos", 20.0f, 28.0f, 40.0f, 5.0, 5.0f, 5.0f, 0.7);

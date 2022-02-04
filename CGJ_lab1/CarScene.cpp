@@ -153,7 +153,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	headlight->light->color[0] = 1;
 	headlight->light->color[1] = 0.9f;
 	headlight->light->color[2] = 0.2f;
-	headlight->light->linear = 1;
+	//headlight->light->linear = 1;
 	headlight->light->cos_angle = .9f;
 	headlight->transform.setRotation(0, 0, 90);
 	headlight->transform.setLocalPosition(-1.1, .2, -.45);
@@ -164,7 +164,7 @@ void CarScene::init(unsigned int _shaderIndex)
 	headlight->light->color[0] = 1;
 	headlight->light->color[1] = 0.9f;
 	headlight->light->color[2] = 0.2f;
-	headlight->light->linear = 1;
+	//headlight->light->linear = 1;
 	headlight->light->cos_angle = .9f;
 	headlight->transform.setRotation(0, 0, 90);
 	headlight->transform.setLocalPosition(-1.1, 0.2, .45);

@@ -9,6 +9,7 @@ namespace GameObjectSpace
 		vector<Camera*> cameras;
 		// Camera constants and values for easy definition
 		float WinX = 1024, WinY = 768;
+
 		float positionTopDownCamera[3] = { 0.0f, 70.0f, 0.0f };
 		float positionTopDownCamera2[3] = { 0.0f, 5.0f, 0.0f };
 		float followCameraPerspectiveArguments[8] = {

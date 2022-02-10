@@ -12,7 +12,9 @@ in vec4 normal;    //por causa do gerador de geometria
 in vec4 tangent;
 
 out vec4 real_position;
-out mat3 TBN;
+out vec3 T;
+out vec3 B;
+out vec3 N;
 out Data {
 	vec3 normal;
 	vec3 eye;
@@ -32,10 +34,10 @@ void main ()
 		DataOut.skyboxTexCoord = vec3(m_model * position);
 		DataOut.skyboxTexCoord.x = - DataOut.skyboxTexCoord.x; 
 	
-	vec3 T = normalize(m_normal*tangent.xyz);
-	vec3 B = normalize(m_normal*cross(tangent.xyz,normal.xyz).xyz);
-	vec3 N = normalize(m_normal*normal.xyz);
-	TBN = mat3(TBN);
+	T = normalize(m_normal*tangent.xyz);
+	B = normalize(m_normal*cross(tangent.xyz,normal.xyz).xyz);
+	N = normalize(m_normal*normal.xyz);
+	//TBN = mat3(TBN);
 
 	gl_Position = m_pvm * position;	
 }

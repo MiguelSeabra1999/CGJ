@@ -52,16 +52,35 @@ in Data {
 	vec2 tex_coord;
 	vec3 skyboxTexCoord;
 } DataIn;
+in vec3 T;
+in vec3 B;
+in vec3 N;
+
+vec3 transformTangent(vec3 src)
+{
+	vec3 v;
+	v.x = dot (src, T);
+	v.y = dot (src, B);
+	v.z = dot (src, N);
+	return normalize (v);
+}
 
 vec4 blinnPhong(Light source, vec3 normal, vec3 lightDir, vec3 eye)
 {
 	vec4 spec = vec4(0.0);
-
+	if(useNormalMap)
+	{
+		lightDir = transformTangent(lightDir);
+	}
 	float intensity =  max(dot(normal,lightDir),0.0);
 	
 	if (intensity > 0.0) {
 
 		vec3 h = normalize(lightDir + eye);
+		if(useNormalMap)
+		{
+			h = transformTangent(h);
+		}
 		float intSpec = max(dot(h,normal), 0.0);
 		spec =  mat.specular * pow(intSpec, mat.shininess);
 	}
@@ -197,6 +216,7 @@ void main()
 	for(int i = 0; i < n_lights; i++)
 	{
 		vec3 l = vec3(lights[i].position) - vec3(position);
+
 		vec3 dir = normalize(vec3(lights[i].direction));
 
 		resultColor += calcLightContribuition(lights[i],l,n,e,dir);
